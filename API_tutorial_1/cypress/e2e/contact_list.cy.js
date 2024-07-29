@@ -11,12 +11,15 @@ describe('template spec', () => {
     cy.visit('https://thinking-tester-contact-list.herokuapp.com/')
 
     cy.get('[id="signup"]').click()
+    cy.contains('Add User').should('be.visible')
     cy.get('[id="firstName"]').type('ali')
     cy.get('[id="lastName"]').type('abu')
     cy.get('[id="email"]').type(emailAddress)
     cy.get('[id="password"]').type('Admin@1234')
 
     cy.get('[id="submit"]').click()
+
+    cy.contains('Contact List').should('be.visible')
 
     cy.get('[id="add-contact"]').click()
 

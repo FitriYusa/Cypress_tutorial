@@ -1,0 +1,28 @@
+{
+  "name": "cypress-cucumber-bdd",
+  "version": "1.0.0",
+  "description": "Cypress with cucumber examples",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Cypress",
+    "BDD",
+    "Cucumber"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^20.1.1",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.2",
+    "esbuild": "^0.19.0"
+  },
+  "cypress-cucumber-preprocessor": {
+    "stepDefinitions": "cypress/e2e/step_definitions/**/*.{js,ts}"
+  },
+  "devDependencies": {
+    "cypress": "^13.13.1",
+    "cypress-mailosaur": "^2.15.0"
+  }
+}

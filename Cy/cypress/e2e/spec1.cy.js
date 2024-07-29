@@ -59,34 +59,34 @@ describe('Signup pop up button', () => {
 
     //     cy.get('[type="submit"]').contains('Start!').click()
 
-    //     cy.get('[class="col-md-4 ng-star-inserted"]').contains('Internship').click()
-    //     cy.get('[class="col-md-4 ng-star-inserted"]').contains('Work Placement').click()
-    //     cy.get('[class="col-md-4 ng-star-inserted"]').contains('Course').click()
-    //     cy.get('[class="col-md-4 ng-star-inserted"]').contains('Job').click()
-    //     cy.get('[class="col-md-4 ng-star-inserted"]').contains('Traineeship').click()
-    //     cy.get('[type="submit"]').contains('Continue').click()
+        // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Internship').click()
+        // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Work Placement').click()
+        // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Course').click()
+        // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Job').click()
+        // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Traineeship').click()
+        // cy.get('[type="submit"]').contains('Continue').click()
 
         
-    //     cy.get('span.slider.round').first().click();
-    //     // cy.get('input[type="checkbox"]').should('be.checked')
-    //     cy.get('[placeholder="University/School"]').type('MSU')
+        // cy.get('span.slider.round').first().click();
+        // // cy.get('input[type="checkbox"]').should('be.checked')
+        // cy.get('[placeholder="University/School"]').type('MSU')
 
-    //     cy.get('[name="start_date"]').click()
-    //     cy.get('[title="Select year"]').select('2020')
-    //     cy.get('[title="Select month"]').select('Apr')
-    //     cy.get('[role="gridcell"]').contains('21').click()
+        // cy.get('[name="start_date"]').click()
+        // cy.get('[title="Select year"]').select('2020')
+        // cy.get('[title="Select month"]').select('Apr')
+        // cy.get('[role="gridcell"]').contains('21').click()
 
-    //     cy.get('[name="end_date"]').click()
-    //     cy.get('[title="Select year"]').select('2025')
-    //     cy.get('[title="Select month"]').select('Jul')
-    //     cy.get('[role="gridcell"]').contains('21').click()
-    //     cy.get('[type="submit"]').contains('Continue').click()
+        // cy.get('[name="end_date"]').click()
+        // cy.get('[title="Select year"]').select('2025')
+        // cy.get('[title="Select month"]').select('Jul')
+        // cy.get('[role="gridcell"]').contains('21').click()
+        // cy.get('[type="submit"]').contains('Continue').click()
 
-    //     // insert profile image
-    //     // cy.get('[type="button"]').click()
-    //     cy.get('button.btn.img-logo').find('img').click();
-    //     // cy.get('[class="drag-files"]').click()
-    //     cy.get('input[type="file"]').selectFile('cypress\\images\\blob.jfif', {force : true})
+        // // insert profile image
+        // // cy.get('[type="button"]').click()
+        // cy.get('button.btn.img-logo').find('img').click();
+        // // cy.get('[class="drag-files"]').click()
+        // cy.get('input[type="file"]').selectFile('cypress\\images\\blob.jfif', {force : true})
 
 
     //     // cy.get('[type="submit"]').contains('Skip').click()
