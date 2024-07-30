@@ -6,7 +6,7 @@ const { createEsbuildPlugin } = require("@badeball/cypress-cucumber-preprocessor
 
 module.exports = defineConfig({
  e2e: {
-   baseUrl: 'https://env3.yuzee.click',
+   baseUrl: 'https://dev.yuzee.click/',
    specPattern: "**/*.feature",
    env: {
      MAILOSAUR_API_KEY: "" //optional
