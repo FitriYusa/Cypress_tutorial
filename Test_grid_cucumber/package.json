@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^20.1.1",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.2"
+  },
+  "name": "cypress-cucumber",
+  "version": "1.0.0",
+  "description": "cypress cucumber test using TestGrid",
+  "main": "index.js",
+  "devDependencies": {
+    "mocha": "^10.7.0"
+  },
+  "scripts": {
+     "cy:open": "cypress open"
+  },
+  "cypress-cucumber-preprocessor": {
+    "stepDefinitions": "cypress/e2e/step_definitions/**/*.{js,ts}"
+  },
+  
+  "author": "",
+  "license": "ISC"
+
+}

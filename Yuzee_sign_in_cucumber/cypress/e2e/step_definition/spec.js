@@ -32,3 +32,8 @@ Then("the user will be in homepage", () => {
 
     // cy.url().should('include', 'https://dev.yuzee.click/user-control-center/landing')
 })
+
+cy.get('[type="button"]').then(($btn) => {
+    
+    if($btn.find())
+})
