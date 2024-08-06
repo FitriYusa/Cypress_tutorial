@@ -13,9 +13,7 @@ Feature: Yuzee Create Institution
       And the user submit the sign in form
       Then the user will be in homepage
       
-      Given the user initiate the insitution
-      And the user provides valid information details
-      When the user submit the application
+
 
 
       Given the user initiate the education
