@@ -68,7 +68,7 @@ Then("the new user should receive verification code via email and submits", () =
 
 Then("the new user will be redirect to completeting the Onboarding", () => {
     
-    cy.url().should('eq', 'https://dev.yuzee.click/profile-setup')
+    cy.url().should('include', '/profile-setup')
     cy.contains("Let's get this show on the road")
 
     cy.get('[type="submit"]').contains('Start!').click()
@@ -100,6 +100,7 @@ Then("the new user will be redirect to completeting the Onboarding", () => {
     // cy.get('button.btn.img-logo').find('img').click();
     // cy.get('input[type="file"]').selectFile('cypress\\images\\blob.jfif', {force : true})
     cy.contains('Skip').click()
+    cy.wait(5000)
     
     //Location
     cy.get('[placeholder="Search location"]').type('Kuala Lumpur')
@@ -108,32 +109,37 @@ Then("the new user will be redirect to completeting the Onboarding", () => {
     cy.get('[type="submit"]').contains('Continue').click()
     //cannot click on the continue, it just loading - decided to skip
     // cy.get('[type="submit"]').contains('Skip').click()
+    cy.wait(5000)
 
     //Hobby
     cy.get('[bindlabel="hobby_name"]').type('run')
     cy.contains('Running').click()
     cy.get('[type="submit"]').contains('Continue').click()
+    cy.wait(5000)
 
     //Community
+    
     cy.get('[type="submit"]').contains('Continue').click()
-    cy.wait(5000)
+    cy.wait(3000)
     cy.get('[type="submit"]').contains('Go!').click()
 })
 
 Then("the new user will be redirect to the user control center page", () => {
-    cy.url().should('eq', 'https://dev.yuzee.click/user-control-center/landing')
+    cy.url().should('include', '/user-control-center/landing')
 })
 
 When("the user initiate to Go to profile", () => {
 
     //need to click something else before the Go to profile button to work 
-    cy.get('.d-none-from-apply').click()
-    cy.get('.navbar-nav > :nth-child(1)').click()
-    cy.get('[class="btn btn-block fs-16 fw-500 light-grey-btn"]').contains('Go to profile').click()
+    cy.get('[ngbtooltip="Apply"]').click()
+    cy.wait(3000)
+    cy.get('[ngbtooltip="Control Center"]').click()
+    cy.wait(3000)
+    cy.get('[class="btn btn-block fs-16 fw-500 light-grey-btn"]').contains('Go to profile').should('be.visible').click()
 })
 
 Then("the user will be redirect to profile page", () => {
-    cy.wait(5000)
+    cy.wait(3000)
     //sometimes the test pass sometimes failed
     cy.url().should('include', '/profile')
 })
@@ -145,7 +151,7 @@ When("the user initiate the Work Availability", () => {
 
 })
 
-When("the user provides valid details", () => {
+When("the user provides valid work availability details", () => {
     cy.get('[name="privacy_level"]').click()
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
 

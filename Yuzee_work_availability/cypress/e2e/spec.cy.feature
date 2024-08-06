@@ -13,6 +13,6 @@ Feature: Yuzee Add work availability
       When the user initiate to Go to profile
       Then the user will be redirect to profile page
       When the user initiate the Work Availability
-      And the user provides valid details
+      And the user provides valid work availability details
       And the user submits the Work Availability form
       Then the user can view Work Availability on profile page
