@@ -268,3 +268,81 @@ When("the user submits the Work Experience form", () => {
 Then("the user can view Work Experience on profile page", () => {
     cy.get('[type="button"]').contains(' Read more ').click()
 })
+
+When("the user initiate the Language qualification", () => {
+    cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
+    cy.get('[class="fs-14 fw-500"]').contains('Background').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains(' Language Qualification ').should('be.visible').click()
+})
+
+When("the user provides valid language qualification details", () => {
+    cy.get('[name="privacy_level"]').click()
+    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+
+    //IELTS
+    cy.get('[role="combobox"]').eq(1).click()
+    cy.get('[role="option"]').contains('IELTS').click()
+    cy.get('[role="combobox"]').eq(2).click()
+    cy.get('[role="option"]').contains('9').click()
+    cy.get('[role="combobox"]').eq(3).click()
+    cy.get('[role="option"]').contains('9').click()
+    cy.get('[role="combobox"]').eq(4).click()
+    cy.get('[role="option"]').contains('9').click()
+    cy.get('[role="combobox"]').eq(5).click()
+    cy.get('[role="option"]').contains('9').click()
+    cy.get('[type="file"]').eq(0).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+
+    cy.get('[type="button"]').contains(' Add Qualification ').click()
+
+    //MUET
+    cy.get('[role="combobox"]').eq(6).click()
+    cy.get('[role="option"]').contains('MUET').click()
+    cy.get('[id="over_all_marks_1"]').type('5')
+    cy.get('[type="file"]').eq(1).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+
+    cy.get('[type="button"]').contains(' Add Qualification ').click()
+
+    //Cambridge
+    cy.get('[role="combobox"]').eq(7).click()
+    cy.get('[role="option"]').contains('Cambridge English').click()
+    cy.get('[id="over_all_marks_2"]').type('5')
+    cy.get('[type="file"]').eq(2).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+
+    cy.get('[type="button"]').contains(' Add Qualification ').click()
+
+    //CAE
+    cy.get('[role="combobox"]').eq(8).click()
+    cy.get('[role="option"]').contains('CAE').click()
+    cy.get('[role="combobox"]').eq(9).click()
+    cy.get('[role="option"]').contains('230').click()
+    cy.get('[role="combobox"]').eq(10).click()
+    cy.get('[role="option"]').contains('230').click()
+    cy.get('[role="combobox"]').eq(11).click()
+    cy.get('[role="option"]').contains('230').click()
+    cy.get('[role="combobox"]').eq(12).click()
+    cy.get('[role="option"]').contains('230').click()
+    cy.get('[type="file"]').eq(3).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+
+    cy.get('[type="button"]').contains(' Add Qualification ').click()
+
+    //TOEFL
+    cy.get('[role="combobox"]').eq(13).click()
+    cy.get('[role="option"]').contains('TOEFL').click()
+    cy.get('[role="combobox"]').eq(14).click()
+    cy.get('[role="option"]').contains('30').click()
+    cy.get('[role="combobox"]').eq(15).click()
+    cy.get('[role="option"]').contains('30').click()
+    cy.get('[role="combobox"]').eq(16).click()
+    cy.get('[role="option"]').contains('30').click()
+    cy.get('[role="combobox"]').eq(17).click()
+    cy.get('[role="option"]').contains('30').click()
+    cy.get('[type="file"]').eq(4).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+})
+
+When("the user submits the language qualification form", () => {
+    cy.get('[type="button"]').contains('Save').click()
+})
+
+Then("the user can view language qualification on profile page", () => {
+    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains('Language Qualification').scrollIntoView().should('be.visible')
+})
