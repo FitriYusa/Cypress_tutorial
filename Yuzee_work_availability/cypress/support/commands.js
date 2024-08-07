@@ -23,3 +23,14 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+const serverID = "vvocqwdp";
+const emailDomain = `@${serverID}.mailosaur.net`;
+
+Cypress.Commands.add('generateUniqueEmail', () => {
+
+    const randomString = new Date().getTime();
+    const emailAddress = `abs${randomString}${emailDomain}`;
+    
+    cy.wrap(emailAddress).as('uniqueEmail')
+})

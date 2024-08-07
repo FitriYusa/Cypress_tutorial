@@ -1,10 +1,10 @@
 import { When, Then, Given } from "@badeball/cypress-cucumber-preprocessor"
 
 const serverID = "vvocqwdp";
-const emailDomain = `@${serverID}.mailosaur.net`
+// const emailDomain = `@${serverID}.mailosaur.net`
 
-const randomString = new Date().getTime();
-const emailAddress = `abs${randomString}${emailDomain}`;
+// const randomString = new Date().getTime();
+// const emailAddress = `abs${randomString}${emailDomain}`;
 
 
 Given("the user is on Yuzee homepage is open", () => {
@@ -17,6 +17,8 @@ When("the new user initiate the account creation process", () => {
 })
 
 When("the new user provides valid registration details", () => {
+
+    cy.generateUniqueEmail()
     //First and last name
     cy.get('[formcontrolname="firstName"]').type("ali")
     cy.get('[formcontrolname="lastName"]').type("abu")
@@ -32,7 +34,11 @@ When("the new user provides valid registration details", () => {
     cy.contains('Male').click()
 
     cy.get('[formcontrolname="postal_code"]').type("3000")
-    cy.get('[formcontrolname="email"]').type(emailAddress)
+
+    cy.get('@uniqueEmail').then((emailAddress) => {
+        cy.get('[formcontrolname="email"]').type(emailAddress)
+    })
+    
     cy.get('[formcontrolname="password"]').type("Admin@1234")
     cy.get('[formcontrolname="confirmPassword"]').type("Admin@1234")
 })
@@ -42,28 +48,29 @@ When("the user submits the registration form", () => {
 })
 
 Then("the new user should receive verification code via email and submits", () => {
-    // waiting for the API
-    cy.wait('@signupRequest', { timeout: 10000 }).then((interception) => {
-    
-    let statusCode = interception.response.statusCode;
+   cy.get('@uniqueEmail').then((emailAddress) => { 
+        // waiting for the API
+        cy.wait('@signupRequest', { timeout: 10000 }).then((interception) => {
+            
+            let statusCode = interception.response.statusCode;
 
-    if (statusCode === 200) {
-    
-    cy.contains("Verification Code")
+            if (statusCode === 200) {
+            
+            cy.contains("Verification Code")
+            cy.mailosaurGetMessage(serverID, {
+                sentTo: emailAddress
+            })
+            .then(email => {
+                const OTP = email.html.codes.map(code => code.value);
 
-    cy.mailosaurGetMessage(serverID, {
-        sentTo: emailAddress
-    })
-    .then(email => {
-        const OTP = email.html.codes.map(code => code.value);
-
-        for (let i = 1; i <= 6; i++) {
-            cy.get(`input[formcontrolname="digit${i}"]`).type(`${OTP[i - 1]}`)
-        }
-        cy.get('button[type="submit"]').contains("Continue").click();
-    });
-    }
-});
+                for (let i = 1; i <= 6; i++) {
+                    cy.get(`input[formcontrolname="digit${i}"]`).type(`${OTP[i - 1]}`)
+                }
+                cy.get('button[type="submit"]').contains("Continue").click();
+            });
+            }
+        });
+   })
 })
 
 Then("the new user will be redirect to completeting the Onboarding", () => {
@@ -100,7 +107,7 @@ Then("the new user will be redirect to completeting the Onboarding", () => {
     // cy.get('button.btn.img-logo').find('img').click();
     // cy.get('input[type="file"]').selectFile('cypress\\images\\blob.jfif', {force : true})
     cy.contains('Skip').click()
-    cy.wait(5000)
+    cy.wait(3000)
     
     //Location
     cy.get('[placeholder="Search location"]').type('Kuala Lumpur')
@@ -109,13 +116,13 @@ Then("the new user will be redirect to completeting the Onboarding", () => {
     cy.get('[type="submit"]').contains('Continue').click()
     //cannot click on the continue, it just loading - decided to skip
     // cy.get('[type="submit"]').contains('Skip').click()
-    cy.wait(5000)
+    cy.wait(3000)
 
     //Hobby
     cy.get('[bindlabel="hobby_name"]').type('run')
     cy.contains('Running').click()
     cy.get('[type="submit"]').contains('Continue').click()
-    cy.wait(5000)
+    cy.wait(3000)
 
     //Community
     
@@ -195,4 +202,69 @@ When("the user submits the Work Availability form", () => {
 
 Then("the user can view Work Availability on profile page", () => {
     cy.get('[class="work-row"]').contains('Internship').click()
+})
+
+When("the user initiate the Work Experience", () => {
+    cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
+    cy.get('[class="fs-14 fw-500"]').contains('Background').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains(' Work Experience ').should('be.visible').click()
+
+})
+
+When("the user provides valid work experience details", () => {
+    cy.get('[name="privacy_level"]').click()
+    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+
+    //Job title
+    cy.get('[name="job_title"]').type('Accountant')
+    cy.get('[role="option"]').contains('Accountant').should('be.visible').click()
+
+    //Job type
+    cy.get('[name="preferredWorkTypes"]').click();
+    cy.get('[role="option"]').contains('Internship').should('be.visible').click();
+
+    //Company name
+    cy.get('[name="company_name"]').type('SEECS')
+    cy.get('[role="listbox"]').contains('SEECS').should('be.visible').click()
+
+    //Location
+    cy.get('[name="description"]').clear().type('Geelong Victoria, Australia').should('have.value', 'Geelong Victoria, Australia')
+    cy.get('[role="option"]').contains('Geelong Victoria, Australia').should('be.visible').click()
+
+    // cy.get('[type="checkbox"]').should('be.visible').check()
+
+    //start and end date
+    cy.get('[name="start_date"]').click()
+    cy.get('[title="Select year"]').select('2020')
+    cy.get('[title="Select month"]').select('Apr')
+    cy.get('[role="gridcell"]').contains('21').click()
+
+    cy.get('[name="end_date"]').click()
+    cy.get('[title="Select year"]').select('2024')
+    cy.get('[title="Select month"]').select('Apr')
+    cy.get('[role="gridcell"]').contains('21').click()
+
+    //Job description
+    cy.get('[name="job_description"]')
+        .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+    cy.get('[name="showSkills"]').click()
+    cy.get('[role="option"]').contains(' .NET ').click()
+    cy.get('[class="col-md-12 common-input-mb"]').contains('Skills').click()
+
+    //collaborations
+    cy.get('[name="collaborations"]').should('be.visible').click()
+    cy.get('[role="option"]').contains(' Adam Coffee ').click()
+    cy.get('[class="col-md-12 common-input-mb"]').contains('Skills').click()
+
+    //attach file
+   cy.get('[ type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+})
+
+When("the user submits the Work Experience form", () => {
+    cy.get('[type="button"]').contains('Save').click()
+    cy.get('[type="button"]').contains('Ok').click()
+})
+
+Then("the user can view Work Experience on profile page", () => {
+    cy.get('[type="button"]').contains(' Read more ').click()
 })
