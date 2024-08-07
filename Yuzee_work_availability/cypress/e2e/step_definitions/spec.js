@@ -275,68 +275,103 @@ When("the user initiate the Language qualification", () => {
     cy.get('[class="subpro-name"]').contains(' Language Qualification ').should('be.visible').click()
 })
 
-When("the user provides valid language qualification details", () => {
+When("the user provides valid language qualification details", (dataTable) => {
     cy.get('[name="privacy_level"]').click()
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
 
-    //IELTS
-    cy.get('[role="combobox"]').eq(1).click()
-    cy.get('[role="option"]').contains('IELTS').click()
-    cy.get('[role="combobox"]').eq(2).click()
-    cy.get('[role="option"]').contains('9').click()
-    cy.get('[role="combobox"]').eq(3).click()
-    cy.get('[role="option"]').contains('9').click()
-    cy.get('[role="combobox"]').eq(4).click()
-    cy.get('[role="option"]').contains('9').click()
-    cy.get('[role="combobox"]').eq(5).click()
-    cy.get('[role="option"]').contains('9').click()
-    cy.get('[type="file"]').eq(0).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+    dataTable.hashes().forEach((qualification, index) => {
+            const {Type, Reading, Writing, Listening, Speaking } = qualification;
 
-    cy.get('[type="button"]').contains(' Add Qualification ').click()
+            cy.get('[role="combobox"]').eq(index * 5 + 1).click()
+            cy.get('[role="option"]').contains(Type).click()
+        
+            if (Type !== 'MUET' && Type !== 'Cambridge English') {
+                if (Reading) {
+                cy.get('[role="combobox"]').eq(index * 5 + 2).click();
+                cy.get('[role="option"]').contains(Reading).click();
+                }
+                if (Writing) {
+                cy.get('[role="combobox"]').eq(index * 5 + 3).click();
+                cy.get('[role="option"]').contains(Writing).click();
+                }
+                if (Listening) {
+                cy.get('[role="combobox"]').eq(index * 5 + 4).click();
+                cy.get('[role="option"]').contains(Listening).click();
+                }
+                if (Speaking) {
+                cy.get('[role="combobox"]').eq(index * 5 + 5).click();
+                cy.get('[role="option"]').contains(Speaking).click();
+                }
+            } else {
+                cy.get(`[id^="over_all_marks_${index}"]`).type('5')
+            }
 
-    //MUET
-    cy.get('[role="combobox"]').eq(6).click()
-    cy.get('[role="option"]').contains('MUET').click()
-    cy.get('[id="over_all_marks_1"]').type('5')
-    cy.get('[type="file"]').eq(1).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+            cy.get('[type="file"]').eq(index).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+            
+            if(index <= 1 ){
+                cy.get('[type="button"]').contains(' Add Qualification ').click()
+            }
+           
+    })
+        
+    // //IELTS
+    // cy.get('[role="combobox"]').eq(1).click()
+    // cy.get('[role="option"]').contains('IELTS').click()
+    // cy.get('[role="combobox"]').eq(2).click()
+    // cy.get('[role="option"]').contains('9').click()
+    // cy.get('[role="combobox"]').eq(3).click()
+    // cy.get('[role="option"]').contains('9').click()
+    // cy.get('[role="combobox"]').eq(4).click()
+    // cy.get('[role="option"]').contains('9').click()
+    // cy.get('[role="combobox"]').eq(5).click()
+    // cy.get('[role="option"]').contains('9').click()
+    // cy.get('[type="file"]').eq(0).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
 
-    cy.get('[type="button"]').contains(' Add Qualification ').click()
+    // cy.get('[type="button"]').contains(' Add Qualification ').click()
 
-    //Cambridge
-    cy.get('[role="combobox"]').eq(7).click()
-    cy.get('[role="option"]').contains('Cambridge English').click()
-    cy.get('[id="over_all_marks_2"]').type('5')
-    cy.get('[type="file"]').eq(2).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+    // //MUET
+    // cy.get('[role="combobox"]').eq(6).click()
+    // cy.get('[role="option"]').contains('MUET').click()
+    // cy.get('[id="over_all_marks_1"]').type('5')
+    // cy.get('[type="file"]').eq(1).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
 
-    cy.get('[type="button"]').contains(' Add Qualification ').click()
+    // cy.get('[type="button"]').contains(' Add Qualification ').click()
 
-    //CAE
-    cy.get('[role="combobox"]').eq(8).click()
-    cy.get('[role="option"]').contains('CAE').click()
-    cy.get('[role="combobox"]').eq(9).click()
-    cy.get('[role="option"]').contains('230').click()
-    cy.get('[role="combobox"]').eq(10).click()
-    cy.get('[role="option"]').contains('230').click()
-    cy.get('[role="combobox"]').eq(11).click()
-    cy.get('[role="option"]').contains('230').click()
-    cy.get('[role="combobox"]').eq(12).click()
-    cy.get('[role="option"]').contains('230').click()
-    cy.get('[type="file"]').eq(3).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+    // //Cambridge
+    // cy.get('[role="combobox"]').eq(7).click()
+    // cy.get('[role="option"]').contains('Cambridge English').click()
+    // cy.get('[id="over_all_marks_2"]').type('5')
+    // cy.get('[type="file"]').eq(2).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
 
-    cy.get('[type="button"]').contains(' Add Qualification ').click()
+    // cy.get('[type="button"]').contains(' Add Qualification ').click()
 
-    //TOEFL
-    cy.get('[role="combobox"]').eq(13).click()
-    cy.get('[role="option"]').contains('TOEFL').click()
-    cy.get('[role="combobox"]').eq(14).click()
-    cy.get('[role="option"]').contains('30').click()
-    cy.get('[role="combobox"]').eq(15).click()
-    cy.get('[role="option"]').contains('30').click()
-    cy.get('[role="combobox"]').eq(16).click()
-    cy.get('[role="option"]').contains('30').click()
-    cy.get('[role="combobox"]').eq(17).click()
-    cy.get('[role="option"]').contains('30').click()
-    cy.get('[type="file"]').eq(4).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+    // //CAE
+    // cy.get('[role="combobox"]').eq(8).click()
+    // cy.get('[role="option"]').contains('CAE').click()
+    // cy.get('[role="combobox"]').eq(9).click()
+    // cy.get('[role="option"]').contains('230').click()
+    // cy.get('[role="combobox"]').eq(10).click()
+    // cy.get('[role="option"]').contains('230').click()
+    // cy.get('[role="combobox"]').eq(11).click()
+    // cy.get('[role="option"]').contains('230').click()
+    // cy.get('[role="combobox"]').eq(12).click()
+    // cy.get('[role="option"]').contains('230').click()
+    // cy.get('[type="file"]').eq(3).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+
+    // cy.get('[type="button"]').contains(' Add Qualification ').click()
+
+    // //TOEFL
+    // cy.get('[role="combobox"]').eq(13).click()
+    // cy.get('[role="option"]').contains('TOEFL').click()
+    // cy.get('[role="combobox"]').eq(14).click()
+    // cy.get('[role="option"]').contains('30').click()
+    // cy.get('[role="combobox"]').eq(15).click()
+    // cy.get('[role="option"]').contains('30').click()
+    // cy.get('[role="combobox"]').eq(16).click()
+    // cy.get('[role="option"]').contains('30').click()
+    // cy.get('[role="combobox"]').eq(17).click()
+    // cy.get('[role="option"]').contains('30').click()
+    // cy.get('[type="file"]').eq(4).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
 })
 
 When("the user submits the language qualification form", () => {
@@ -344,5 +379,6 @@ When("the user submits the language qualification form", () => {
 })
 
 Then("the user can view language qualification on profile page", () => {
-    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains('Language Qualification').scrollIntoView().should('be.visible')
+    cy.wait(3000)
+    cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains('Language Qualification').scrollIntoView().should('be.visible')
 })

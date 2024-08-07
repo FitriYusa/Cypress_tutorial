@@ -45,6 +45,12 @@ Feature: Yuzee Add work availability
       Then the user will be redirect to profile page
       When the user initiate the Language qualification
       And the user provides valid language qualification details
+      | Type              | Reading | Writing | Listening | Speaking |
+      | IELTS             | 9       | 9       | 9         | 9        |
+      | CAE               | 230     | 230     | 230       | 230      |
+      | TOEFL             | 30      | 30      | 30        | 30       |
+      | MUET              |         |         |           |          |
+      | Cambridge English |         |         |           |          |
       And the user submits the language qualification form
       Then the user can view language qualification on profile page
       
