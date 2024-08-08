@@ -82,8 +82,8 @@ Then("the new user will be redirect to completeting the Onboarding", () => {
 
     cy.contains("How do you plan on using Yuzee?")
     cy.get('[class="col-md-4 ng-star-inserted"]').contains('Internship').click()
-    // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Work Placement').click()
-    // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Course').click()
+    cy.get('[class="col-md-4 ng-star-inserted"]').contains('Work Placement').click()
+    cy.get('[class="col-md-4 ng-star-inserted"]').contains('Course').click()
     // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Job').click()
     // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Traineeship').click()
     cy.get('[type="submit"]').contains('Continue').click()
@@ -110,19 +110,20 @@ Then("the new user will be redirect to completeting the Onboarding", () => {
     cy.wait(3000)
     
     //Location
-    cy.get('[placeholder="Search location"]').type('Kuala Lumpur')
-    cy.contains('Kuala Lumpur').click()
-    cy.contains('Continue').should('be.visible').click()
-    cy.get('[type="submit"]').contains('Continue').click()
+    // cy.get('[placeholder="Search location"]').type('Kuala Lumpur')
+    // cy.contains('Kuala Lumpur').click()
+    // cy.contains('Continue').should('be.visible').click()
+    // cy.get('[type="submit"]').contains('Continue').click()
     //cannot click on the continue, it just loading - decided to skip
-    // cy.get('[type="submit"]').contains('Skip').click()
+    cy.get('[type="submit"]').contains('Skip').click()
     cy.wait(3000)
 
     //Hobby
-    cy.get('[bindlabel="hobby_name"]').type('run')
-    cy.contains('Running').click()
-    cy.get('[type="submit"]').contains('Continue').click()
-    cy.wait(3000)
+    // cy.get('[bindlabel="hobby_name"]').type('run')
+    // cy.contains('Running').click()
+    // cy.get('[type="submit"]').contains('Continue').click()
+    // cy.wait(3000)
+    cy.contains('Skip').click()
 
     //Community
     
@@ -151,6 +152,8 @@ Then("the user will be redirect to profile page", () => {
     cy.url().should('include', '/profile')
 })
 
+
+//Work Availability
 When("the user initiate the Work Availability", () => {
     cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
     cy.get('[class="fs-14 fw-500"]').contains('Background').should('be.visible').click()
@@ -204,6 +207,8 @@ Then("the user can view Work Availability on profile page", () => {
     cy.get('[class="work-row"]').contains('Internship').click()
 })
 
+
+//Work Experrience
 When("the user initiate the Work Experience", () => {
     cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
     cy.get('[class="fs-14 fw-500"]').contains('Background').should('be.visible').click()
@@ -225,13 +230,15 @@ When("the user provides valid work experience details", () => {
 
     //Company name
     cy.get('[name="company_name"]').type('SEECS')
-    cy.get('[role="listbox"]').contains('SEECS').should('be.visible').click()
+    // cy.get('[role="listbox"]').contains('SEECS').should('be.visible').click()
 
     //Location
     cy.get('[name="description"]').clear().type('Geelong Victoria, Australia').should('have.value', 'Geelong Victoria, Australia')
     cy.get('[role="option"]').contains('Geelong Victoria, Australia').should('be.visible').click()
+    cy.get('[name="postal_code"]').type('3435')
 
-    // cy.get('[type="checkbox"]').should('be.visible').check()
+    //Checkbox
+    // cy.get('[class="custom-control custom-checkbox text-align mb-0"]').click()
 
     //start and end date
     cy.get('[name="start_date"]').click()
@@ -269,6 +276,8 @@ Then("the user can view Work Experience on profile page", () => {
     cy.get('[type="button"]').contains(' Read more ').click()
 })
 
+
+//Language Qualification
 When("the user initiate the Language qualification", () => {
     cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
     cy.get('[class="fs-14 fw-500"]').contains('Background').should('be.visible').click()
@@ -279,99 +288,99 @@ When("the user provides valid language qualification details", (dataTable) => {
     cy.get('[name="privacy_level"]').click()
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
 
-    dataTable.hashes().forEach((qualification, index) => {
-            const {Type, Reading, Writing, Listening, Speaking } = qualification;
+    // dataTable.hashes().forEach((qualification, index) => {
+    //         const {Type, Reading, Writing, Listening, Speaking } = qualification;
 
-            cy.get('[role="combobox"]').eq(index * 5 + 1).click()
-            cy.get('[role="option"]').contains(Type).click()
+    //         cy.get('[role="combobox"]').eq(index * 5 + 1).click()
+    //         cy.get('[role="option"]').contains(Type).click()
         
-            if (Type !== 'MUET' && Type !== 'Cambridge English') {
-                if (Reading) {
-                cy.get('[role="combobox"]').eq(index * 5 + 2).click();
-                cy.get('[role="option"]').contains(Reading).click();
-                }
-                if (Writing) {
-                cy.get('[role="combobox"]').eq(index * 5 + 3).click();
-                cy.get('[role="option"]').contains(Writing).click();
-                }
-                if (Listening) {
-                cy.get('[role="combobox"]').eq(index * 5 + 4).click();
-                cy.get('[role="option"]').contains(Listening).click();
-                }
-                if (Speaking) {
-                cy.get('[role="combobox"]').eq(index * 5 + 5).click();
-                cy.get('[role="option"]').contains(Speaking).click();
-                }
-            } else {
-                cy.get(`[id^="over_all_marks_${index}"]`).type('5')
-            }
+    //         if (Type !== 'MUET' && Type !== 'Cambridge English') {
+    //             if (Reading) {
+    //             cy.get('[role="combobox"]').eq(index * 5 + 2).click();
+    //             cy.get('[role="option"]').contains(Reading).click();
+    //             }
+    //             if (Writing) {
+    //             cy.get('[role="combobox"]').eq(index * 5 + 3).click();
+    //             cy.get('[role="option"]').contains(Writing).click();
+    //             }
+    //             if (Listening) {
+    //             cy.get('[role="combobox"]').eq(index * 5 + 4).click();
+    //             cy.get('[role="option"]').contains(Listening).click();
+    //             }
+    //             if (Speaking) {
+    //             cy.get('[role="combobox"]').eq(index * 5 + 5).click();
+    //             cy.get('[role="option"]').contains(Speaking).click();
+    //             }
+    //         } else {
+    //             cy.get(`[id^="over_all_marks_${index}"]`).type('5')
+    //         }
 
-            cy.get('[type="file"]').eq(index).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+    //         cy.get('[type="file"]').eq(index).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
             
-            if(index <= 1 ){
-                cy.get('[type="button"]').contains(' Add Qualification ').click()
-            }
+    //         if(index < 2 ){
+    //             cy.get('[type="button"]').contains(' Add Qualification ').click()
+    //         }
            
-    })
+    // })
         
-    // //IELTS
-    // cy.get('[role="combobox"]').eq(1).click()
-    // cy.get('[role="option"]').contains('IELTS').click()
-    // cy.get('[role="combobox"]').eq(2).click()
-    // cy.get('[role="option"]').contains('9').click()
-    // cy.get('[role="combobox"]').eq(3).click()
-    // cy.get('[role="option"]').contains('9').click()
-    // cy.get('[role="combobox"]').eq(4).click()
-    // cy.get('[role="option"]').contains('9').click()
-    // cy.get('[role="combobox"]').eq(5).click()
-    // cy.get('[role="option"]').contains('9').click()
-    // cy.get('[type="file"]').eq(0).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+    //IELTS
+    cy.get('[role="combobox"]').eq(1).click()
+    cy.get('[role="option"]').contains('IELTS').click()
+    cy.get('[role="combobox"]').eq(2).click()
+    cy.get('[role="option"]').contains('9').click()
+    cy.get('[role="combobox"]').eq(3).click()
+    cy.get('[role="option"]').contains('9').click()
+    cy.get('[role="combobox"]').eq(4).click()
+    cy.get('[role="option"]').contains('9').click()
+    cy.get('[role="combobox"]').eq(5).click()
+    cy.get('[role="option"]').contains('9').click()
+    cy.get('[type="file"]').eq(0).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
 
-    // cy.get('[type="button"]').contains(' Add Qualification ').click()
+    cy.get('[type="button"]').contains(' Add Qualification ').click()
 
-    // //MUET
-    // cy.get('[role="combobox"]').eq(6).click()
-    // cy.get('[role="option"]').contains('MUET').click()
-    // cy.get('[id="over_all_marks_1"]').type('5')
-    // cy.get('[type="file"]').eq(1).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+    //MUET
+    cy.get('[role="combobox"]').eq(6).click()
+    cy.get('[role="option"]').contains('MUET').click()
+    cy.get('[id="over_all_marks_1"]').type('5')
+    cy.get('[type="file"]').eq(1).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
 
-    // cy.get('[type="button"]').contains(' Add Qualification ').click()
+    cy.get('[type="button"]').contains(' Add Qualification ').click()
 
-    // //Cambridge
-    // cy.get('[role="combobox"]').eq(7).click()
-    // cy.get('[role="option"]').contains('Cambridge English').click()
-    // cy.get('[id="over_all_marks_2"]').type('5')
-    // cy.get('[type="file"]').eq(2).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+    //Cambridge
+    cy.get('[role="combobox"]').eq(7).click()
+    cy.get('[role="option"]').contains('Cambridge English').click()
+    cy.get('[id="over_all_marks_2"]').type('5')
+    cy.get('[type="file"]').eq(2).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
 
-    // cy.get('[type="button"]').contains(' Add Qualification ').click()
+    cy.get('[type="button"]').contains(' Add Qualification ').click()
 
-    // //CAE
-    // cy.get('[role="combobox"]').eq(8).click()
-    // cy.get('[role="option"]').contains('CAE').click()
-    // cy.get('[role="combobox"]').eq(9).click()
-    // cy.get('[role="option"]').contains('230').click()
-    // cy.get('[role="combobox"]').eq(10).click()
-    // cy.get('[role="option"]').contains('230').click()
-    // cy.get('[role="combobox"]').eq(11).click()
-    // cy.get('[role="option"]').contains('230').click()
-    // cy.get('[role="combobox"]').eq(12).click()
-    // cy.get('[role="option"]').contains('230').click()
-    // cy.get('[type="file"]').eq(3).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+    //CAE
+    cy.get('[role="combobox"]').eq(8).click()
+    cy.get('[role="option"]').contains('CAE').click()
+    cy.get('[role="combobox"]').eq(9).click()
+    cy.get('[role="option"]').contains('230').click()
+    cy.get('[role="combobox"]').eq(10).click()
+    cy.get('[role="option"]').contains('230').click()
+    cy.get('[role="combobox"]').eq(11).click()
+    cy.get('[role="option"]').contains('230').click()
+    cy.get('[role="combobox"]').eq(12).click()
+    cy.get('[role="option"]').contains('230').click()
+    cy.get('[type="file"]').eq(3).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
 
-    // cy.get('[type="button"]').contains(' Add Qualification ').click()
+    cy.get('[type="button"]').contains(' Add Qualification ').click()
 
-    // //TOEFL
-    // cy.get('[role="combobox"]').eq(13).click()
-    // cy.get('[role="option"]').contains('TOEFL').click()
-    // cy.get('[role="combobox"]').eq(14).click()
-    // cy.get('[role="option"]').contains('30').click()
-    // cy.get('[role="combobox"]').eq(15).click()
-    // cy.get('[role="option"]').contains('30').click()
-    // cy.get('[role="combobox"]').eq(16).click()
-    // cy.get('[role="option"]').contains('30').click()
-    // cy.get('[role="combobox"]').eq(17).click()
-    // cy.get('[role="option"]').contains('30').click()
-    // cy.get('[type="file"]').eq(4).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+    //TOEFL
+    cy.get('[role="combobox"]').eq(13).click()
+    cy.get('[role="option"]').contains('TOEFL').click()
+    cy.get('[role="combobox"]').eq(14).click()
+    cy.get('[role="option"]').contains('30').click()
+    cy.get('[role="combobox"]').eq(15).click()
+    cy.get('[role="option"]').contains('30').click()
+    cy.get('[role="combobox"]').eq(16).click()
+    cy.get('[role="option"]').contains('30').click()
+    cy.get('[role="combobox"]').eq(17).click()
+    cy.get('[role="option"]').contains('30').click()
+    cy.get('[type="file"]').eq(4).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
 })
 
 When("the user submits the language qualification form", () => {
@@ -381,4 +390,130 @@ When("the user submits the language qualification form", () => {
 Then("the user can view language qualification on profile page", () => {
     cy.wait(3000)
     cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains('Language Qualification').scrollIntoView().should('be.visible')
+})
+
+
+//Introductory videos
+When("the user initiate the introductory videos", () => {
+    cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
+    cy.get('[class="fs-14 fw-500"]').contains('Intro').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains(' About Me ').should('be.visible').click()
+})
+
+When("the user provides valid introductory videos details", () => {
+    cy.get('[name="privacy_level"]').click()
+    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+    cy.get('input[type="file"]').eq(0).invoke('removeClass', 'd-none').selectFile('cypress/images/3209828-uhd_3840_2160_25fps.mp4')
+    
+    cy.get('[name="title"]').type('asdkmndlf asdasd')
+    cy.get('[placeholder="Please give a short explanation on what this video is about."')
+        .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+
+    cy.get('input[type="file"]').eq(1).invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png');
+})
+
+When("the user submits the introductory videos form", () => {
+    cy.get('[type="button"]').contains('Save').click()
+})
+
+Then("the user can view introductory videos on profile page", () => {
+    cy.get('[class="block-title-md p-0 d-flex"]').contains(' Introductory Videos ').scrollIntoView().should('be.visible')
+})
+
+
+//Accomplishment ( project )
+When("the user initiate the Accomplishment_projects", () => {
+    cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
+    cy.get('[class="fs-14 fw-500"]').contains('Accomplishments').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains('Projects').scrollIntoView().should('be.visible').click()
+})
+
+When("the user provides valid Accomplishment_projects details", () => {
+    cy.get('[name="privacy_level"]').click()
+    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+
+    cy.get('[placeholder="Enter title"]').type('asdf adaw sdas')
+    cy.get('[placeholder="Enter project url"]').type('https://example.com')
+
+    cy.get('[name="start_date"]').click()
+    cy.get('[title="Select year"]').select('2024')
+    cy.get('[title="Select month"]').select('Jul')
+    cy.get('[role="gridcell"]').contains('2').click()
+
+    cy.get('[name="end_date"]').click()
+    cy.get('[title="Select year"]').select('2024')
+    cy.get('[title="Select month"]').select('Aug')
+    cy.get('[role="gridcell"]').contains('4').click()
+
+    cy.get('[name="details"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+
+    cy.get('[name="collaborations"]').type('g')
+    cy.get('[role="option"]').contains(' Bridget Lynch ').click()
+    cy.get('[class="ng-star-inserted"]').contains('labels.Other Contributors').click()
+
+    cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+})
+
+When("the user submits the Accomplishment_projects form", () => {
+    cy.get('[type="button"]').contains('Save').click()
+})
+
+Then("the user can view Accomplishment_projects on profile page", () => {
+    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
+    cy.get('[class="accomplish-row"]').contains('Project').click()
+})
+
+
+//Contact details
+When("the user initiate the Contact details", () => {
+    cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
+    cy.get('[class="fs-14 fw-500"]').contains('About').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains(' Contact Details ').should('be.visible').click()
+})
+
+When("the user provides valid Contact details details", () =>{
+    cy.get('[name="privacy_level"]').click()
+    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+
+    cy.get('[class="select-control"]').eq(1).click()
+    cy.get('[role="option"]').contains('WhatsApp').click()
+    cy.get('[class="iti__selected-flag dropdown-toggle"]').eq(0).click()
+    cy.get('[placeholder="Search Country"]').eq(0).type('Malaysia')
+    cy.get('[class="iti__country-list"]').eq(0).contains('Malaysia').click()
+    cy.get('[id="phone"]').eq(0).type('1123456789')
+
+    cy.get('[type="button"]').contains(' Add contact ').click()
+
+    cy.get('[class="select-control"]').eq(2).click()
+    cy.get('[role="option"]').contains('WhatsApp').click()
+    cy.get('[class="iti__selected-flag dropdown-toggle"]').eq(1).click()
+    cy.get('[placeholder="Search Country"]').eq(1).type('Malaysia')
+    cy.get('[class="iti__country-list"]').eq(1).contains('Malaysia').click()
+    cy.get('[id="phone"]').eq(1).type('1124356789')
+
+    cy.get('[type="button"]').contains(' Add contact ').click()
+
+    cy.get('[class="select-control"]').eq(3).click()
+    cy.get('[role="option"]').contains('Email').click()
+    cy.get('[placeholder="Enter contact detail"]').eq(0).type('yovami3872@biscoine.com')
+
+    cy.get('[type="button"]').contains(' Add contact ').click()
+
+    cy.get('[class="select-control"]').eq(4).click()
+    cy.get('[role="option"]').contains('Instagram').click()
+    cy.get('[placeholder="Enter contact detail"]').eq(1).type('ali_abu')
+
+    cy.get('[type="button"]').contains(' Add contact ').click()
+
+    cy.get('[class="select-control"]').eq(5).click()
+    cy.get('[role="option"]').contains('Tik Tok').click()
+    cy.get('[placeholder="Enter contact detail"]').eq(2).type('ali_abu')
+})
+
+When("the user submits the Contact details form", () => {
+    cy.get('[type="submit"]').contains('Save').click()
+})
+
+Then("the user can view Contact details on profile page", () => {
+    cy.get('[class="pr-24"]').contains(' Contact Details ').scrollIntoView().should('be.visible')
 })
