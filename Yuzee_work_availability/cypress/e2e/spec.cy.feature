@@ -1,7 +1,7 @@
 Feature: Yuzee Add work availability
 
     Background:
-    Feature: Yuzee Add work availability
+    Given the user is on Yuzee homepage is open
 
     Scenario Outline: Add work availability
       When the new user initiate the account creation process
