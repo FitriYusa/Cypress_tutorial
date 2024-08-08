@@ -68,7 +68,7 @@ Feature: Yuzee Add work availability
       And the user submits the introductory videos form
       Then the user can view introductory videos on profile page
 
-    Scenario Outline: Add introductory videos
+    Scenario Outline: Add Contact details
       Given the user is on Yuzee homepage is open
       When the new user initiate the account creation process
       And the new user provides valid registration details
