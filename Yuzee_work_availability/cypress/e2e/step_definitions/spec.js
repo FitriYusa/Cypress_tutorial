@@ -139,11 +139,15 @@ Then("the new user will be redirect to the user control center page", () => {
 When("the user initiate to Go to profile", () => {
 
     //need to click something else before the Go to profile button to work 
-    cy.get('[ngbtooltip="Apply"]').click()
-    cy.wait(3000)
-    cy.get('[ngbtooltip="Control Center"]').click()
-    cy.wait(3000)
-    cy.get('[class="btn btn-block fs-16 fw-500 light-grey-btn"]').contains('Go to profile').should('be.visible').click()
+    // cy.get('[ngbtooltip="Apply"]').click()
+    // cy.wait(3000)
+    // cy.get('[ngbtooltip="Control Center"]').click()
+    // cy.wait(3000)
+    // cy.get('[class="btn btn-block fs-16 fw-500 light-grey-btn"]').contains('Go to profile').should('be.visible').click()
+
+    cy.get('[class="nav-item d-none-from-me"]').click()
+    cy.get('[class="setting-item ml-0 ng-star-inserted"]').click()
+
 })
 
 Then("the user will be redirect to profile page", () => {
@@ -153,62 +157,236 @@ Then("the user will be redirect to profile page", () => {
 })
 
 
-//Work Availability
-When("the user initiate the Work Availability", () => {
+//Edit profile
+When("the user edit profile and background image as well initiate the Edit profiles", () => {
+    cy.get('[class="img-over"]').click()
+    cy.get('[type="file"]').invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png')
+    cy.get('[type="button"]').contains('Save').click()
+    cy.get('[type="button"]').contains('Ok').click()
+
+    cy.get('[class="apply-baner cursor-pointer"]').click()
+    cy.get('[type="file"]').invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png')
+    cy.get('[type="button"]').contains('Save').click()
+    cy.get('[type="button"]').contains('Ok').click()
+
+    cy.get('[type="button"]').contains(' Edit Profile ').click()
+})
+
+When("the user provides valid Edit profiles details", () => {
+
+    cy.get('.select-control > .ng-select-container > .ng-value-container').click()
+    cy.get('[role="option"]').contains('Job').click()
+
+    cy.get('[placeholder="Select a date"]').click()
+    cy.get('[title="Select month"]').select('Jul')
+    cy.get('[title="Select year"]').select('1997')
+    cy.get('[role="gridcell"]').contains('10').click()
+
+    cy.get('[name="gender"]').click()
+    cy.get('[role="option"]').contains('Male')
+
+    cy.get('[name="firstName"]').clear().type('Abu')
+    cy.get('[name="lastName"]').clear().type('Ali')
+
+    cy.get('[name="aboutMe"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+
+    cy.get('[name="citizenship"]').click()
+    cy.get('[role="listbox"]').scrollIntoView().contains('Malaysia').click()
+
+    cy.get('[placeholder="Search location"]').type('Kuala Lumpur')
+    cy.get('[role="option"]').contains('Kuala Lumpur').click()
+
+    cy.get('[name="postalCode"]').clear().type('3432')
+
+    
+})
+
+When("the user submits the Edit profiles form", () => {
+    cy.get('[type="submit"]').contains('Update').click()
+})
+
+Then("the user can view Edit profiles on profile page", () => {
+    cy.url().should('include', '/profile')
+})
+
+
+//Intro
+//Get to know me
+When("the user initiate the Get to know me", () => {
     cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
-    cy.get('[class="fs-14 fw-500"]').contains('Background').should('be.visible').click()
-    cy.get('[class="subpro-name"]').contains(' Work Availability ').should('be.visible').click()
-
+    cy.get('[class="fs-14 fw-500"]').contains('Intro').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains(' Get to know me ').should('be.visible').click()
 })
 
-When("the user provides valid work availability details", () => {
-    cy.get('[name="privacy_level"]').click()
-    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+When("the user provides valid Get to know me details", () =>{
+    cy.get('[name="jobs"]').type(' Accountant ')
+    cy.get('[role="option"]').contains('Accountant').click()
+    cy.contains('My ideal jobs').click()
 
-    cy.get('[name="preferredWorkTypes"]').click();
-    cy.get('[role="option"]').contains('Internship').should('be.visible').click();
-    
-    cy.get('[name="work_status"]').click()
-    cy.contains('Unemployed').should('be.visible').click()
+    cy.get('[name="fields"]').click()
+    cy.get('[role="option"]').contains(' Foundation ').click()
+    cy.contains('My ideal jobs').click()
 
-    cy.get('[name="distance"]').type('30')
+    cy.get('[name="searchVal"]').type('Kuala Lumpur')
+    cy.get('[role="option"').contains('Kuala Lumpur').click()
 
-    cy.get('[name="duration"]').type('3')
-
-    cy.get('[name="duration_type"]').click()
-    cy.contains('month(s)').click()
-
-    cy.get('[name="workTypes"]').click()
-    cy.contains('Full-Time').click()
-
-    cy.get('.col-4 > .select-control > .ng-select > .ng-select-container').click()
-    cy.get('[role="option"]').eq(0).contains('Monday').should('be.visible').click()
-    cy.get('[name="selectTime"]').eq(0).click()
-    cy.get('[role="option"]').contains('8:00 AM').click()
-    cy.get('[name="selectTime"]').eq(1).click()
-    cy.get('[role="option"]').contains('8:00 PM').click()
-
-    cy.contains('Add Availability').should('be.visible').click()
-
-    cy.get(':nth-child(8) > .row > .col-4 > .select-control > .ng-select > .ng-select-container').click()
-    cy.get('[role="option"]').eq(1).contains('Tuesday').should('be.visible').click()
-    cy.get('[name="selectTime"]').eq(2).click()
-    cy.get('[role="option"]').contains('8:00 AM').click()
-    cy.get('[name="selectTime"]').eq(3).click()
-    cy.get('[role="option"]').contains('8:00 PM').click()
-    
+    cy.get('[name="reason"]').type('Asdasdf fsadf asfda dfwqda sdcasd')
 })
 
-When("the user submits the Work Availability form", () => {
+When("the user submits the Get to know me form", () => {
     cy.get('[type="button"]').contains('Save').click()
 })
 
-Then("the user can view Work Availability on profile page", () => {
-    cy.get('[class="work-row"]').contains('Internship').click()
+Then("the user can view Get to know me on profile page", () => {
+    cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Get to know me ').scrollIntoView().should('be.visible')
 })
 
 
-//Work Experrience
+//About me - video introductory
+When("the user initiate the introductory videos", () => {
+    cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
+    cy.get('[class="fs-14 fw-500"]').contains('Intro').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains(' About Me ').should('be.visible').click()
+})
+
+When("the user provides valid introductory videos details", () => {
+    cy.get('[name="privacy_level"]').click()
+    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+    cy.get('input[type="file"]').eq(0).invoke('removeClass', 'd-none').selectFile('cypress/images/3209828-uhd_3840_2160_25fps.mp4')
+    
+    cy.get('[name="title"]').type('asdkmndlf asdasd')
+    cy.get('[placeholder="Please give a short explanation on what this video is about."')
+        .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+
+    cy.get('input[type="file"]').eq(1).invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png');
+})
+
+When("the user submits the introductory videos form", () => {
+    cy.get('[type="button"]').contains('Save').click()
+})
+
+Then("the user can view introductory videos on profile page", () => {
+    cy.get('[class="block-title-md p-0 d-flex"]').contains(' Introductory Videos ').scrollIntoView().should('be.visible')
+})
+
+
+//About
+//Contact Details
+When("the user initiate the Contact details", () => {
+    cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
+    cy.get('[class="fs-14 fw-500"]').contains('About').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains(' Contact Details ').should('be.visible').click()
+})
+
+When("the user provides valid Contact details details", () =>{
+    cy.get('[name="privacy_level"]').click()
+    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+
+    cy.get('[class="select-control"]').eq(1).click()
+    cy.get('[role="option"]').contains('WhatsApp').click()
+    cy.get('[class="iti__selected-flag dropdown-toggle"]').eq(0).click()
+    cy.get('[placeholder="Search Country"]').eq(0).type('Malaysia')
+    cy.get('[class="iti__country-list"]').eq(0).contains('Malaysia').click()
+    cy.get('[id="phone"]').eq(0).type('1123456789')
+
+    cy.get('[type="button"]').contains(' Add contact ').click()
+
+    cy.get('[class="select-control"]').eq(2).click()
+    cy.get('[role="option"]').contains('WhatsApp').click()
+    cy.get('[class="iti__selected-flag dropdown-toggle"]').eq(1).click()
+    cy.get('[placeholder="Search Country"]').eq(1).type('Malaysia')
+    cy.get('[class="iti__country-list"]').eq(1).contains('Malaysia').click()
+    cy.get('[id="phone"]').eq(1).type('1124356789')
+
+    cy.get('[type="button"]').contains(' Add contact ').click()
+
+    cy.get('[class="select-control"]').eq(3).click()
+    cy.get('[role="option"]').contains('Email').click()
+    cy.get('[placeholder="Enter contact detail"]').eq(0).type('yovami3872@biscoine.com')
+
+    cy.get('[type="button"]').contains(' Add contact ').click()
+
+    cy.get('[class="select-control"]').eq(4).click()
+    cy.get('[role="option"]').contains('Instagram').click()
+    cy.get('[placeholder="Enter contact detail"]').eq(1).type('ali_abu')
+
+    cy.get('[type="button"]').contains(' Add contact ').click()
+
+    cy.get('[class="select-control"]').eq(5).click()
+    cy.get('[role="option"]').contains('Tik Tok').click()
+    cy.get('[placeholder="Enter contact detail"]').eq(2).type('ali_abu')
+})
+
+When("the user submits the Contact details form", () => {
+    cy.get('[type="submit"]').contains('Save').click()
+})
+
+Then("the user can view Contact details on profile page", () => {
+    cy.get('[class="pr-24"]').contains(' Contact Details ').scrollIntoView().should('be.visible')
+})
+
+//My docs
+When("the user initiate the My Docs", () => {
+    cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
+    cy.get('[class="fs-14 fw-500"]').contains('About').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains(' My Docs ').should('be.visible').click()
+})
+
+When("the user provides valid My Docs details", () => {
+    cy.get('[class="menu-div"]').contains(' Australian keypass ').click()
+    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
+    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
+
+    cy.get('[class="menu-div"]').contains(' Birth certificate ').click()
+    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
+    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
+    
+    cy.get('[class="menu-div"]').contains(' Passport ').click()
+    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
+    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
+
+    cy.get('[class="menu-div"]').contains(' Australian citizenship certificate ').click()
+    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
+    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
+
+    cy.get('[class="menu-div"]').contains(' Medicare card ').click()
+    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
+    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
+
+    cy.get('[class="menu-div"]').contains(' Driving License ').click()
+    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
+    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
+
+    cy.get('[class="menu-div"]').contains(' Children Check ').click()
+    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
+    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
+
+    cy.get('[class="menu-div"]').contains(' Police Check ').click()
+    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
+    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
+
+    cy.get('[class="menu-div"]').contains(' First Aid Check ').click()
+    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
+    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
+
+    cy.get('[class="menu-div"]').contains(' CV/Resume ').click()
+    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
+    cy.get('[type="button"]', {timeout : 1000 }).contains('Yes').click()
+})
+
+When("the user close the My Docs form", () => {
+    cy.get('[class="close"]').click()
+    cy.get('[type="button"]').contains('Yes').click()
+})
+
+Then("the user can view My Docs on profile page", () => {
+    cy.get('[class="pr-24"]').contains(' My Docs ').scrollIntoView().should('be.visible')
+})
+
+
+//Background
+//Education
+//Work Experience
 When("the user initiate the Work Experience", () => {
     cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
     cy.get('[class="fs-14 fw-500"]').contains('Background').should('be.visible').click()
@@ -276,6 +454,59 @@ Then("the user can view Work Experience on profile page", () => {
     cy.get('[type="button"]').contains(' Read more ').click()
 })
 
+//Work Availability
+When("the user initiate the Work Availability", () => {
+    cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
+    cy.get('[class="fs-14 fw-500"]').contains('Background').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains(' Work Availability ').should('be.visible').click()
+
+})
+
+When("the user provides valid work availability details", () => {
+    cy.get('[name="privacy_level"]').click()
+    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+
+    cy.get('[name="preferredWorkTypes"]').click();
+    cy.get('[role="option"]').contains('Internship').should('be.visible').click();
+    
+    cy.get('[name="work_status"]').click()
+    cy.contains('Unemployed').should('be.visible').click()
+
+    cy.get('[name="distance"]').type('30')
+
+    cy.get('[name="duration"]').type('3')
+
+    cy.get('[name="duration_type"]').click()
+    cy.contains('month(s)').click()
+
+    cy.get('[name="workTypes"]').click()
+    cy.contains('Full-Time').click()
+
+    cy.get('.col-4 > .select-control > .ng-select > .ng-select-container').click()
+    cy.get('[role="option"]').eq(0).contains('Monday').should('be.visible').click()
+    cy.get('[name="selectTime"]').eq(0).click()
+    cy.get('[role="option"]').contains('8:00 AM').click()
+    cy.get('[name="selectTime"]').eq(1).click()
+    cy.get('[role="option"]').contains('8:00 PM').click()
+
+    cy.contains('Add Availability').should('be.visible').click()
+
+    cy.get(':nth-child(8) > .row > .col-4 > .select-control > .ng-select > .ng-select-container').click()
+    cy.get('[role="option"]').eq(1).contains('Tuesday').should('be.visible').click()
+    cy.get('[name="selectTime"]').eq(2).click()
+    cy.get('[role="option"]').contains('8:00 AM').click()
+    cy.get('[name="selectTime"]').eq(3).click()
+    cy.get('[role="option"]').contains('8:00 PM').click()
+    
+})
+
+When("the user submits the Work Availability form", () => {
+    cy.get('[type="button"]').contains('Save').click()
+})
+
+Then("the user can view Work Availability on profile page", () => {
+    cy.get('[class="work-row"]').contains('Internship').scrollIntoView().click()
+})
 
 //Language Qualification
 When("the user initiate the Language qualification", () => {
@@ -285,39 +516,44 @@ When("the user initiate the Language qualification", () => {
 })
 
 When("the user provides valid language qualification details", (dataTable) => {
+    
     cy.get('[name="privacy_level"]').click()
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
 
     // dataTable.hashes().forEach((qualification, index) => {
     //         const {Type, Reading, Writing, Listening, Speaking } = qualification;
+    //         // Determine the base index offset depending on the type
+    //         let baseIndex = 0; // Default for types with 5 components
 
-    //         cy.get('[role="combobox"]').eq(index * 5 + 1).click()
+    //         cy.get('[role="combobox"]').eq(baseIndex + 1).click()
     //         cy.get('[role="option"]').contains(Type).click()
-        
+            
     //         if (Type !== 'MUET' && Type !== 'Cambridge English') {
+    //             baseIndex = index * 5;
     //             if (Reading) {
-    //             cy.get('[role="combobox"]').eq(index * 5 + 2).click();
+    //             cy.get('[role="combobox"]').eq(baseIndex + 2).click();
     //             cy.get('[role="option"]').contains(Reading).click();
     //             }
     //             if (Writing) {
-    //             cy.get('[role="combobox"]').eq(index * 5 + 3).click();
+    //             cy.get('[role="combobox"]').eq(baseIndex + 3).click();
     //             cy.get('[role="option"]').contains(Writing).click();
     //             }
     //             if (Listening) {
-    //             cy.get('[role="combobox"]').eq(index * 5 + 4).click();
+    //             cy.get('[role="combobox"]').eq(baseIndex + 4).click();
     //             cy.get('[role="option"]').contains(Listening).click();
     //             }
     //             if (Speaking) {
-    //             cy.get('[role="combobox"]').eq(index * 5 + 5).click();
+    //             cy.get('[role="combobox"]').eq(baseIndex + 5).click();
     //             cy.get('[role="option"]').contains(Speaking).click();
     //             }
     //         } else {
+    //             baseIndex = index;
     //             cy.get(`[id^="over_all_marks_${index}"]`).type('5')
     //         }
 
     //         cy.get('[type="file"]').eq(index).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
             
-    //         if(index < 2 ){
+    //         if(index < 4 ){
     //             cy.get('[type="button"]').contains(' Add Qualification ').click()
     //         }
            
@@ -326,14 +562,10 @@ When("the user provides valid language qualification details", (dataTable) => {
     //IELTS
     cy.get('[role="combobox"]').eq(1).click()
     cy.get('[role="option"]').contains('IELTS').click()
-    cy.get('[role="combobox"]').eq(2).click()
-    cy.get('[role="option"]').contains('9').click()
-    cy.get('[role="combobox"]').eq(3).click()
-    cy.get('[role="option"]').contains('9').click()
-    cy.get('[role="combobox"]').eq(4).click()
-    cy.get('[role="option"]').contains('9').click()
-    cy.get('[role="combobox"]').eq(5).click()
-    cy.get('[role="option"]').contains('9').click()
+    for (let index = 2; index <= 5; index++) {
+        cy.get('[role="combobox"]').eq(index).click();
+        cy.get('[role="option"]').contains('9').click();
+      }
     cy.get('[type="file"]').eq(0).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
 
     cy.get('[type="button"]').contains(' Add Qualification ').click()
@@ -357,14 +589,10 @@ When("the user provides valid language qualification details", (dataTable) => {
     //CAE
     cy.get('[role="combobox"]').eq(8).click()
     cy.get('[role="option"]').contains('CAE').click()
-    cy.get('[role="combobox"]').eq(9).click()
-    cy.get('[role="option"]').contains('230').click()
-    cy.get('[role="combobox"]').eq(10).click()
-    cy.get('[role="option"]').contains('230').click()
-    cy.get('[role="combobox"]').eq(11).click()
-    cy.get('[role="option"]').contains('230').click()
-    cy.get('[role="combobox"]').eq(12).click()
-    cy.get('[role="option"]').contains('230').click()
+    for (let index = 9; index <= 12; index++) {
+        cy.get('[role="combobox"]').eq(index).click();
+        cy.get('[role="option"]').contains('230').click();
+      }
     cy.get('[type="file"]').eq(3).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
 
     cy.get('[type="button"]').contains(' Add Qualification ').click()
@@ -372,14 +600,10 @@ When("the user provides valid language qualification details", (dataTable) => {
     //TOEFL
     cy.get('[role="combobox"]').eq(13).click()
     cy.get('[role="option"]').contains('TOEFL').click()
-    cy.get('[role="combobox"]').eq(14).click()
-    cy.get('[role="option"]').contains('30').click()
-    cy.get('[role="combobox"]').eq(15).click()
-    cy.get('[role="option"]').contains('30').click()
-    cy.get('[role="combobox"]').eq(16).click()
-    cy.get('[role="option"]').contains('30').click()
-    cy.get('[role="combobox"]').eq(17).click()
-    cy.get('[role="option"]').contains('30').click()
+    for (let index = 14; index <= 17; index++) {
+        cy.get('[role="combobox"]').eq(index).click();
+        cy.get('[role="option"]').contains('30').click();
+      }
     cy.get('[type="file"]').eq(4).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
 })
 
@@ -392,36 +616,68 @@ Then("the user can view language qualification on profile page", () => {
     cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains('Language Qualification').scrollIntoView().should('be.visible')
 })
 
-
-//Introductory videos
-When("the user initiate the introductory videos", () => {
+//Interest
+//Hobbies
+When("the user initiate the Hobbies", () => {
     cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
-    cy.get('[class="fs-14 fw-500"]').contains('Intro').should('be.visible').click()
-    cy.get('[class="subpro-name"]').contains(' About Me ').should('be.visible').click()
+    cy.get('[class="fs-14 fw-500"]').contains('Interests').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains(' Interested Hobbies ').scrollIntoView().should('be.visible').click()
 })
-
-When("the user provides valid introductory videos details", () => {
+When("the user provides valid Hobbies details", () => {
     cy.get('[name="privacy_level"]').click()
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
-    cy.get('input[type="file"]').eq(0).invoke('removeClass', 'd-none').selectFile('cypress/images/3209828-uhd_3840_2160_25fps.mp4')
-    
-    cy.get('[name="title"]').type('asdkmndlf asdasd')
-    cy.get('[placeholder="Please give a short explanation on what this video is about."')
-        .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
 
-    cy.get('input[type="file"]').eq(1).invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png');
+    cy.get('[name="hobbies"]').type('as')
+    cy.get('[role="option"]').contains(' Arenas & Stadiums ').click()
+    cy.get('[role="option"]').contains(' Baseball ').click()
+    cy.get('[role="option"]').contains(' Fashion Shows & Tours ').click()
+    cy.get('[role="option"]').contains(' Historic Walking Areas ').click()
+    cy.get('[role="option"]').contains(' Squash ').click()
+    cy.contains('Tell us your hobbies').click()
+})
+When("the user submit the Hobbies form", () => {
+    cy.get('[type="button"]').contains('Save').click()
+})
+Then("the user can view Hobbies on profile page", () => {
+    cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Interested Hobbies ').scrollIntoView().should('be.visible')
 })
 
-When("the user submits the introductory videos form", () => {
+
+//Skills
+When("the user initiate the Skills", () => {
+    cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
+    cy.get('[class="fs-14 fw-500"]').contains('Skills').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains('Skills').scrollIntoView().should('be.visible').click()
+})
+
+When("the user provides valid Skills details", () => {
+    cy.get('[name="privacy_level"]').click()
+    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+
+    cy.get('[name="skills"]').type('microsoft')
+    cy.get('[role="option"]').contains('Microsoft Access').click()
+    cy.get('[role="option"]').contains('Microsoft Applications').click()
+    cy.get('[role="option"]').contains('Microsoft Assessment and Planning Toolkit').click()
+    cy.get('[role="option"]').contains('Microsoft Azure').click()
+    cy.get('[role="option"]').contains('Microsoft Backoffice').click()
+
+    cy.get('[class="col-md-12 common-input-mb"]').contains('Skills and Endorsement').click()
+
+})
+
+When("the user submit the Skills form", () => {
     cy.get('[type="button"]').contains('Save').click()
 })
 
-Then("the user can view introductory videos on profile page", () => {
-    cy.get('[class="block-title-md p-0 d-flex"]').contains(' Introductory Videos ').scrollIntoView().should('be.visible')
+Then("the user can view Skills on profile page", () => {
+    cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Skills and Endorsement ').scrollIntoView().should('be.visible')
 })
 
-
-//Accomplishment ( project )
+//Accomplishment
+//Award and certificates
+//Publications
+//Patent
+//Projects
 When("the user initiate the Accomplishment_projects", () => {
     cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
     cy.get('[class="fs-14 fw-500"]').contains('Accomplishments').should('be.visible').click()
@@ -463,57 +719,4 @@ Then("the user can view Accomplishment_projects on profile page", () => {
     cy.get('[class="accomplish-row"]').contains('Project').click()
 })
 
-
-//Contact details
-When("the user initiate the Contact details", () => {
-    cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
-    cy.get('[class="fs-14 fw-500"]').contains('About').should('be.visible').click()
-    cy.get('[class="subpro-name"]').contains(' Contact Details ').should('be.visible').click()
-})
-
-When("the user provides valid Contact details details", () =>{
-    cy.get('[name="privacy_level"]').click()
-    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
-
-    cy.get('[class="select-control"]').eq(1).click()
-    cy.get('[role="option"]').contains('WhatsApp').click()
-    cy.get('[class="iti__selected-flag dropdown-toggle"]').eq(0).click()
-    cy.get('[placeholder="Search Country"]').eq(0).type('Malaysia')
-    cy.get('[class="iti__country-list"]').eq(0).contains('Malaysia').click()
-    cy.get('[id="phone"]').eq(0).type('1123456789')
-
-    cy.get('[type="button"]').contains(' Add contact ').click()
-
-    cy.get('[class="select-control"]').eq(2).click()
-    cy.get('[role="option"]').contains('WhatsApp').click()
-    cy.get('[class="iti__selected-flag dropdown-toggle"]').eq(1).click()
-    cy.get('[placeholder="Search Country"]').eq(1).type('Malaysia')
-    cy.get('[class="iti__country-list"]').eq(1).contains('Malaysia').click()
-    cy.get('[id="phone"]').eq(1).type('1124356789')
-
-    cy.get('[type="button"]').contains(' Add contact ').click()
-
-    cy.get('[class="select-control"]').eq(3).click()
-    cy.get('[role="option"]').contains('Email').click()
-    cy.get('[placeholder="Enter contact detail"]').eq(0).type('yovami3872@biscoine.com')
-
-    cy.get('[type="button"]').contains(' Add contact ').click()
-
-    cy.get('[class="select-control"]').eq(4).click()
-    cy.get('[role="option"]').contains('Instagram').click()
-    cy.get('[placeholder="Enter contact detail"]').eq(1).type('ali_abu')
-
-    cy.get('[type="button"]').contains(' Add contact ').click()
-
-    cy.get('[class="select-control"]').eq(5).click()
-    cy.get('[role="option"]').contains('Tik Tok').click()
-    cy.get('[placeholder="Enter contact detail"]').eq(2).type('ali_abu')
-})
-
-When("the user submits the Contact details form", () => {
-    cy.get('[type="submit"]').contains('Save').click()
-})
-
-Then("the user can view Contact details on profile page", () => {
-    cy.get('[class="pr-24"]').contains(' Contact Details ').scrollIntoView().should('be.visible')
-})
+//Language
