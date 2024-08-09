@@ -438,7 +438,7 @@ When("the user provides valid work experience details", () => {
 
     //collaborations
     cy.get('[name="collaborations"]').should('be.visible').click()
-    cy.get('[role="option"]').contains(' Adam Coffee ').click()
+    cy.get('[role="option"]').contains(' Abu Ali ').click()
     cy.get('[class="col-md-12 common-input-mb"]').contains('Skills').click()
 
     //attach file
