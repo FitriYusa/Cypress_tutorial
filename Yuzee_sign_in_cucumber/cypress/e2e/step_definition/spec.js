@@ -143,7 +143,7 @@ When("the user provides valid application details", (dataTable) => {
        
         cy.contains('Search Course').click({force : true})
         cy.contains(row.course).click();
- cy.get('.modal-footer > .btn-blue').click({force : true})
+        cy.get('.modal-footer > .btn-blue').click({force : true})
         cy.contains('Select intake').click({ force: true });
         cy.contains(row.intake).click({ force: true });
         
