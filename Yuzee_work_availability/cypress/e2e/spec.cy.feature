@@ -12,7 +12,10 @@ Feature: Yuzee Add work availability
       Then the new user will be redirect to the user control center page
       When the user initiate to Go to profile
       Then the user will be redirect to profile page
-      When the user initiate the Edit profiles
+      When the user edit profile and background image as well initiate the Edit profiles
+      And the user provides valid Edit profiles details
+      And the user submits the Edit profiles form
+      Then the user can view Edit profiles on profile page
       
     Scenario Outline: Add Get to know me
       Given the user is on Yuzee homepage is open
