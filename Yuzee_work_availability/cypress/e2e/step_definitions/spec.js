@@ -386,6 +386,82 @@ Then("the user can view My Docs on profile page", () => {
 
 //Background
 //Education
+When("the user initiate the Education", () => {
+    cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
+    cy.get('[class="fs-14 fw-500"]').contains('Background').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains(' Education ').should('be.visible').click()
+})
+
+When("the user provides valid Education details", (dataTable) => {
+    cy.get('[name="privacy_level"]').click()
+    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+
+    cy.get('[name="education_title"]').click()
+    cy.get('[role="option"]').contains('Diploma').click()
+
+    cy.get('[name="institute_name"]').clear().type('MMU')
+
+    cy.get('[placeholder="Search location"]').type('Cyberjaya')
+    cy.get('[role="option"]').contains('Cyberjaya').click()
+
+    cy.get('[name="postal_code"]').type('43300')
+
+    cy.get('[name="course_name"]').type('Diploma in Infomation Technology')
+
+    cy.get('[name="examType"]').click()
+    cy.get('[role="option"]').contains(' English ').click()
+    cy.get('[role="option"]').contains(' Malay ').click()
+    cy.contains('Study Language').click()
+    cy.get('[name="studyMode"]').click()
+    cy.get('[role="option"]').contains('Online').click()
+
+    cy.get('[name="start_date"]').click()
+    cy.get('[title="Select month"]').select('Mar')
+    cy.get('[title="Select year"]').select('2022')
+    cy.get('[role="gridcell"]').contains('22').click()
+
+    cy.get('[name="end_date"]').click()
+    cy.get('[title="Select month"]').select('Nov')
+    cy.get('[title="Select year"]').select('2025')
+    cy.get('[role="gridcell"]').contains('22').click()
+
+    cy.get('[name="system"]').click()
+    cy.get('[role="option"]').contains('C-GPA (out of 5)').should('be.visible').click()
+    cy.get('[name="cgpa"]').type('3.5')
+
+    cy.get('[class="slider round"]').click()
+    cy.get('[id="type_0"]').click()
+    cy.get('[role="option"]').contains('Semester').should('be.visible').click()
+
+    dataTable.hashes().forEach((element, i) => {
+        
+        cy.get('[placeholder="Enter a subject"]').eq(i).type(element.subjects);
+        cy.get('[placeholder="Enter a grade"]').eq(i).type(element.grade);
+    
+        if (i < dataTable.hashes().length - 1) {
+            cy.get('[type="button"]').contains('Add Subject').click();
+        }
+
+        // Click "Add Term/Semester" after the second iteration
+        // if (i === 4 || i === 9) {
+            // cy.get('[type="button"]').contains('Add Term/Semester').click()
+        // }
+
+      });
+     cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+})
+
+When("the user submits the Education form", () => {
+   
+    cy.get('[type="button"]').contains(' Update ').click()
+
+    cy.get('[type="button"]').contains('Ok').click()
+})
+
+Then("the user can view Education on profile page", () => {
+     cy.get('[class="block-sec block-sec-pad pr-0 ng-star-inserted"]').contains(' Education ').scrollIntoView().should('be.visible')
+})
+
 //Work Experience
 When("the user initiate the Work Experience", () => {
     cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
