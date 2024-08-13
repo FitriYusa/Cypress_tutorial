@@ -9,7 +9,7 @@ module.exports = defineConfig({
    baseUrl: 'https://env3.yuzee.click',
    specPattern: "**/*.feature",
    env: {
-     MAILOSAUR_API_KEY: "da7E88JhSx5Gce1Bu6FKP4opFqLgnqRR" //optional
+     MAILOSAUR_API_KEY: "da7E88JhSx5Gce1Bu6FKP4opFqLgnqRR", //optional
    },
    async setupNodeEvents(on, config) {
      await addCucumberPreprocessorPlugin(on, config);

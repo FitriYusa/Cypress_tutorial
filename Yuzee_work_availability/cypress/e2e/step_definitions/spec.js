@@ -24,7 +24,7 @@ When("the new user provides valid registration details", () => {
     cy.get('[formcontrolname="lastName"]').type("abu")
 
     //Select date
-    cy.get('.input-group > .form-control').click()
+    cy.get('[class="calendar-icon icon-lg"]').click()
     cy.get('[title="Select month"]').select('Jul')
     cy.get('[title="Select year"]').select('1997')
     cy.get('[role="gridcell"]').contains('7').click()
@@ -433,22 +433,34 @@ When("the user provides valid Education details", (dataTable) => {
     cy.get('[id="type_0"]').click()
     cy.get('[role="option"]').contains('Semester').should('be.visible').click()
 
-    dataTable.hashes().forEach((element, i) => {
-        
-        cy.get('[placeholder="Enter a subject"]').eq(i).type(element.subjects);
-        cy.get('[placeholder="Enter a grade"]').eq(i).type(element.grade);
+    // Fill out the first subject, grade and "Add Subject" button
+    cy.get('[placeholder="Enter a subject"]').eq(0).type('OOP')
+    cy.get('[placeholder="Enter a grade"]').eq(0).type('A')
+    cy.get('[type="button"]').contains('Add Subject').eq(0).click()
+    // Fill out the second subject and grade
+    cy.get('[placeholder="Enter a subject"]').eq(1).type('OOPA')
+    cy.get('[placeholder="Enter a grade"]').eq(1).type('A')
+ 
+
+    // Click "Add Term/Semester"
+    cy.get('[type="button"]').contains('Add Term/Semester').click()
+ 
+
+    // Fill out the first subject, grade and "Add Subject" button
+    cy.get('[placeholder="Enter a subject"]').eq(2).type('OOP')
+    cy.get('[placeholder="Enter a grade"]').eq(2).type('A')
+    cy.get('[placeholder="Enter a grade"]').eq(2).closest('.row').find('button').contains('Add Subject').click()
+    // Fill out the second subject and grade
+    cy.get('[placeholder="Enter a subject"]').eq(3).type('OOPAs')
+    cy.get('[placeholder="Enter a grade"]').eq(3).type('A')
+    //Add subject button
+    cy.get('[placeholder="Enter a grade"]').eq(3).closest('.row').find('button').contains('Add Subject').click()
+    //add third subject
+    cy.get('[placeholder="Enter a subject"]').eq(4).type('OOPAss')
+    cy.get('[placeholder="Enter a grade"]').eq(4).type('A')
     
-        if (i < dataTable.hashes().length - 1) {
-            cy.get('[type="button"]').contains('Add Subject').click();
-        }
 
-        // Click "Add Term/Semester" after the second iteration
-        // if (i === 4 || i === 9) {
-            // cy.get('[type="button"]').contains('Add Term/Semester').click()
-        // }
-
-      });
-     cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+    cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
 })
 
 When("the user submits the Education form", () => {
@@ -751,16 +763,54 @@ Then("the user can view Skills on profile page", () => {
 
 //Accomplishment
 //Award and certificates
+When("the user initiate the Awards and certificates", () => {
+    cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
+    cy.get('[class="fs-14 fw-500"]').contains('Accomplishments').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains('Awards and Certificates').scrollIntoView().should('be.visible').click()
+})
+
+When("the user provides valid Awards and certificates details", () => {
+    cy.get('[name="privacy_level"]').click()
+    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+    cy.get('[placeholder="Enter title"]').type('Awards')
+    cy.get('[placeholder="placeholder.Search or type"]').type('as')
+    cy.contains('Aston University').click()
+
+    cy.get('[placeholder="Select a date"]').click()
+    cy.get('[title="Select month"]').select('Aug')
+    cy.get('[title="Select year"]').select('2020')
+    cy.get('[role="gridcell"]').contains('6').click()
+
+    cy.get('[placeholder="Add description"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+    cy.get('[name="collaborations"]').type('ada')
+    cy.get('[role="option"]').contains(' Adamson University ').click()
+    cy.contains('Associated with').click()
+
+    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
+})
+
+When("the user submits the Awards and certificates form", () => {
+    cy.get('[type="button"]').contains(' Save ').click()
+    cy.get('[type="button"]').contains('Ok').click()
+    //have error, after click on the Ok button, the popup does not close
+})
+
+Then("the user can view Awards and certificates on profile page", () => {
+    // cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
+    // cy.get('[class="accomplish-row"]').contains('Awards and Certificates').click()
+})
+
 //Publications
 //Patent
+
 //Projects
-When("the user initiate the Accomplishment_projects", () => {
+When("the user initiate the Accomplishment projects", () => {
     cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
     cy.get('[class="fs-14 fw-500"]').contains('Accomplishments').should('be.visible').click()
     cy.get('[class="subpro-name"]').contains('Projects').scrollIntoView().should('be.visible').click()
 })
 
-When("the user provides valid Accomplishment_projects details", () => {
+When("the user provides valid Accomplishment projects details", () => {
     cy.get('[name="privacy_level"]').click()
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
 
@@ -786,11 +836,11 @@ When("the user provides valid Accomplishment_projects details", () => {
     cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
 })
 
-When("the user submits the Accomplishment_projects form", () => {
+When("the user submits the Accomplishment projects form", () => {
     cy.get('[type="button"]').contains('Save').click()
 })
 
-Then("the user can view Accomplishment_projects on profile page", () => {
+Then("the user can view Accomplishment projects on profile page", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
     cy.get('[class="accomplish-row"]').contains('Project').click()
 })

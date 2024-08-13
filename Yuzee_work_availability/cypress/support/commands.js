@@ -30,7 +30,7 @@ const emailDomain = `@${serverID}.mailosaur.net`;
 Cypress.Commands.add('generateUniqueEmail', () => {
 
     const randomString = new Date().getTime();
-    const emailAddress = `abs${randomString}${emailDomain}`;
+    const emailAddress = `aliabu${randomString}${emailDomain}`;
     
     cy.wrap(emailAddress).as('uniqueEmail')
 })

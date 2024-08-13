@@ -183,9 +183,9 @@ Feature: Yuzee Add work availability
       And the user provides valid Skills details
       And the user submit the Skills form
       Then the user can view Skills on profile page
-      
-     Scenario Outline: Add work availability
-	    Given the user is on Yuzee homepage is open
+    
+    Scenario Outline: Add Award and certificates
+      Given the user is on Yuzee homepage is open
       When the new user initiate the account creation process
       And the new user provides valid registration details
       And the user submits the registration form
@@ -194,8 +194,22 @@ Feature: Yuzee Add work availability
       Then the new user will be redirect to the user control center page
       When the user initiate to Go to profile
       Then the user will be redirect to profile page
-      When the user initiate the Accomplishment_projects
-      And the user provides valid Accomplishment_projects details
-      And the user submits the Accomplishment_projects form
-      Then the user can view Accomplishment_projects on profile page
-    
+      When the user initiate the Awards and certificates
+      And the user provides valid Awards and certificates details
+      And the user submits the Awards and certificates form
+      Then the user can view Awards and certificates on profile page
+      
+    Scenario Outline: Add Accomplishment projects
+      Given the user is on Yuzee homepage is open
+      When the new user initiate the account creation process
+      And the new user provides valid registration details
+      And the user submits the registration form
+      Then the new user should receive verification code via email and submits
+      Then the new user will be redirect to completeting the Onboarding
+      Then the new user will be redirect to the user control center page
+      When the user initiate to Go to profile
+      Then the user will be redirect to profile page
+      When the user initiate the Accomplishment projects
+      And the user provides valid Accomplishment projects details
+      And the user submits the Accomplishment projects form
+      Then the user can view Accomplishment projects on profile page

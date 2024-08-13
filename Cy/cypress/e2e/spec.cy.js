@@ -18,7 +18,7 @@ describe('Signup', () => {
     cy.get('[formcontrolname="lastName"]').type("abu")
 
     //Select date
-    cy.get('[placeholder="Select a date"]').click()
+    cy.get('[class="calendar-icon icon-lg"]').click()
     cy.get('[title="Select month"]').select('Jul')
     cy.get('[title="Select year"]').select('1997')
     cy.get('[role="gridcell"]').contains('7').click()
