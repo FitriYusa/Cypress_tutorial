@@ -433,32 +433,24 @@ When("the user provides valid Education details", (dataTable) => {
     cy.get('[id="type_0"]').click()
     cy.get('[role="option"]').contains('Semester').should('be.visible').click()
 
-    // Fill out the first subject, grade and "Add Subject" button
-    cy.get('[placeholder="Enter a subject"]').eq(0).type('OOP')
-    cy.get('[placeholder="Enter a grade"]').eq(0).type('A')
-    cy.get('[type="button"]').contains('Add Subject').eq(0).click()
-    // Fill out the second subject and grade
-    cy.get('[placeholder="Enter a subject"]').eq(1).type('OOPA')
-    cy.get('[placeholder="Enter a grade"]').eq(1).type('A')
- 
+    let index = 0;
 
-    // Click "Add Term/Semester"
-    cy.get('[type="button"]').contains('Add Term/Semester').click()
- 
+    dataTable.hashes().forEach((entry, i) => {
+    if (i > 0 && i % 5 === 0) {
+        cy.get('[type="button"]').contains('Add Term/Semester').click();
+      }
+  
+      // Fill out the subject and grade
+      cy.get('[placeholder="Enter a subject"]').eq(index).type(entry.subject);
+      cy.get('[placeholder="Enter a grade"]').eq(index).type(entry.grade);
+  
+      // Click "Add Subject" button
+      if (i % 5 !== 4) {
+        cy.get('[placeholder="Enter a grade"]').eq(index).closest('.row').find('button').contains('Add Subject').click();
+      }
 
-    // Fill out the first subject, grade and "Add Subject" button
-    cy.get('[placeholder="Enter a subject"]').eq(2).type('OOP')
-    cy.get('[placeholder="Enter a grade"]').eq(2).type('A')
-    cy.get('[placeholder="Enter a grade"]').eq(2).closest('.row').find('button').contains('Add Subject').click()
-    // Fill out the second subject and grade
-    cy.get('[placeholder="Enter a subject"]').eq(3).type('OOPAs')
-    cy.get('[placeholder="Enter a grade"]').eq(3).type('A')
-    //Add subject button
-    cy.get('[placeholder="Enter a grade"]').eq(3).closest('.row').find('button').contains('Add Subject').click()
-    //add third subject
-    cy.get('[placeholder="Enter a subject"]').eq(4).type('OOPAss')
-    cy.get('[placeholder="Enter a grade"]').eq(4).type('A')
-    
+      index++;
+    });
 
     cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
 })
