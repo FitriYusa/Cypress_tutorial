@@ -441,7 +441,7 @@ When("the user provides valid Education details", (dataTable) => {
       }
   
       // Fill out the subject and grade
-      cy.get('[placeholder="Enter a subject"]').eq(index).type(entry.subject);
+      cy.get('[placeholder="Enter a subject"]').eq(index).type(entry.subjects);
       cy.get('[placeholder="Enter a grade"]').eq(index).type(entry.grade);
   
       // Click "Add Subject" button
