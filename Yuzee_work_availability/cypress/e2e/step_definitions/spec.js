@@ -764,6 +764,7 @@ When("the user initiate the Awards and certificates", () => {
 When("the user provides valid Awards and certificates details", () => {
     cy.get('[name="privacy_level"]').click()
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+
     cy.get('[placeholder="Enter title"]').type('Awards')
     cy.get('[placeholder="placeholder.Search or type"]').type('as')
     cy.contains('Aston University').click()
@@ -793,7 +794,89 @@ Then("the user can view Awards and certificates on profile page", () => {
 })
 
 //Publications
+When("the user initiate the Publications", () => {
+    cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
+    cy.get('[class="fs-14 fw-500"]').contains('Accomplishments').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains(' Publications ').scrollIntoView().should('be.visible').click()
+})
+
+When("the user provides valid Publications details", () => {
+    cy.get('[name="privacy_level"]').click()
+    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+
+    cy.get('[placeholder="Enter title"]').type('Firecracker Award')
+    cy.get('[name="publication"]').type('ae')
+    cy.get('[name="publicUrl"]').type('mass.com')
+
+    cy.get('[placeholder="Select a date"]').click()
+    cy.get('[title="Select month"]').select('Aug')
+    cy.get('[title="Select year"]').select('2023')
+    cy.get('[role="gridcell"]').contains('3').click()
+
+    cy.get('[name="details"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+
+    cy.get('[name="collaborations"]').type('adam')
+    cy.get('[role="option"]').contains(' Adam Cof ').click()
+    cy.contains('Other Authors').click()
+
+    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
+})
+
+When("the user submits the Publications form", () => {
+    cy.get('[type="button"]').contains('Save').click()
+})
+
+Then("the user can view Publications on profile page", () => {
+    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
+    cy.get('[class="accomplish-row"]').contains('Publication').click()
+})
+
 //Patent
+When("the user initiate the Patent", () => {
+    cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
+    cy.get('[class="fs-14 fw-500"]').contains('Accomplishments').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains('Patents').scrollIntoView().should('be.visible').click()
+})
+
+When("the user provides valid Patent details", () => {
+    cy.get('[name="privacy_level"]').click()
+    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+
+    cy.get('[placeholder="Enter title"]').type('ae')
+    cy.get('[name="citizenship"]').click()
+    cy.get('[role="option"]').contains('Malaysia').scrollIntoView().click()
+
+    //if patent issued
+    cy.get('[id="Patent Issued"]').click()
+
+    //if patent pending
+    // cy.get('[id="Patent Pending"]').click()
+
+    cy.get('[placeholder="Select a date"]').click()
+    cy.get('[title="Select month"]').select('Feb')
+    cy.get('[title="Select year"]').select('2023')
+    cy.get('[role="gridcell"]').contains('3').click()
+
+    cy.get('[id="patent_number"]').type('32112333')
+    cy.get('[id="pat_url"]').type('fastr.com')
+    cy.get('[id="description"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+
+   cy.get('[name="collaborations"]').type('adam')
+   cy.get('[role="option"]').contains(' Adam Cof ').click()
+
+   cy.contains('Other Inventors').click()
+
+   cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
+})
+
+When("the user submits the Patent form", () => {
+    cy.get('[type="button"]').contains('Save').should('be.visible').click()
+})
+
+Then("the user can view Patent on profile page", () => {
+    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
+    cy.get('[class="accomplish-row"]').contains('Patent').click()
+})
 
 //Projects
 When("the user initiate the Accomplishment projects", () => {
@@ -838,3 +921,30 @@ Then("the user can view Accomplishment projects on profile page", () => {
 })
 
 //Language
+When("the user initiate the Language", () => {
+    cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
+    cy.get('[class="fs-14 fw-500"]').contains('Accomplishments').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains('Languages').scrollIntoView().should('be.visible').click()
+})
+
+When("the user provides valid Language details", () => {
+    cy.get('[name="privacy_level"]').click()
+    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+
+    cy.get('[formcontrolname="title"]').click()
+    cy.get('[role="option"]').contains('Malay').scrollIntoView().click()
+
+    cy.get('[formcontrolname="language_proficiency_type"]').click()
+    cy.get('[role="option"]').contains('Native or bilingual Proficiency').should('be.visible').click()
+
+    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
+})
+
+When("the user submits the Language form", () => {
+    cy.get('[type="button"]').contains('Save').should('be.visible').click()
+})
+
+Then("the user can view Language on profile page", () => {
+    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
+    cy.get('[class="accomplish-row"]').contains('Language').click()
+})

@@ -199,6 +199,36 @@ Feature: Yuzee Add work availability
       And the user submits the Awards and certificates form
       Then the user can view Awards and certificates on profile page
       
+    Scenario Outline: Add Publications
+      Given the user is on Yuzee homepage is open
+      When the new user initiate the account creation process
+      And the new user provides valid registration details
+      And the user submits the registration form
+      Then the new user should receive verification code via email and submits
+      Then the new user will be redirect to completeting the Onboarding
+      Then the new user will be redirect to the user control center page
+      When the user initiate to Go to profile
+      Then the user will be redirect to profile page
+      When the user initiate the Publications
+      And the user provides valid Publications details
+      And the user submits the Publications form
+      Then the user can view Publications on profile page
+      
+    Scenario Outline: Add Patent
+      Given the user is on Yuzee homepage is open
+      When the new user initiate the account creation process
+      And the new user provides valid registration details
+      And the user submits the registration form
+      Then the new user should receive verification code via email and submits
+      Then the new user will be redirect to completeting the Onboarding
+      Then the new user will be redirect to the user control center page
+      When the user initiate to Go to profile
+      Then the user will be redirect to profile page
+      When the user initiate the Patent
+      And the user provides valid Patent details
+      And the user submits the Patent form
+      Then the user can view Patent on profile page
+      
     Scenario Outline: Add Accomplishment projects
       Given the user is on Yuzee homepage is open
       When the new user initiate the account creation process
@@ -213,3 +243,18 @@ Feature: Yuzee Add work availability
       And the user provides valid Accomplishment projects details
       And the user submits the Accomplishment projects form
       Then the user can view Accomplishment projects on profile page
+      
+   Scenario Outline: Add Language
+      Given the user is on Yuzee homepage is open
+      When the new user initiate the account creation process
+      And the new user provides valid registration details
+      And the user submits the registration form
+      Then the new user should receive verification code via email and submits
+      Then the new user will be redirect to completeting the Onboarding
+      Then the new user will be redirect to the user control center page
+      When the user initiate to Go to profile
+      Then the user will be redirect to profile page
+      When the user initiate the Language
+      And the user provides valid Language details
+      And the user submits the Language form
+      Then the user can view Language on profile page
