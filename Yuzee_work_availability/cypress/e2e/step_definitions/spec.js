@@ -300,43 +300,28 @@ When("the user initiate the Contact details", () => {
     cy.get('[class="subpro-name"]').contains(' Contact Details ').should('be.visible').click()
 })
 
-When("the user provides valid Contact details details", () =>{
-    cy.get('[name="privacy_level"]').click()
-    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
-
-    cy.get('[class="select-control"]').eq(1).click()
-    cy.get('[role="option"]').contains('WhatsApp').click()
-    cy.get('[class="iti__selected-flag dropdown-toggle"]').eq(0).click()
-    cy.get('[placeholder="Search Country"]').eq(0).type('Malaysia')
-    cy.get('[class="iti__country-list"]').eq(0).contains('Malaysia').click()
-    cy.get('[id="phone"]').eq(0).type('1123456789')
-
-    cy.get('[type="button"]').contains(' Add contact ').click()
-
-    cy.get('[class="select-control"]').eq(2).click()
-    cy.get('[role="option"]').contains('WhatsApp').click()
-    cy.get('[class="iti__selected-flag dropdown-toggle"]').eq(1).click()
-    cy.get('[placeholder="Search Country"]').eq(1).type('Malaysia')
-    cy.get('[class="iti__country-list"]').eq(1).contains('Malaysia').click()
-    cy.get('[id="phone"]').eq(1).type('1124356789')
-
-    cy.get('[type="button"]').contains(' Add contact ').click()
-
-    cy.get('[class="select-control"]').eq(3).click()
-    cy.get('[role="option"]').contains('Email').click()
-    cy.get('[placeholder="Enter contact detail"]').eq(0).type('yovami3872@biscoine.com')
-
-    cy.get('[type="button"]').contains(' Add contact ').click()
-
-    cy.get('[class="select-control"]').eq(4).click()
-    cy.get('[role="option"]').contains('Instagram').click()
-    cy.get('[placeholder="Enter contact detail"]').eq(1).type('ali_abu')
-
-    cy.get('[type="button"]').contains(' Add contact ').click()
-
-    cy.get('[class="select-control"]').eq(5).click()
-    cy.get('[role="option"]').contains('Tik Tok').click()
-    cy.get('[placeholder="Enter contact detail"]').eq(2).type('ali_abu')
+When("the user provides valid Contact details details", (dataTable) =>{
+    dataTable.hashes().forEach((contact, index) => {
+        // Select the contact method
+        cy.get('[class="select-control"]').eq(index + 1).click();
+        cy.get('[role="option"]').contains(contact.method).click();
+    
+        // Handle country selection if phone is true
+        if (contact.phone === 'true') {
+          cy.get('[class="iti__selected-flag dropdown-toggle"]').eq(index).click();
+          cy.get('[placeholder="Search Country"]').eq(index).type(contact.country);
+          cy.get('[class="iti__country-list"]').eq(index).contains(contact.country).click();
+          cy.get('[id="phone"]').eq(index).type(contact.detail);
+        } else {
+          // For other contact types (e.g., email, Instagram, TikTok)
+          cy.get('[placeholder="Enter contact detail"]').eq(index - 2).type(contact.detail);
+        }
+    
+        // Click "Add contact" button
+        if(index < 4){
+            cy.get('[type="button"]').contains(' Add contact ').click();
+        }
+      });
 })
 
 When("the user submits the Contact details form", () => {
