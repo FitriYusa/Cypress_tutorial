@@ -354,46 +354,12 @@ When("the user initiate the My Docs", () => {
     cy.get('[class="subpro-name"]').contains(' My Docs ').should('be.visible').click()
 })
 
-When("the user provides valid My Docs details", () => {
-    cy.get('[class="menu-div"]').contains(' Australian keypass ').click()
-    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
-    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
-
-    cy.get('[class="menu-div"]').contains(' Birth certificate ').click()
-    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
-    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
-    
-    cy.get('[class="menu-div"]').contains(' Passport ').click()
-    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
-    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
-
-    cy.get('[class="menu-div"]').contains(' Australian citizenship certificate ').click()
-    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
-    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
-
-    cy.get('[class="menu-div"]').contains(' Medicare card ').click()
-    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
-    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
-
-    cy.get('[class="menu-div"]').contains(' Driving License ').click()
-    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
-    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
-
-    cy.get('[class="menu-div"]').contains(' Children Check ').click()
-    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
-    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
-
-    cy.get('[class="menu-div"]').contains(' Police Check ').click()
-    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
-    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
-
-    cy.get('[class="menu-div"]').contains(' First Aid Check ').click()
-    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
-    cy.get('[type="button"]', {timeout : 10000 }).contains('Yes').click()
-
-    cy.get('[class="menu-div"]').contains(' CV/Resume ').click()
-    cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
-    cy.get('[type="button"]', {timeout : 1000 }).contains('Yes').click()
+When("the user provides valid My Docs details", (dataTable) => {
+    dataTable.hashes().forEach((row) => {
+        cy.get('[class="menu-div"]').contains(row.documentType).click();
+        cy.get('[type="file"]').selectFile(row.filePath);
+        cy.get('[type="button"]', { timeout: 10000 }).contains('Yes').click();
+    });
 })
 
 When("the user close the My Docs form", () => {
