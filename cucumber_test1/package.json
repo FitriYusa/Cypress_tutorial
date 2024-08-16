@@ -1,14 +1,22 @@
 {
-  "name": "cucumber_test1",
+  "dependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^20.1.2",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.2",
+    "cypress-mailosaur": "^2.15.0"
+  },
+  "name": "yuzee_user_profile",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
+  "devDependencies": {
+    "mocha": "^10.7.0"
+  },
   "scripts": {
-    "test": "cypress open"
+    "cy:open": "cypress open"
+  },
+  "cypress-cucumber-preprocessor": {
+    "stepDefinitions": "cypress/e2e/step_definitions/**/*.{js,ts}"
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "cypress": "^13.13.1"
-  }
+  "description": ""
 }

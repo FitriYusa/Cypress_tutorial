@@ -36,8 +36,8 @@ When("the user submit the sign in form", () => {
 
 Then("the user will be in homepage", () => {
 
-    cy.visit('/user-control-center/landing')
-    // cy.url({ timeout: 10000 }).should('include', 'https://dev.yuzee.click/user-control-center/landing')
+    // cy.visit('/user-control-center/landing')
+    cy.url({ timeout: 10000 }).should('include', '/user-control-center/landing')
 })
 
 // Given("the user initiate the insitution", () => {

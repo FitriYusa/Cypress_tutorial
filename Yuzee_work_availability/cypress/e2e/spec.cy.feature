@@ -1,8 +1,6 @@
-Feature: Yuzee Add work availability
+Feature: Yuzee user profile components
 
     Background:
-        
-    Scenario Outline: Edit profiles details
       Given the user is on Yuzee homepage is open
       When the new user initiate the account creation process
       And the new user provides valid registration details
@@ -11,250 +9,25 @@ Feature: Yuzee Add work availability
       Then the new user will be redirect to completeting the Onboarding
       Then the new user will be redirect to the user control center page
       When the user initiate to Go to profile
-      Then the user will be redirect to profile page
-      When the user edit profile and background image as well initiate the Edit profiles
+
+    Scenario Outline: Edit profile photo if no photo
+      Given the user is in profile page
+      When the user edit the profile photo
+      And the user submit the profile photo
+      Then the edited profile photo can be viewed
+
+     Scenario Outline: Edit background photo if no photo
+      Given the user is in profile page
+      When the user edit the background photo
+      And the user submit the background photo
+      Then the edited background photo can be viewed
+
+    Scenario Outline: Edit profile information
+      Given the user is in profile page
+      When the user initiate the edit profile
       And the user provides valid Edit profiles details
       And the user submits the Edit profiles form
-      Then the user can view Edit profiles on profile page
-      
-    Scenario Outline: Add Get to know me
-      Given the user is on Yuzee homepage is open
-      When the new user initiate the account creation process
-      And the new user provides valid registration details
-      And the user submits the registration form
-      Then the new user should receive verification code via email and submits
-      Then the new user will be redirect to completeting the Onboarding
-      Then the new user will be redirect to the user control center page
-      When the user initiate to Go to profile
-      Then the user will be redirect to profile page
-      When the user initiate the Get to know me
-      And the user provides valid Get to know me details
-      And the user submits the Get to know me form
-      Then the user can view Get to know me on profile page
-      
-     Scenario Outline: Add introductory videos
-      Given the user is on Yuzee homepage is open
-      When the new user initiate the account creation process
-      And the new user provides valid registration details
-      And the user submits the registration form
-      Then the new user should receive verification code via email and submits
-      Then the new user will be redirect to completeting the Onboarding
-      Then the new user will be redirect to the user control center page
-      When the user initiate to Go to profile
-      Then the user will be redirect to profile page
-      When the user initiate the introductory videos
-      And the user provides valid introductory videos details
-      And the user submits the introductory videos form
-      Then the user can view introductory videos on profile page
-      
-    Scenario Outline: Add Contact details
-      Given the user is on Yuzee homepage is open
-      When the new user initiate the account creation process
-      And the new user provides valid registration details
-      And the user submits the registration form
-      Then the new user should receive verification code via email and submits
-      Then the new user will be redirect to completeting the Onboarding
-      Then the new user will be redirect to the user control center page
-      When the user initiate to Go to profile
-      Then the user will be redirect to profile page
-      When the user initiate the Contact details
-      And the user provides valid Contact details details
-      And the user submits the Contact details form
-      Then the user can view Contact details on profile page
-      
-    Scenario Outline: Add My Docs
-      Given the user is on Yuzee homepage is open
-      When the new user initiate the account creation process
-      And the new user provides valid registration details
-      And the user submits the registration form
-      Then the new user should receive verification code via email and submits
-      Then the new user will be redirect to completeting the Onboarding
-      Then the new user will be redirect to the user control center page
-      When the user initiate to Go to profile
-      Then the user will be redirect to profile page
-      When the user initiate the My Docs
-      And the user provides valid My Docs details
-      And the user close the My Docs form
-      Then the user can view My Docs on profile page
+      Then the edited profile information can be viewed
 
-      Scenario Outline: Add Education
-      Given the user is on Yuzee homepage is open
-      When the new user initiate the account creation process
-      And the new user provides valid registration details
-      And the user submits the registration form
-      Then the new user should receive verification code via email and submits
-      Then the new user will be redirect to completeting the Onboarding
-      Then the new user will be redirect to the user control center page
-      When the user initiate to Go to profile
-      Then the user will be redirect to profile page
-      When the user initiate the Education
-      And the user provides valid Education details
-      | subjects       | grade |
-      | Communications | A     |
-      | OOP            | A     |
-      | HTML           | A     |
-      | Business       | A     |
-      | JS             | A     |
-      | Economics      | A     |
-      | Physics        | B     |
-      | Chemistry      | A     |
-      | Literature     | B     |
-      | Art            | A     |
-      And the user submits the Education form
-      Then the user can view Education on profile page
-      
-     Scenario Outline: Add work experience
-      Given the user is on Yuzee homepage is open
-      When the new user initiate the account creation process
-      And the new user provides valid registration details
-      And the user submits the registration form
-      Then the new user should receive verification code via email and submits
-      Then the new user will be redirect to completeting the Onboarding
-      Then the new user will be redirect to the user control center page
-      When the user initiate to Go to profile
-      Then the user will be redirect to profile page
-      When the user initiate the Work Experience
-      And the user provides valid work experience details
-      And the user submits the Work Experience form
-      Then the user can view Work Experience on profile page
 
-    Scenario Outline: Add work availability
-	    Given the user is on Yuzee homepage is open
-      When the new user initiate the account creation process
-      And the new user provides valid registration details
-      And the user submits the registration form
-      Then the new user should receive verification code via email and submits
-      Then the new user will be redirect to completeting the Onboarding
-      Then the new user will be redirect to the user control center page
-      When the user initiate to Go to profile
-      Then the user will be redirect to profile page
-      When the user initiate the Work Availability
-      And the user provides valid work availability details
-      And the user submits the Work Availability form
-      Then the user can view Work Availability on profile page
-
-    Scenario Outline: Add language qaulification
-      Given the user is on Yuzee homepage is open
-      When the new user initiate the account creation process
-      And the new user provides valid registration details
-      And the user submits the registration form
-      Then the new user should receive verification code via email and submits
-      Then the new user will be redirect to completeting the Onboarding
-      Then the new user will be redirect to the user control center page
-      When the user initiate to Go to profile
-      Then the user will be redirect to profile page
-      When the user initiate the Language qualification
-      And the user provides valid language qualification details
-      | Type              | Reading | Writing | Listening | Speaking |
-      | IELTS             | 9       | 9       | 9         | 9        |
-      | CAE               | 230     | 230     | 230       | 230      |
-      | TOEFL             | 30      | 30      | 30        | 30       |
-      | MUET              |         |         |           |          |
-      | Cambridge English |         |         |           |          |
-      And the user submits the language qualification form
-      Then the user can view language qualification on profile page
-      
-    Scenario Outline: Add Hobbies
-      Given the user is on Yuzee homepage is open
-      When the new user initiate the account creation process
-      And the new user provides valid registration details
-      And the user submits the registration form
-      Then the new user should receive verification code via email and submits
-      Then the new user will be redirect to completeting the Onboarding
-      Then the new user will be redirect to the user control center page
-      When the user initiate to Go to profile
-      Then the user will be redirect to profile page
-      When the user initiate the Hobbies
-      And the user provides valid Hobbies details
-      And the user submit the Hobbies form
-      Then the user can view Hobbies on profile page
-      
-    Scenario Outline: Add Skills
-      Given the user is on Yuzee homepage is open
-      When the new user initiate the account creation process
-      And the new user provides valid registration details
-      And the user submits the registration form
-      Then the new user should receive verification code via email and submits
-      Then the new user will be redirect to completeting the Onboarding
-      Then the new user will be redirect to the user control center page
-      When the user initiate to Go to profile
-      Then the user will be redirect to profile page
-      When the user initiate the Skills
-      And the user provides valid Skills details
-      And the user submit the Skills form
-      Then the user can view Skills on profile page
-    
-    Scenario Outline: Add Award and certificates
-      Given the user is on Yuzee homepage is open
-      When the new user initiate the account creation process
-      And the new user provides valid registration details
-      And the user submits the registration form
-      Then the new user should receive verification code via email and submits
-      Then the new user will be redirect to completeting the Onboarding
-      Then the new user will be redirect to the user control center page
-      When the user initiate to Go to profile
-      Then the user will be redirect to profile page
-      When the user initiate the Awards and certificates
-      And the user provides valid Awards and certificates details
-      And the user submits the Awards and certificates form
-      Then the user can view Awards and certificates on profile page
-      
-    Scenario Outline: Add Publications
-      Given the user is on Yuzee homepage is open
-      When the new user initiate the account creation process
-      And the new user provides valid registration details
-      And the user submits the registration form
-      Then the new user should receive verification code via email and submits
-      Then the new user will be redirect to completeting the Onboarding
-      Then the new user will be redirect to the user control center page
-      When the user initiate to Go to profile
-      Then the user will be redirect to profile page
-      When the user initiate the Publications
-      And the user provides valid Publications details
-      And the user submits the Publications form
-      Then the user can view Publications on profile page
-      
-    Scenario Outline: Add Patent
-      Given the user is on Yuzee homepage is open
-      When the new user initiate the account creation process
-      And the new user provides valid registration details
-      And the user submits the registration form
-      Then the new user should receive verification code via email and submits
-      Then the new user will be redirect to completeting the Onboarding
-      Then the new user will be redirect to the user control center page
-      When the user initiate to Go to profile
-      Then the user will be redirect to profile page
-      When the user initiate the Patent
-      And the user provides valid Patent details
-      And the user submits the Patent form
-      Then the user can view Patent on profile page
-      
-    Scenario Outline: Add Accomplishment projects
-      Given the user is on Yuzee homepage is open
-      When the new user initiate the account creation process
-      And the new user provides valid registration details
-      And the user submits the registration form
-      Then the new user should receive verification code via email and submits
-      Then the new user will be redirect to completeting the Onboarding
-      Then the new user will be redirect to the user control center page
-      When the user initiate to Go to profile
-      Then the user will be redirect to profile page
-      When the user initiate the Accomplishment projects
-      And the user provides valid Accomplishment projects details
-      And the user submits the Accomplishment projects form
-      Then the user can view Accomplishment projects on profile page
-      
-   Scenario Outline: Add Language
-      Given the user is on Yuzee homepage is open
-      When the new user initiate the account creation process
-      And the new user provides valid registration details
-      And the user submits the registration form
-      Then the new user should receive verification code via email and submits
-      Then the new user will be redirect to completeting the Onboarding
-      Then the new user will be redirect to the user control center page
-      When the user initiate to Go to profile
-      Then the user will be redirect to profile page
-      When the user initiate the Language
-      And the user provides valid Language details
-      And the user submits the Language form
-      Then the user can view Language on profile page
+  

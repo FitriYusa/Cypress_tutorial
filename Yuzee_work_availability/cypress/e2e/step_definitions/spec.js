@@ -13,34 +13,7 @@ Given("the user is on Yuzee homepage is open", () => {
     cy.intercept('POST', 'https://auth.yuzee.click/quick-blox/api/v1/quickblox/login').as('signinRequest')
 })
 
-When("the user initiate the sign in", () => {
-    cy.contains('Sign in').click()
-})
-
-When("the user provides valid sign in details", (dataTable) => {
-
-    dataTable.hashes().forEach(row => {
-        cy.get('[placeholder="Email"]').clear().type(row.email)
-        cy.get('[type="password"]').clear().type('Admin@1234')
-    })
-    
-})
-
-When("the user submit the sign in form", () => {
-    
-    cy.get('[type="submit"]').contains('Sign in').click()
-
-    cy.wait('@signinRequest', { timeout: 10000 }).then((interception) => {
-      
-        let statusCode = interception.response.statusCode;
-  
-        expect(statusCode).to.equal(200)
-
-    });
-
-})
-
-
+//sign up
 When("the new user initiate the account creation process", () => {
     cy.contains('Join Yuzee').click()
 })
@@ -68,8 +41,8 @@ When("the new user provides valid registration details", () => {
         cy.get('[formcontrolname="email"]').type(emailAddress)
     })
     
-    cy.get('[formcontrolname="password"]').type("Admin@1234")
-    cy.get('[formcontrolname="confirmPassword"]').type("Admin@1234")
+    cy.get('[formcontrolname="password"]').type("Admin@12345")
+    cy.get('[formcontrolname="confirmPassword"]').type("Admin@12345")
 })
 
 When("the user submits the registration form", () => {
@@ -161,6 +134,11 @@ Then("the new user will be redirect to completeting the Onboarding", () => {
     cy.get('[type="submit"]').contains('Go!').click()
 })
 
+Then("the new user will skip the onboarding process", () => {
+
+})
+
+//user home page and user profile page
 Then("the new user will be redirect to the user control center page", () => {
     cy.url({ timeout: 10000 }).should('include', '/user-control-center/landing')
 })
@@ -179,25 +157,40 @@ When("the user initiate to Go to profile", () => {
 
 })
 
-Then("the user will be redirect to profile page", () => {
-    cy.wait(3000)
-    //sometimes the test pass sometimes failed
+Given("the user is in profile page", () => {
     cy.url().should('include', '/profile')
 })
 
-
-//Edit profile
-When("the user edit profile and background image as well initiate the Edit profiles", () => {
+//Edit profile photo
+When("the user edit the profile photo", () => {
     cy.get('[class="img-over"]').click()
     cy.get('[type="file"]').invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png')
     cy.get('[type="button"]').contains('Save').click()
+})
+When("the user submit the profile photo", () => {
     cy.get('[type="button"]').contains('Ok').click()
+})
+Then("the edited profile photo can be viewed", () => {
+    cy.url().should('include', '/profile')
+    cy.reload()
+})
 
+//Edit background photo
+When("the user edit the background photo", () => {
     cy.get('[class="apply-baner cursor-pointer"]').click()
     cy.get('[type="file"]').invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png')
     cy.get('[type="button"]').contains('Save').click()
+})
+When("the user submit the background photo", () => {
     cy.get('[type="button"]').contains('Ok').click()
+})
+Then("the edited background photo can be viewed", () => {
+    cy.url().should('include', '/profile')
+    cy.reload()
+})
 
+//Edit profile
+When("the user initiate the edit profile", () =>{
     cy.get('[type="button"]').contains(' Edit Profile ').click()
 })
 
@@ -217,7 +210,7 @@ When("the user provides valid Edit profiles details", () => {
     cy.get('[name="firstName"]').clear().type('Abu')
     cy.get('[name="lastName"]').clear().type('Ali')
 
-    cy.get('[name="aboutMe"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+    cy.get('[name="aboutMe"]').type('bio is correct and Minimum 30 characters are required')
 
     cy.get('[name="citizenship"]').click()
     cy.get('[role="listbox"]').scrollIntoView().contains('Malaysia').click()
@@ -226,16 +219,16 @@ When("the user provides valid Edit profiles details", () => {
     cy.get('[role="option"]').contains('Kuala Lumpur').click()
 
     cy.get('[name="postalCode"]').clear().type('3432')
-
-    
 })
 
 When("the user submits the Edit profiles form", () => {
     cy.get('[type="submit"]').contains('Update').click()
 })
 
-Then("the user can view Edit profiles on profile page", () => {
+Then("the edited profile information can be viewed", () => {
     cy.url().should('include', '/profile')
+    cy.get('[class="col-md-8"]').should('include.text', ' Abu Ali ')
+    cy.get('[class="col-md-8"]').should('include.text','bio is correct and Minimum 30 characters are required')
 })
 
 
