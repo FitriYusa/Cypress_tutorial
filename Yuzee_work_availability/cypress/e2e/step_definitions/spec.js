@@ -1,5 +1,7 @@
 import { When, Then, Given } from "@badeball/cypress-cucumber-preprocessor"
 
+import { selectDate, fillSubjects, fillContactDetails, fillMyDocs } from '../../support/function';
+
 const serverID = "vvocqwdp";
 // const emailDomain = `@${serverID}.mailosaur.net`
 
@@ -27,9 +29,7 @@ When("the new user provides valid registration details", () => {
 
     //Select date
     cy.get('[class="calendar-icon icon-lg"]').click()
-    cy.get('[title="Select month"]').select('Jul')
-    cy.get('[title="Select year"]').select('1997')
-    cy.get('[role="gridcell"]').contains('7').click()
+    selectDate('Jul', '1997', '6');
 
     //Gender
     cy.get('[formcontrolname="gender"]').click()
@@ -49,7 +49,7 @@ When("the user submits the registration form", () => {
     cy.get('[type="submit"]').contains('Sign Up').click()
 })
 
-Then("the new user should receive verification code via email and submits", () => {
+Then("the new user should receive verification code via email", () => {
    cy.get('@uniqueEmail').then((emailAddress) => { 
         // waiting for the API
         cy.wait('@signupRequest', { timeout: 10000 }).then((interception) => {
@@ -68,14 +68,18 @@ Then("the new user should receive verification code via email and submits", () =
                 for (let i = 1; i <= 6; i++) {
                     cy.get(`input[formcontrolname="digit${i}"]`).type(`${OTP[i - 1]}`)
                 }
-                cy.get('button[type="submit"]').contains("Continue").click();
+                // cy.get('button[type="submit"]').contains("Continue").click();
             });
             }
         });
    })
 })
 
-Then("the new user will be redirect to completeting the Onboarding", () => {
+When("the new user submits the verification code", () => {
+    cy.get('button[type="submit"]').contains("Continue").click();
+})
+
+When("the new user will be redirect to completeting the Onboarding", () => {
     
     cy.url().should('include', '/profile-setup')
     cy.contains("Let's get this show on the road")
@@ -90,8 +94,7 @@ Then("the new user will be redirect to completeting the Onboarding", () => {
     // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Traineeship').click()
     cy.get('[type="submit"]').contains('Continue').click()
 
-    cy.get('span.slider.round').first().click();
-    // cy.get('input[type="checkbox"]').should('be.checked')
+    cy.get('span.slider.round').first().click()
     cy.get('[placeholder="University/School"]').type('MSU')
 
     cy.get('[name="start_date"]').click()
@@ -105,37 +108,70 @@ Then("the new user will be redirect to completeting the Onboarding", () => {
     cy.get('[role="gridcell"]').contains('21').click()
     cy.get('[type="submit"]').contains('Continue').click()
 
-    // insert profile image - having issue with the uploading the image, decided to skip
-    // cy.get('button.btn.img-logo').find('img').click();
-    // cy.get('input[type="file"]').selectFile('cypress\\images\\blob.jfif', {force : true})
+    // //profile photo
+    // cy.get('button.btn.img-logo').find('img').click()
+    // cy.get('input[type="file"]').invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png')
+    // cy.get('[type="button"]', { timeout: 10000 }).contains('Save').click()
+    // cy.get('[type="button"]', { timeout: 10000 }).contains('Ok').click()
+    // cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
     cy.contains('Skip').click()
-    cy.wait(3000)
     
     //Location
-    // cy.get('[placeholder="Search location"]').type('Kuala Lumpur')
-    // cy.contains('Kuala Lumpur').click()
-    // cy.contains('Continue').should('be.visible').click()
-    // cy.get('[type="submit"]').contains('Continue').click()
-    //cannot click on the continue, it just loading - decided to skip
-    cy.get('[type="submit"]').contains('Skip').click()
-    cy.wait(3000)
+    cy.get('[placeholder="Search location"]', { timeout: 10000 }).type('Kuala Lumpur')
+    cy.contains('Kuala Lumpur').click()
+    cy.contains('Continue').should('be.visible').click()
+    cy.get('[type="submit"]').contains('Continue').click()
 
     //Hobby
-    // cy.get('[bindlabel="hobby_name"]').type('run')
-    // cy.contains('Running').click()
-    // cy.get('[type="submit"]').contains('Continue').click()
-    // cy.wait(3000)
-    cy.contains('Skip').click()
+    cy.get('[bindlabel="hobby_name"]', { timeout: 10000 }).type('run')
+    cy.contains('Running').click()
+    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
 
     //Community
-    
-    cy.get('[type="submit"]').contains('Continue').click()
     cy.wait(3000)
-    cy.get('[type="submit"]').contains('Go!').click()
+    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
+    cy.get('[type="submit"]', { timeout: 10000 }).contains('Go!').click()
 })
 
-Then("the new user will skip the onboarding process", () => {
+When("the new user will skip the onboarding process", () => {
+    cy.url().should('include', '/profile-setup')
+    cy.contains("Let's get this show on the road")
 
+    cy.get('[type="submit"]').contains('Start!').click()
+
+    cy.contains("How do you plan on using Yuzee?")
+    cy.get('[class="col-md-4 ng-star-inserted"]').contains('Internship').click()
+    cy.get('[class="col-md-4 ng-star-inserted"]').contains('Work Placement').click()
+    cy.get('[class="col-md-4 ng-star-inserted"]').contains('Course').click()
+    // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Job').click()
+    // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Traineeship').click()
+    cy.get('[type="submit"]').contains('Continue').click()
+
+    cy.get('span.slider.round').first().click()
+    cy.get('[placeholder="University/School"]').type('MSU')
+
+    cy.get('[name="start_date"]').click()
+    cy.get('[title="Select year"]').select('2020')
+    cy.get('[title="Select month"]').select('Apr')
+    cy.get('[role="gridcell"]').contains('21').click()
+
+    cy.get('[name="end_date"]').click()
+    cy.get('[title="Select year"]').select('2025')
+    cy.get('[title="Select month"]').select('Jul')
+    cy.get('[role="gridcell"]').contains('21').click()
+    cy.get('[type="submit"]').contains('Continue').click()
+
+    cy.contains('Skip').click()
+    
+    //Location
+    cy.get('[type="submit"]', { timeout: 10000 }).contains('Skip').click()
+
+    //Hobby
+    cy.contains('Skip', { timeout: 10000 }).click()
+
+    //Community
+    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
+    cy.get('[type="submit"]', { timeout: 10000 }).contains('Go!').click()
 })
 
 //user home page and user profile page
@@ -161,7 +197,7 @@ Given("the user is in profile page", () => {
     cy.url().should('include', '/profile')
 })
 
-//Edit profile photo
+//Edit profile photo if there is no photo
 When("the user edit the profile photo", () => {
     cy.get('[class="img-over"]').click()
     cy.get('[type="file"]').invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png')
@@ -174,6 +210,8 @@ Then("the edited profile photo can be viewed", () => {
     cy.url().should('include', '/profile')
     cy.reload()
 })
+
+//Edit profile photo if there is photo
 
 //Edit background photo
 When("the user edit the background photo", () => {
@@ -200,9 +238,7 @@ When("the user provides valid Edit profiles details", () => {
     cy.get('[role="option"]').contains('Job').click()
 
     cy.get('[placeholder="Select a date"]').click()
-    cy.get('[title="Select month"]').select('Jul')
-    cy.get('[title="Select year"]').select('1997')
-    cy.get('[role="gridcell"]').contains('10').click()
+    selectDate('Jul', '1997', '6');
 
     cy.get('[name="gender"]').click()
     cy.get('[role="option"]').contains('Male')
@@ -301,27 +337,7 @@ When("the user initiate the Contact details", () => {
 })
 
 When("the user provides valid Contact details details", (dataTable) =>{
-    dataTable.hashes().forEach((contact, index) => {
-        // Select the contact method
-        cy.get('[class="select-control"]').eq(index + 1).click();
-        cy.get('[role="option"]').contains(contact.method).click();
-    
-        // Handle country selection if phone is true
-        if (contact.phone === 'true') {
-          cy.get('[class="iti__selected-flag dropdown-toggle"]').eq(index).click();
-          cy.get('[placeholder="Search Country"]').eq(index).type(contact.country);
-          cy.get('[class="iti__country-list"]').eq(index).contains(contact.country).click();
-          cy.get('[id="phone"]').eq(index).type(contact.detail);
-        } else {
-          // For other contact types (e.g., email, Instagram, TikTok)
-          cy.get('[placeholder="Enter contact detail"]').eq(index - 2).type(contact.detail);
-        }
-    
-        // Click "Add contact" button
-        if(index < 4){
-            cy.get('[type="button"]').contains(' Add contact ').click();
-        }
-      });
+    fillContactDetails(dataTable);
 })
 
 When("the user submits the Contact details form", () => {
@@ -340,11 +356,7 @@ When("the user initiate the My Docs", () => {
 })
 
 When("the user provides valid My Docs details", (dataTable) => {
-    dataTable.hashes().forEach((row) => {
-        cy.get('[class="menu-div"]').contains(row.documentType).click();
-        cy.get('[type="file"]').selectFile(row.filePath);
-        cy.get('[type="button"]', { timeout: 10000 }).contains('Yes').click();
-    });
+    fillMyDocs(dataTable);
 })
 
 When("the user close the My Docs form", () => {
@@ -389,14 +401,10 @@ When("the user provides valid Education details", (dataTable) => {
     cy.get('[role="option"]').contains('Online').click()
 
     cy.get('[name="start_date"]').click()
-    cy.get('[title="Select month"]').select('Mar')
-    cy.get('[title="Select year"]').select('2022')
-    cy.get('[role="gridcell"]').contains('22').click()
+    selectDate('Mar', '2022', '22');
 
     cy.get('[name="end_date"]').click()
-    cy.get('[title="Select month"]').select('Nov')
-    cy.get('[title="Select year"]').select('2025')
-    cy.get('[role="gridcell"]').contains('22').click()
+    selectDate('Nov', '2025', '22');
 
     cy.get('[name="system"]').click()
     cy.get('[role="option"]').contains('C-GPA (out of 5)').should('be.visible').click()
@@ -406,24 +414,7 @@ When("the user provides valid Education details", (dataTable) => {
     cy.get('[id="type_0"]').click()
     cy.get('[role="option"]').contains('Semester').should('be.visible').click()
 
-    let index = 0;
-
-    dataTable.hashes().forEach((entry, i) => {
-    if (i > 0 && i % 5 === 0) {
-        cy.get('[type="button"]').contains('Add Term/Semester').click();
-      }
-  
-      // Fill out the subject and grade
-      cy.get('[placeholder="Enter a subject"]').eq(index).type(entry.subjects);
-      cy.get('[placeholder="Enter a grade"]').eq(index).type(entry.grade);
-  
-      // Click "Add Subject" button
-      if (i % 5 !== 4) {
-        cy.get('[placeholder="Enter a grade"]').eq(index).closest('.row').find('button').contains('Add Subject').click();
-      }
-
-      index++;
-    });
+    fillSubjects(dataTable);
 
     cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
 })
@@ -473,18 +464,13 @@ When("the user provides valid work experience details", () => {
 
     //start and end date
     cy.get('[name="start_date"]').click()
-    cy.get('[title="Select year"]').select('2020')
-    cy.get('[title="Select month"]').select('Apr')
-    cy.get('[role="gridcell"]').contains('21').click()
+    selectDate('Apr', '2020', '21');
 
     cy.get('[name="end_date"]').click()
-    cy.get('[title="Select year"]').select('2024')
-    cy.get('[title="Select month"]').select('Apr')
-    cy.get('[role="gridcell"]').contains('21').click()
-
+    selectDate('Apr', '2025', '21');
+    
     //Job description
-    cy.get('[name="job_description"]')
-        .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+    cy.get('[name="job_description"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
     cy.get('[name="showSkills"]').click()
     cy.get('[role="option"]').contains(' .NET ').click()
     cy.get('[class="col-md-12 common-input-mb"]').contains('Skills').click()
@@ -743,9 +729,7 @@ When("the user provides valid Awards and certificates details", () => {
     cy.contains('Aston University').click()
 
     cy.get('[placeholder="Select a date"]').click()
-    cy.get('[title="Select month"]').select('Aug')
-    cy.get('[title="Select year"]').select('2020')
-    cy.get('[role="gridcell"]').contains('6').click()
+    selectDate('Aug', '2020', '6');
 
     cy.get('[placeholder="Add description"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
     cy.get('[name="collaborations"]').type('ada')
@@ -782,9 +766,7 @@ When("the user provides valid Publications details", () => {
     cy.get('[name="publicUrl"]').type('mass.com')
 
     cy.get('[placeholder="Select a date"]').click()
-    cy.get('[title="Select month"]').select('Aug')
-    cy.get('[title="Select year"]').select('2023')
-    cy.get('[role="gridcell"]').contains('3').click()
+    selectDate('Aug', '2020', '6');
 
     cy.get('[name="details"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
 
@@ -826,10 +808,7 @@ When("the user provides valid Patent details", () => {
     // cy.get('[id="Patent Pending"]').click()
 
     cy.get('[placeholder="Select a date"]').click()
-    cy.get('[title="Select month"]').select('Feb')
-    cy.get('[title="Select year"]').select('2023')
-    cy.get('[role="gridcell"]').contains('3').click()
-
+    selectDate('Aug', '2020', '6');
     cy.get('[id="patent_number"]').type('32112333')
     cy.get('[id="pat_url"]').type('fastr.com')
     cy.get('[id="description"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
@@ -866,14 +845,10 @@ When("the user provides valid Accomplishment projects details", () => {
     cy.get('[placeholder="Enter project url"]').type('https://example.com')
 
     cy.get('[name="start_date"]').click()
-    cy.get('[title="Select year"]').select('2024')
-    cy.get('[title="Select month"]').select('Jul')
-    cy.get('[role="gridcell"]').contains('2').click()
+    selectDate('Jul', '2024', '2');
 
     cy.get('[name="end_date"]').click()
-    cy.get('[title="Select year"]').select('2024')
-    cy.get('[title="Select month"]').select('Aug')
-    cy.get('[role="gridcell"]').contains('4').click()
+    selectDate('Aug', '2024', '4');
 
     cy.get('[name="details"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
 
