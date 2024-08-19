@@ -1,6 +1,6 @@
 import { When, Then, Given } from "@badeball/cypress-cucumber-preprocessor"
 
-import { selectDate, fillSubjects, fillContactDetails, fillMyDocs } from '../../support/function';
+import { selectDate, fillSubjects, fillContactDetails, fillMyDocs, uploadQualifications, fillHobbies, fillSkills } from '../../support/function';
 
 const serverID = "vvocqwdp";
 // const emailDomain = `@${serverID}.mailosaur.net`
@@ -123,6 +123,7 @@ When("the new user will be redirect to completeting the Onboarding", () => {
     cy.get('[type="submit"]').contains('Continue').click()
 
     //Hobby
+    cy.wait(10000)
     cy.get('[bindlabel="hobby_name"]', { timeout: 10000 }).type('run')
     cy.contains('Running').click()
     cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
@@ -209,6 +210,7 @@ When("the user submit the profile photo", () => {
 })
 Then("the edited profile photo can be viewed", () => {
     cy.url().should('include', '/profile')
+    //bug, cannot see without reloading the page
     cy.reload()
 })
 
@@ -225,6 +227,7 @@ When("the user submit the background photo", () => {
 })
 Then("the edited background photo can be viewed", () => {
     cy.url().should('include', '/profile')
+    //bug, cannot see without reloading the page
     cy.reload()
 })
 
@@ -282,6 +285,10 @@ When("the user provides valid Get to know me details", () =>{
     cy.get('[role="option"]').contains('Accountant').click()
     cy.contains('My ideal jobs').click()
 
+    cy.get('[name="courses"]').type('beauty')
+    cy.get('[role="option"]').contains(' Diploma of Beauty Therapy ').click()
+    cy.contains('My ideal jobs').click()
+
     cy.get('[name="fields"]').click()
     cy.get('[role="option"]').contains(' Foundation ').click()
     cy.contains('My ideal jobs').click()
@@ -298,6 +305,11 @@ When("the user submits the Get to know me form", () => {
 
 Then("the user can view Get to know me on profile page", () => {
     cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Get to know me ').scrollIntoView().should('be.visible')
+    cy.get('[class="mt-3 ng-star-inserted"]').should('contain.text', 'Accountant')
+    cy.get('[class="mt-3 ng-star-inserted"]').should('contain.text', 'Diploma of Beauty Therapy')
+    cy.get('[class="mt-3 ng-star-inserted"]').should('contain.text', 'Foundation')
+    cy.get('[class="mt-3 ng-star-inserted"]').should('contain.text', 'Kuala Lumpur')
+    
 })
 
 
@@ -314,8 +326,7 @@ When("the user provides valid introductory videos details", () => {
     cy.get('input[type="file"]').eq(0).invoke('removeClass', 'd-none').selectFile('cypress/images/3209828-uhd_3840_2160_25fps.mp4')
     
     cy.get('[name="title"]').type('asdkmndlf asdasd')
-    cy.get('[placeholder="Please give a short explanation on what this video is about."')
-        .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+    cy.get('[id="description"').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
 
     cy.get('input[type="file"]').eq(1).invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png');
 })
@@ -468,7 +479,7 @@ When("the user provides valid work experience details", () => {
     selectDate('Apr', '2020', '21');
 
     cy.get('[name="end_date"]').click()
-    selectDate('Apr', '2025', '21');
+    selectDate('Apr', '2024', '21');
     
     //Job description
     cy.get('[name="job_description"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
@@ -559,92 +570,7 @@ When("the user provides valid language qualification details", (dataTable) => {
     
     cy.get('[name="privacy_level"]').click()
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
-
-    // dataTable.hashes().forEach((qualification, index) => {
-    //         const {Type, Reading, Writing, Listening, Speaking } = qualification;
-    //         // Determine the base index offset depending on the type
-    //         let baseIndex = 0; // Default for types with 5 components
-
-    //         cy.get('[role="combobox"]').eq(baseIndex + 1).click()
-    //         cy.get('[role="option"]').contains(Type).click()
-            
-    //         if (Type !== 'MUET' && Type !== 'Cambridge English') {
-    //             baseIndex = index * 5;
-    //             if (Reading) {
-    //             cy.get('[role="combobox"]').eq(baseIndex + 2).click();
-    //             cy.get('[role="option"]').contains(Reading).click();
-    //             }
-    //             if (Writing) {
-    //             cy.get('[role="combobox"]').eq(baseIndex + 3).click();
-    //             cy.get('[role="option"]').contains(Writing).click();
-    //             }
-    //             if (Listening) {
-    //             cy.get('[role="combobox"]').eq(baseIndex + 4).click();
-    //             cy.get('[role="option"]').contains(Listening).click();
-    //             }
-    //             if (Speaking) {
-    //             cy.get('[role="combobox"]').eq(baseIndex + 5).click();
-    //             cy.get('[role="option"]').contains(Speaking).click();
-    //             }
-    //         } else {
-    //             baseIndex = index;
-    //             cy.get(`[id^="over_all_marks_${index}"]`).type('5')
-    //         }
-
-    //         cy.get('[type="file"]').eq(index).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
-            
-    //         if(index < 4 ){
-    //             cy.get('[type="button"]').contains(' Add Qualification ').click()
-    //         }
-           
-    // })
-        
-    //IELTS
-    cy.get('[role="combobox"]').eq(1).click()
-    cy.get('[role="option"]').contains('IELTS').click()
-    for (let index = 2; index <= 5; index++) {
-        cy.get('[role="combobox"]').eq(index).click();
-        cy.get('[role="option"]').contains('9').click();
-      }
-    cy.get('[type="file"]').eq(0).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
-
-    cy.get('[type="button"]').contains(' Add Qualification ').click()
-
-    //MUET
-    cy.get('[role="combobox"]').eq(6).click()
-    cy.get('[role="option"]').contains('MUET').click()
-    cy.get('[id="over_all_marks_1"]').type('5')
-    cy.get('[type="file"]').eq(1).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
-
-    cy.get('[type="button"]').contains(' Add Qualification ').click()
-
-    //Cambridge
-    cy.get('[role="combobox"]').eq(7).click()
-    cy.get('[role="option"]').contains('Cambridge English').click()
-    cy.get('[id="over_all_marks_2"]').type('5')
-    cy.get('[type="file"]').eq(2).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
-
-    cy.get('[type="button"]').contains(' Add Qualification ').click()
-
-    //CAE
-    cy.get('[role="combobox"]').eq(8).click()
-    cy.get('[role="option"]').contains('CAE').click()
-    for (let index = 9; index <= 12; index++) {
-        cy.get('[role="combobox"]').eq(index).click();
-        cy.get('[role="option"]').contains('230').click();
-      }
-    cy.get('[type="file"]').eq(3).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
-
-    cy.get('[type="button"]').contains(' Add Qualification ').click()
-
-    //TOEFL
-    cy.get('[role="combobox"]').eq(13).click()
-    cy.get('[role="option"]').contains('TOEFL').click()
-    for (let index = 14; index <= 17; index++) {
-        cy.get('[role="combobox"]').eq(index).click();
-        cy.get('[role="option"]').contains('30').click();
-      }
-    cy.get('[type="file"]').eq(4).selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+    uploadQualifications(dataTable)
 })
 
 When("the user submits the language qualification form", () => {
@@ -668,10 +594,7 @@ When("the user provides valid Hobbies details", (dataTable) => {
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
 
     cy.get('[name="hobbies"]').type('as')
-
-    dataTable.hashes().forEach((row) => {
-        cy.get('[role="option"]').contains(row.hobbies).click()
-    });
+    fillHobbies(dataTable);
    
     cy.contains('Tell us your hobbies').click()
 })
@@ -697,9 +620,7 @@ When("the user provides valid Skills details", (dataTable) => {
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
 
     cy.get('[name="skills"]').type('microsoft')
-    dataTable.hashes().forEach((row) => {
-        cy.get('[role="option"]').contains(row.skills).click()
-    })
+    fillSkills(dataTable)
 
     cy.get('[class="col-md-12 common-input-mb"]').contains('Skills and Endorsement').click()
 
