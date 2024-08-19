@@ -57,3 +57,26 @@ export function fillSubjects(dataTable) {
       index++;
     });
 }
+
+export function uploadQualifications(dataTable) {
+  dataTable.hashes().forEach((qualification, index) => {
+    // Select the exam type
+    cy.get('[role="combobox"]').eq(index * 6 + 1).click();
+    cy.get('[role="option"]').contains(qualification.Type).click();
+
+    // Handle the scores if there are multiple scores
+    const scores = qualification.scores.split(',');
+    scores.forEach((score, scoreIndex) => {
+      cy.get('[role="combobox"]').eq(index * 6 + 2 + scoreIndex).click();
+      cy.get('[role="option"]').contains(score).click();
+    });
+
+    // Upload the file
+    cy.get('[type="file"]').eq(index).selectFile(qualification.file);
+
+    // Click the "Add Qualification" button
+    if (index < dataTable.hashes().length - 1) {
+      cy.get('[type="button"]').contains(' Add Qualification ').click();
+    }
+  });
+}

@@ -23,7 +23,7 @@ Feature: Yuzee user profile components
       And the user provides valid Edit profiles details
       And the user submits the Edit profiles form
       Then the edited profile information can be viewed
-      
+
     Scenario Outline: Add Contact details
       Given the user is in profile page
       When the user initiate the Contact details
@@ -36,7 +36,7 @@ Feature: Yuzee user profile components
       | Tik Tok   | ali_abu                           |           | false       |
       And the user submits the Contact details form
       Then the user can view Contact details on profile page
-      
+
     Scenario Outline: Add My Docs
       Given the user is in profile page
       When the user initiate the My Docs
@@ -72,3 +72,28 @@ Feature: Yuzee user profile components
       | Art            | A     |
       And the user submits the Education form
       Then the user can view Education on profile page
+
+    Scenario Outline: Add Hobbies
+      Given the user is in profile page 
+      When the user initiate the Hobbies
+      And the user provides valid Hobbies details
+      | hobbies                 |
+      | Baseball                |
+      | Fashion Shows & Tours   |
+      | Historic Walking Areas  |
+      | Squash                  |
+      And the user submit the Hobbies form
+      Then the user can view Hobbies on profile page
+        
+    Scenario Outline: Add Skills
+      Given the user is in profile page 
+      When the user initiate the Skills
+      And the user provides valid Skills details
+      | skills                                     |
+      | Microsoft Access                           |
+      | Microsoft Applications                     |
+      | Microsoft Assessment and Planning Toolkit  |
+      | Microsoft Azure                            |
+      | Microsoft Backoffice                       |
+      And the user submit the Skills form
+      Then the user can view Skills on profile page

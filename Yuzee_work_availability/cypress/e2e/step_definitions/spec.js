@@ -130,6 +130,7 @@ When("the new user will be redirect to completeting the Onboarding", () => {
     //Community
     cy.wait(3000)
     cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
+    cy.wait(3000)
     cy.get('[type="submit"]', { timeout: 10000 }).contains('Go!').click()
 })
 
@@ -662,20 +663,22 @@ When("the user initiate the Hobbies", () => {
     cy.get('[class="fs-14 fw-500"]').contains('Interests').should('be.visible').click()
     cy.get('[class="subpro-name"]').contains(' Interested Hobbies ').scrollIntoView().should('be.visible').click()
 })
-When("the user provides valid Hobbies details", () => {
+When("the user provides valid Hobbies details", (dataTable) => {
     cy.get('[name="privacy_level"]').click()
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
 
     cy.get('[name="hobbies"]').type('as')
-    cy.get('[role="option"]').contains(' Arenas & Stadiums ').click()
-    cy.get('[role="option"]').contains(' Baseball ').click()
-    cy.get('[role="option"]').contains(' Fashion Shows & Tours ').click()
-    cy.get('[role="option"]').contains(' Historic Walking Areas ').click()
-    cy.get('[role="option"]').contains(' Squash ').click()
+
+    dataTable.hashes().forEach((row) => {
+        cy.get('[role="option"]').contains(row.hobbies).click()
+    });
+   
     cy.contains('Tell us your hobbies').click()
 })
 When("the user submit the Hobbies form", () => {
-    cy.get('[type="button"]').contains('Save').click()
+    //if in the onborading the user select hobbies
+    // cy.get('[type="button"]').contains('Save').click()
+    cy.get('[type="button"]').contains('Update').click()
 })
 Then("the user can view Hobbies on profile page", () => {
     cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Interested Hobbies ').scrollIntoView().should('be.visible')
@@ -689,16 +692,14 @@ When("the user initiate the Skills", () => {
     cy.get('[class="subpro-name"]').contains('Skills').scrollIntoView().should('be.visible').click()
 })
 
-When("the user provides valid Skills details", () => {
+When("the user provides valid Skills details", (dataTable) => {
     cy.get('[name="privacy_level"]').click()
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
 
     cy.get('[name="skills"]').type('microsoft')
-    cy.get('[role="option"]').contains('Microsoft Access').click()
-    cy.get('[role="option"]').contains('Microsoft Applications').click()
-    cy.get('[role="option"]').contains('Microsoft Assessment and Planning Toolkit').click()
-    cy.get('[role="option"]').contains('Microsoft Azure').click()
-    cy.get('[role="option"]').contains('Microsoft Backoffice').click()
+    dataTable.hashes().forEach((row) => {
+        cy.get('[role="option"]').contains(row.skills).click()
+    })
 
     cy.get('[class="col-md-12 common-input-mb"]').contains('Skills and Endorsement').click()
 
