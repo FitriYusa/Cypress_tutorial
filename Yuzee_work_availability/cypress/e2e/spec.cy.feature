@@ -7,7 +7,7 @@ Feature: Yuzee user profile components
       And the user submits the registration form
       Then the new user should receive verification code via email
       And the new user submits the verification code
-      And the new user will be redirect to completing the Onboarding
+      And the new user will skip the onboarding process
       Then the new user will be redirect to the user control center page
       And the user initiate to Go to profile
 

@@ -199,19 +199,19 @@ export function completeOnboarding(skip = false) {
     cy.get('[type="submit"]').contains('Continue').click();
 
     // //profile photo
-    // cy.get('button.btn.img-logo').find('img').click()
-    // cy.get('input[type="file"]').invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png')
-    // cy.get('[type="button"]', { timeout: 10000 }).contains('Save').click()
-    // cy.get('[type="button"]', { timeout: 10000 }).contains('Ok').click()
-    // cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
-    cy.contains('Skip', { timeout: 10000 }).click();
+    cy.get('button.btn.img-logo').find('img').click()
+    cy.get('input[type="file"]').invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png')
+    cy.get('[type="button"]', { timeout: 10000 }).contains('Save').click()
+    cy.get('[type="button"]', { timeout: 10000 }).contains('Ok').click()
+    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
+    // cy.contains('Skip', { timeout: 10000 }).click();
 
     // Location
-    // cy.get('[placeholder="Search location"]', { timeout: 10000 }).type('Kuala Lumpur')
-    // cy.get('[role="option"]').contains('Kuala Lumpur').click()
-    // cy.contains('Continue').should('be.visible').click();
-    // cy.get('[type="submit"]').contains('Continue').click();
-    cy.contains('Skip', { timeout: 10000 }).click();
+    cy.get('[placeholder="Search location"]', { timeout: 10000 }).type('Kuala Lumpur')
+    cy.get('[role="option"]').contains('Kuala Lumpur').click()
+    cy.contains('Continue').should('be.visible').click();
+    cy.get('[type="submit"]').contains('Continue').click();
+    // cy.contains('Skip', { timeout: 10000 }).click();
 
     // Hobby
     cy.get('[bindlabel="hobby_name"]', { timeout: 10000 }).type('run');
@@ -227,11 +227,9 @@ export function completeOnboarding(skip = false) {
     cy.get('[type="submit"]').contains('Continue').click();
     cy.contains('Skip').click();
     cy.get('[type="submit"]').contains('Skip').click();
-    cy.wait(5000)
     cy.contains('Skip', { timeout: 10000 }).click();
-    cy.wait(5000)
     cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
-    cy.wait(5000)
+    cy.wait(3000)
     cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
   }
 }

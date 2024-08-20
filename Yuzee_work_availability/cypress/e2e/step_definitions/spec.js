@@ -313,7 +313,7 @@ When("the user provides valid Education details", (dataTable) => {
 
 When("the user submits the Education form", () => {
    
-    cy.get('[type="button"]').contains(' Update ').click()
+    cy.get('[type="submit"]').contains('Save').click()
 
     cy.get('[type="button"]').contains('Ok').click()
 })
@@ -533,8 +533,8 @@ When("the user submits the Awards and certificates form", () => {
 })
 
 Then("the user can view Awards and certificates on profile page", () => {
-    // cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
-    // cy.get('[class="accomplish-row"]').contains('Awards and Certificates').click()
+    cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
+    cy.get('[class="accomplish-row"]').contains('Awards and Certificates').click()
 })
 
 //Publications
