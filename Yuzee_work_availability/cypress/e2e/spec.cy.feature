@@ -7,7 +7,7 @@ Feature: Yuzee user profile components
       And the user submits the registration form
       Then the new user should receive verification code via email
       And the new user submits the verification code
-      And the new user will skip the onboarding process
+      And the new user will be redirect to completing the Onboarding
       Then the new user will be redirect to the user control center page
       And the user initiate to Go to profile
 
@@ -55,7 +55,7 @@ Feature: Yuzee user profile components
         When the user initiate the Contact details
         And the user provides valid Contact details details
         | method    | detail                            | country   | phone       |
-        | WhatsApp  | 1123456789                        | Malaysia  | true        |
+        | Phone     | 1123456789                        | Malaysia  | true        |
         | WhatsApp  | 1124356789                        | Malaysia  | true        |
         | Email     | yovami3872@biscoine.com           |           | false       |
         | Instagram | ali_abu                           |           | false       |
@@ -114,6 +114,12 @@ Feature: Yuzee user profile components
         Given the user is in profile page
         When the user initiate the Work Availability
         And the user provides valid work availability details
+        | day       | startTime | endTime   |
+        | Monday    | 8:00 AM   | 8:00 PM   |
+        | Tuesday   | 8:00 AM   | 8:00 PM   |
+        | Wednesday | 9:00 AM   | 6:00 PM   |
+        | Thursday  | 10:00 AM  | 7:00 PM   |
+        | Friday    | 10:00 AM  | 7:00 PM   |
         And the user submits the Work Availability form
         Then the user can view Work Availability on profile page
 

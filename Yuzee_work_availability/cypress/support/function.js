@@ -204,23 +204,22 @@ export function completeOnboarding(skip = false) {
     // cy.get('[type="button"]', { timeout: 10000 }).contains('Save').click()
     // cy.get('[type="button"]', { timeout: 10000 }).contains('Ok').click()
     // cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
-    cy.contains('Skip').click();
+    cy.contains('Skip', { timeout: 10000 }).click();
 
     // Location
-    cy.get('[placeholder="Search location"]', { timeout: 10000 }).type('Kuala Lumpur')
-    cy.get('[role="option"]').contains('Kuala Lumpur').click()
-    cy.contains('Continue').should('be.visible').click();
-    cy.get('[type="submit"]').contains('Continue').click();
+    // cy.get('[placeholder="Search location"]', { timeout: 10000 }).type('Kuala Lumpur')
+    // cy.get('[role="option"]').contains('Kuala Lumpur').click()
+    // cy.contains('Continue').should('be.visible').click();
+    // cy.get('[type="submit"]').contains('Continue').click();
+    cy.contains('Skip', { timeout: 10000 }).click();
+
     // Hobby
-    cy.wait(10000);
     cy.get('[bindlabel="hobby_name"]', { timeout: 10000 }).type('run');
     cy.contains('Running').click();
     cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
 
     // Community
-    cy.wait(3000);
     cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
-    cy.wait(3000);
     cy.get('[type="submit"]', { timeout: 10000 }).contains('Go!').click();
   } else {
     // If skipping the onboarding process
@@ -228,8 +227,30 @@ export function completeOnboarding(skip = false) {
     cy.get('[type="submit"]').contains('Continue').click();
     cy.contains('Skip').click();
     cy.get('[type="submit"]').contains('Skip').click();
+    cy.wait(5000)
     cy.contains('Skip', { timeout: 10000 }).click();
+    cy.wait(5000)
     cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+    cy.wait(5000)
     cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
   }
+}
+
+export function fillDaysAvailable (dataTable) {
+  let i=0;
+  dataTable.hashes().forEach((row, index) => {
+
+      cy.get('[bindvalue="id"]').eq(index + 1).click()
+      cy.get('[role="option"]').eq(index).contains(row.day).should('be.visible').click()
+      cy.get('[name="selectTime"]').eq(index + i).click()
+      cy.get('[role="option"]').contains(row.startTime).click()
+      cy.get('[name="selectTime"]').eq(index + 1 + i).click()
+      cy.get('[role="option"]').contains(row.endTime).click()
+
+      if(index < (dataTable.hashes().length - 1)){
+          cy.contains('Add Availability').should('be.visible').click()
+          i++
+      }
+      
+  });
 }

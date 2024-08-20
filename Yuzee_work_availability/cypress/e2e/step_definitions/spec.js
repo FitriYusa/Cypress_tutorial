@@ -1,6 +1,6 @@
 import { When, Then, Given } from "@badeball/cypress-cucumber-preprocessor"
 
-import { fillRegistration, verifyOTP, completeOnboarding, selectDate, fillSubjects, fillContactDetails, fillMyDocs, uploadQualifications, fillHobbies, fillSkills } from '../../support/function';
+import { fillRegistration, verifyOTP, completeOnboarding, selectDate, fillSubjects, fillContactDetails, fillMyDocs, fillDaysAvailable, uploadQualifications, fillHobbies, fillSkills } from '../../support/function';
 
 // const serverID = "vvocqwdp";
 // const emailDomain = `@${serverID}.mailosaur.net`
@@ -36,7 +36,7 @@ When("the new user submits the verification code", () => {
     cy.get('button[type="submit"]').contains("Continue").click();
 })
 
-When("the new user will be redirect to completeting the Onboarding", () => {
+When("the new user will be redirect to completing the Onboarding", () => {
     completeOnboarding();
 })
 
@@ -237,6 +237,17 @@ When("the user submits the Contact details form", () => {
 
 Then("the user can view Contact details on profile page", () => {
     cy.get('[class="pr-24"]').contains(' Contact Details ').scrollIntoView().should('be.visible')
+    cy.get('[class="detail-section ng-star-inserted"]')
+        .should('contain.text', 'Phone')
+        .and('contain.text', '11-2345 6789')
+        .and('contain.text', 'Whatsapp')
+        .and('contain.text', '11-2345 6789')
+        .and('contain.text', 'Email')
+        .and('contain.text', 'yovami3872@biscoine.com')
+        .and('contain.text', 'Instagram')
+        .and('contain.text', 'ali_abu')
+        .and('contain.text', 'Tik_tok')
+        .and('contain.text', 'ali_abu')
 })
 
 //My docs
@@ -392,7 +403,7 @@ When("the user initiate the Work Availability", () => {
 
 })
 
-When("the user provides valid work availability details", () => {
+When("the user provides valid work availability details", (dataTable) => {
     cy.get('[name="privacy_level"]').click()
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
 
@@ -412,22 +423,7 @@ When("the user provides valid work availability details", () => {
     cy.get('[name="workTypes"]').click()
     cy.contains('Full-Time').click()
 
-    cy.get('.col-4 > .select-control > .ng-select > .ng-select-container').click()
-    cy.get('[role="option"]').eq(0).contains('Monday').should('be.visible').click()
-    cy.get('[name="selectTime"]').eq(0).click()
-    cy.get('[role="option"]').contains('8:00 AM').click()
-    cy.get('[name="selectTime"]').eq(1).click()
-    cy.get('[role="option"]').contains('8:00 PM').click()
-
-    cy.contains('Add Availability').should('be.visible').click()
-
-    cy.get(':nth-child(8) > .row > .col-4 > .select-control > .ng-select > .ng-select-container').click()
-    cy.get('[role="option"]').eq(1).contains('Tuesday').should('be.visible').click()
-    cy.get('[name="selectTime"]').eq(2).click()
-    cy.get('[role="option"]').contains('8:00 AM').click()
-    cy.get('[name="selectTime"]').eq(3).click()
-    cy.get('[role="option"]').contains('8:00 PM').click()
-    
+    fillDaysAvailable (dataTable)
 })
 
 When("the user submits the Work Availability form", () => {
