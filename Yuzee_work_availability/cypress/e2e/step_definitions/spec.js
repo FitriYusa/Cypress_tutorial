@@ -1,6 +1,6 @@
 import { When, Then, Given } from "@badeball/cypress-cucumber-preprocessor"
 
-import { fillRegistration, verifyOTP, completeOnboarding, selectDate, fillSubjects, fillContactDetails, fillMyDocs, fillDaysAvailable, uploadQualifications, fillHobbies, fillSkills } from '../../support/function';
+import { fillRegistration, verifyOTP, completeOnboarding, selectDate, fillSubjects, fillContactDetails, assertContactDetails, fillMyDocs, fillDaysAvailable, uploadQualifications, fillHobbies, fillSkills } from '../../support/function';
 
 // const serverID = "vvocqwdp";
 // const emailDomain = `@${serverID}.mailosaur.net`
@@ -235,19 +235,9 @@ When("the user submits the Contact details form", () => {
     cy.get('[type="submit"]').contains('Save').click()
 })
 
-Then("the user can view Contact details on profile page", () => {
+Then("the user can view Contact details on profile page", (dataTable) => {
     cy.get('[class="pr-24"]').contains(' Contact Details ').scrollIntoView().should('be.visible')
-    cy.get('[class="detail-section ng-star-inserted"]')
-        .should('contain.text', 'Phone')
-        .and('contain.text', '11-2345 6789')
-        .and('contain.text', 'Whatsapp')
-        .and('contain.text', '11-2345 6789')
-        .and('contain.text', 'Email')
-        .and('contain.text', 'yovami3872@biscoine.com')
-        .and('contain.text', 'Instagram')
-        .and('contain.text', 'ali_abu')
-        .and('contain.text', 'Tik_tok')
-        .and('contain.text', 'ali_abu')
+    assertContactDetails (dataTable)
 })
 
 //My docs

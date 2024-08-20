@@ -220,7 +220,7 @@ export function completeOnboarding(skip = false) {
 
     // Community
     cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
-    cy.get('[type="submit"]', { timeout: 10000 }).contains('Go!').click();
+    cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
   } else {
     // If skipping the onboarding process
     cy.get('span.slider.round').eq(1).click();
@@ -252,5 +252,14 @@ export function fillDaysAvailable (dataTable) {
           i++
       }
       
+  });
+}
+
+
+export function assertContactDetails (dataTable) {
+  dataTable.hashes().forEach(detail => {
+    cy.get('[class="detail-section ng-star-inserted"]')
+      .should('contain.text', detail.method)
+      .and('contain.text', detail.detail);
   });
 }

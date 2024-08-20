@@ -62,6 +62,12 @@ Feature: Yuzee user profile components
         | Tik Tok   | ali_abu                           |           | false       |
         And the user submits the Contact details form
         Then the user can view Contact details on profile page
+        | method    | detail                            |
+        | Phone     | 11-2345 6789                      |
+        | Whatsapp  | 11-2435 6789                      |
+        | Email     | yovami3872@biscoine.com           |
+        | Instagram | ali_abu                           |
+        | Tik_tok   | ali_abu                           |
     
     # My Docs
       Scenario Outline: Add My Docs
