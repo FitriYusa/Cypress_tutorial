@@ -7,23 +7,23 @@ Feature: Yuzee user profile components
       And the user submits the registration form
       Then the new user should receive verification code via email
       And the new user submits the verification code
-      And the new user will be redirect to completeting the Onboarding
+      And the new user will skip the onboarding process
       Then the new user will be redirect to the user control center page
       And the user initiate to Go to profile
 
     # Edit profile photo ig there are no profile photo in the beginning
-      Scenario Outline: Edit profile photo if no photo
+      Scenario Outline: Edit profile photo if no photo exist
         Given the user is in profile page
         When the user edit the profile photo
         And the user submit the profile photo
-        Then the edited profile photo can be viewed
+        Then the edited profile photo should be visible
 
     # Background photo
       Scenario Outline: Edit background photo
         Given the user is in profile page
         And the user edit the background photo
         And the user submit the background photo
-        Then the edited background photo can be viewed
+        Then the edited background photo should be visible
 
     # Edit profile
       Scenario Outline: Edit profile information
@@ -31,7 +31,7 @@ Feature: Yuzee user profile components
         When the user initiate the edit profile
         And the user provides valid Edit profiles details
         And the user submits the Edit profiles form
-        Then the edited profile information can be viewed
+        Then the edited profile information should be visible
 
     # Get to know me
       Scenario Outline: Add Get to know me

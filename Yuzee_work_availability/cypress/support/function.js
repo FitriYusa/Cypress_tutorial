@@ -111,3 +111,125 @@ export function fillSkills (dataTable) {
       cy.get('[role="option"]').contains(row.skills).click()
   })
 }
+
+// function to fill registration
+export function fillRegistration () {
+  
+  cy.generateUniqueEmail()
+    //First and last name
+    cy.get('[formcontrolname="firstName"]').type("ali")
+    cy.get('[formcontrolname="lastName"]').type("abu")
+
+    //Select date
+    cy.get('[class="calendar-icon icon-lg"]').click()
+    selectDate('Jul', '1997', '6');
+
+    //Gender
+    cy.get('[formcontrolname="gender"]').click()
+    cy.contains('Male').click()
+
+    cy.get('[formcontrolname="postal_code"]').type("3000")
+
+    cy.get('@uniqueEmail').then((emailAddress) => {
+        cy.get('[formcontrolname="email"]').type(emailAddress)
+    })
+    
+    cy.get('[formcontrolname="password"]').type("Admin@12345")
+    cy.get('[formcontrolname="confirmPassword"]').type("Admin@12345")
+}
+
+export function verifyOTP () {
+
+  const serverID = "vvocqwdp";
+
+  cy.get('@uniqueEmail').then((emailAddress) => { 
+    // waiting for the API
+    cy.wait('@signupRequest', { timeout: 10000 }).then((interception) => {
+        
+        let statusCode = interception.response.statusCode;
+
+        if (statusCode === 200) {
+        
+        cy.contains("Verification Code")
+        cy.mailosaurGetMessage(serverID, {
+            sentTo: emailAddress
+        })
+        .then(email => {
+            const OTP = email.html.codes.map(code => code.value);
+
+            for (let i = 1; i <= 6; i++) {
+                cy.get(`input[formcontrolname="digit${i}"]`).type(`${OTP[i - 1]}`)
+            }
+            // cy.get('button[type="submit"]').contains("Continue").click();
+        });
+        }
+    });
+  })
+}
+
+// Function to handle onboarding flow
+export function completeOnboarding(skip = false) {
+  cy.url().should('include', '/profile-setup');
+  cy.contains("Let's get this show on the road");
+  cy.get('[type="submit"]').contains('Start!').click();
+
+  cy.contains("How do you plan on using Yuzee?");
+  cy.get('[class="col-md-4 ng-star-inserted"]').contains('Internship').click();
+  cy.get('[class="col-md-4 ng-star-inserted"]').contains('Work Placement').click();
+  cy.get('[class="col-md-4 ng-star-inserted"]').contains('Course').click();
+  // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Job').click()
+  // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Traineeship').click()
+  cy.get('[type="submit"]').contains('Continue').click();
+
+  if (!skip) {
+    cy.get('span.slider.round').first().click();
+    cy.get('[placeholder="University/School"]').type('MSU');
+
+    // Set start and end dates
+    cy.get('[name="start_date"]').click();
+    cy.get('[title="Select year"]').select('2020');
+    cy.get('[title="Select month"]').select('Apr');
+    cy.get('[role="gridcell"]').contains('21').click();
+
+    cy.get('[name="end_date"]').click();
+    cy.get('[title="Select year"]').select('2025');
+    cy.get('[title="Select month"]').select('Jul');
+    cy.get('[role="gridcell"]').contains('21').click();
+
+    cy.get('[type="submit"]').contains('Continue').click();
+
+    // //profile photo
+    // cy.get('button.btn.img-logo').find('img').click()
+    // cy.get('input[type="file"]').invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png')
+    // cy.get('[type="button"]', { timeout: 10000 }).contains('Save').click()
+    // cy.get('[type="button"]', { timeout: 10000 }).contains('Ok').click()
+    // cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
+    cy.contains('Skip').click();
+
+    // Location
+    cy.get('[placeholder="Search location"]', { timeout: 10000 }).type('Kuala Lumpur')
+    cy.get('[role="option"]').contains('Kuala Lumpur').click()
+    cy.contains('Continue').should('be.visible').click();
+    cy.get('[type="submit"]').contains('Continue').click();
+    // Hobby
+    cy.wait(10000);
+    cy.get('[bindlabel="hobby_name"]', { timeout: 10000 }).type('run');
+    cy.contains('Running').click();
+    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+
+    // Community
+    cy.wait(3000);
+    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+    cy.wait(3000);
+    cy.get('[type="submit"]', { timeout: 10000 }).contains('Go!').click();
+  } else {
+    // If skipping the onboarding process
+    cy.get('span.slider.round').eq(1).click();
+    cy.get('[type="submit"]').contains('Continue').click();
+    cy.contains('Skip').click();
+    cy.get('[type="submit"]').contains('Skip').click();
+    cy.contains('Skip', { timeout: 10000 }).click();
+    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+    cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
+  }
+}
