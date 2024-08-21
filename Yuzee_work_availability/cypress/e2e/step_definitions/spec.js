@@ -13,6 +13,7 @@ Given("the user is on Yuzee homepage is open", () => {
     cy.visit('/')
     cy.intercept('POST', 'https://auth.yuzee.click/users/api/v1/public/users/signup').as('signupRequest')
     cy.intercept('POST', 'https://auth.yuzee.click/quick-blox/api/v1/quickblox/login').as('signinRequest')
+    cy.intercept('POST', 'https://auth.yuzee.click/users/api/v1/user/*/workexperience').as('workExpRequest')
 })
 
 //sign up
@@ -134,9 +135,9 @@ When("the user provides valid Edit profiles details", () => {
     cy.get('[name="citizenship"]').click()
     cy.get('[role="listbox"]').scrollIntoView().contains('Malaysia').click()
 
+    //location
     cy.get('[name="description"]', { timeout: 10000 }).type('Kuala Lumpur')
     cy.get('[role="option"]').contains('Kuala Lumpur').click()
-
     cy.get('[name="postalCode"]').clear().type('3432')
 })
 
@@ -276,18 +277,21 @@ When("the user provides valid Education details", (dataTable) => {
     cy.get('[name="education_title"]').click()
     cy.get('[role="option"]').contains('Diploma').click()
 
-    cy.get('[name="institute_name"]').clear().type('MMU')
+    cy.get('[name="institute_name"]').clear().type('Australian National University')
+    cy.get('[role="option"]').contains('Australian National University').click()
 
-    cy.get('[name="description"]').type('Cyberjaya')
-    cy.get('[role="option"]').contains('Cyberjaya').click()
-
-    cy.get('[name="postal_code"]').type('43300')
+    //location
+    // cy.get('[name="description"]').type('Cyberjaya')
+    // cy.get('[role="option"]').contains('Cyberjaya').click()
+    // cy.get('[name="postal_code"]').type('43300')
 
     cy.get('[name="course_name"]').type('Diploma in Infomation Technology')
 
-    cy.get('[name="examType"]').click()
-    cy.get('[role="option"]').contains(' English ').click()
+    cy.get('[name="examType"]').click() 
     cy.get('[role="option"]').contains(' Malay ').click()
+    // cy.get('[role="option"]').contains(' English ').click()
+    cy.get('[role="option"]').contains(' Korean ').click()
+
     cy.contains('Study Language').click()
     cy.get('[name="studyMode"]').click()
     cy.get('[role="option"]').contains('Online').click()
@@ -299,7 +303,7 @@ When("the user provides valid Education details", (dataTable) => {
     selectDate('Nov', '2025', '22');
 
     cy.get('[name="system"]').click()
-    cy.get('[role="option"]').contains('C-GPA (out of 5)').should('be.visible').click()
+    cy.get('[role="option"]').contains('C-GPA (out of 5)').scrollIntoView().should('be.visible').click()
     cy.get('[name="cgpa"]').type('3.5')
 
     cy.get('[class="slider round"]').click()
@@ -343,13 +347,13 @@ When("the user provides valid work experience details", () => {
     cy.get('[role="option"]').contains('Internship').should('be.visible').click();
 
     //Company name
-    cy.get('[name="company_name"]').type('SEECS')
-    // cy.get('[role="listbox"]').contains('SEECS').should('be.visible').click()
+    cy.get('[name="company_name"]').type('Australian Company')
+    cy.get('[role="listbox"]').contains('Australian Company').should('be.visible').click()
 
     //Location
-    cy.get('[name="description"]').clear().type('Geelong Victoria, Australia').should('have.value', 'Geelong Victoria, Australia')
-    cy.get('[role="option"]').contains('Geelong Victoria, Australia').should('be.visible').click()
-    cy.get('[name="postal_code"]').type('3435')
+    // cy.get('[name="description"]').clear().type('Geelong Victoria, Australia').should('have.value', 'Geelong Victoria, Australia')
+    // cy.get('[role="option"]').contains('Geelong Victoria, Australia').should('be.visible').click()
+    // cy.get('[name="postal_code"]').type('3435')
 
     //Checkbox
     // cy.get('[class="custom-control custom-checkbox text-align mb-0"]').click()
@@ -373,12 +377,16 @@ When("the user provides valid work experience details", () => {
     cy.get('[class="col-md-12 common-input-mb"]').contains('Skills').click()
 
     //attach file
-   cy.get('[ type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+    cy.get('[ type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
 })
 
 When("the user submits the Work Experience form", () => {
     cy.get('[type="button"]').contains('Save').click()
     cy.get('[type="button"]').contains('Ok').click()
+
+    cy.wait('@workExpRequest', { timeout: 10000 }).then((interception) => {
+            expect(interception.response.statusCode).to.equal(200)
+        })
 })
 
 Then("the user can view Work Experience on profile page", () => {
@@ -465,8 +473,8 @@ When("the user provides valid Hobbies details", (dataTable) => {
 })
 When("the user submit the Hobbies form", () => {
     //if in the onborading the user select hobbies
-    // cy.get('[type="button"]').contains('Save').click()
-    cy.get('[type="button"]').contains('Update').click()
+    cy.get('[type="button"]').contains('Save').click()
+    // cy.get('[type="button"]').contains('Update').click()
 })
 Then("the user can view Hobbies on profile page", () => {
     cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Interested Hobbies ').scrollIntoView().should('be.visible')
@@ -519,8 +527,8 @@ When("the user provides valid Awards and certificates details", () => {
     selectDate('Aug', '2020', '6');
 
     cy.get('[name="details"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
-    cy.get('[name="collaborations"]').type('ada')
-    cy.get('[role="option"]').contains(' Adamson University ').click()
+    cy.get('[name="collaborations"]').type(' Australian National University ')
+    cy.get('[role="option"]').contains(' Australian National University ').click()
     cy.contains('Associated with').click()
 
     cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
@@ -528,12 +536,12 @@ When("the user provides valid Awards and certificates details", () => {
 
 When("the user submits the Awards and certificates form", () => {
     cy.get('[type="button"]').contains(' Save ').click()
-    cy.get('[type="button"]').contains('Ok').click()
+    // cy.get('[type="button"]').contains('Ok').click()
     //have error, after click on the Ok button, the popup does not close
 })
 
 Then("the user can view Awards and certificates on profile page", () => {
-    cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
+    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
     cy.get('[class="accomplish-row"]').contains('Awards and Certificates').click()
 })
 

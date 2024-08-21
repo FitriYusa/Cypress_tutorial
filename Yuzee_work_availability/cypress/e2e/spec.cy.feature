@@ -21,7 +21,7 @@ Feature: Yuzee user profile components
     # Background photo
       Scenario Outline: Edit background photo
         Given the user is in profile page
-        And the user edit the background photo
+        When the user edit the background photo
         And the user submit the background photo
         Then the edited background photo should be visible
 

@@ -183,7 +183,8 @@ export function completeOnboarding(skip = false) {
 
   if (!skip) {
     cy.get('span.slider.round').first().click();
-    cy.get('[placeholder="University/School"]').type('MSU');
+    cy.get('[placeholder="University/School"]').type('Australian National University')
+    cy.get('[role="option"]').contains('Australian National University').click()
 
     // Set start and end dates
     cy.get('[name="start_date"]').click();
@@ -214,20 +215,29 @@ export function completeOnboarding(skip = false) {
     // cy.contains('Skip', { timeout: 10000 }).click();
 
     // Hobby
+    cy.wait(3000)
     cy.get('[bindlabel="hobby_name"]', { timeout: 10000 }).type('run');
     cy.contains('Running').click();
+    cy.wait(3000)
     cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+    cy.wait(3000)
 
     // Community
     cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+    cy.wait(3000)
     cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
+    cy.wait(3000)
   } else {
     // If skipping the onboarding process
     cy.get('span.slider.round').eq(1).click();
     cy.get('[type="submit"]').contains('Continue').click();
+    cy.wait(3000)
     cy.contains('Skip').click();
+    cy.wait(3000)
     cy.get('[type="submit"]').contains('Skip').click();
+    cy.wait(3000)
     cy.contains('Skip', { timeout: 10000 }).click();
+    cy.wait(3000)
     cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
     cy.wait(3000)
     cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
