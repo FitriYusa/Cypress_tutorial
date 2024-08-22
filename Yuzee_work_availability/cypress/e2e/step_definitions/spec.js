@@ -66,6 +66,9 @@ When("the user initiate to Go to profile", () => {
 
 Given("the user is in profile page", () => {
     cy.url().should('include', '/profile')
+    cy.get('[class="col-md-4"]').contains('Kuala Lumpur,').scrollIntoView().should('be.visible')
+    cy.get('[class="col-md-4"]').contains('Australian National University').scrollIntoView().should('be.visible')
+    cy.get('[class="mb-0 fw-400 fs-14"]').contains('Running Tours').should('be.visible')
 })
 
 //Edit profile photo if there is no photo
@@ -462,6 +465,7 @@ When("the user initiate the Hobbies", () => {
     cy.get('[class="fs-14 fw-500"]').contains('Interests').should('be.visible').click()
     cy.get('[class="subpro-name"]').contains(' Interested Hobbies ').scrollIntoView().should('be.visible').click()
 })
+
 When("the user provides valid Hobbies details", (dataTable) => {
     cy.get('[name="privacy_level"]').click()
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
@@ -471,13 +475,21 @@ When("the user provides valid Hobbies details", (dataTable) => {
    
     cy.contains('Tell us your hobbies').click()
 })
+
 When("the user submit the Hobbies form", () => {
-    //if in the onborading the user select hobbies
     cy.get('[type="button"]').contains('Save').click()
-    // cy.get('[type="button"]').contains('Update').click()
+})
+
+When("the user submit the Hobbies form update", () => {
+    cy.get('[type="button"]').contains('Update').click()
 })
 Then("the user can view Hobbies on profile page", () => {
     cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Interested Hobbies ').scrollIntoView().should('be.visible')
+    cy.get('[class="mb-0 fw-400 fs-14"]').contains('Running Tours').should('be.visible')
+    cy.get('[class="mb-0 fw-400 fs-14"]').contains('Baseball').should('be.visible')
+    cy.get('[class="mb-0 fw-400 fs-14"]').contains('Fashion Shows & Tours').should('be.visible')
+    cy.get('[class="mb-0 fw-400 fs-14"]').contains('Historic Walking Areas').should('be.visible')
+    cy.get('[class="mb-0 fw-400 fs-14"]').contains('Squash').should('be.visible')
 })
 
 
@@ -501,6 +513,10 @@ When("the user provides valid Skills details", (dataTable) => {
 
 When("the user submit the Skills form", () => {
     cy.get('[type="button"]').contains('Save').click()
+})
+
+When("the user submit the Skills form (update)", () => {
+    cy.get('[type="button"]').contains('Update').click()
 })
 
 Then("the user can view Skills on profile page", () => {

@@ -140,7 +140,7 @@ export function fillRegistration () {
 
 export function verifyOTP () {
 
-  const serverID = "vvocqwdp";
+  const serverID = "uhvpxryq";
 
   cy.get('@uniqueEmail').then((emailAddress) => { 
     // waiting for the API
@@ -215,16 +215,16 @@ export function completeOnboarding(skip = false) {
     // cy.contains('Skip', { timeout: 10000 }).click();
 
     // Hobby
-    cy.wait(3000)
+    cy.wait(5000)
     cy.get('[bindlabel="hobby_name"]', { timeout: 10000 }).type('run');
     cy.contains('Running').click();
-    cy.wait(3000)
+    cy.wait(5000)
     cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
-    cy.wait(3000)
+    cy.wait(10000)
 
     // Community
     cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
-    cy.wait(3000)
+    cy.wait(10000)
     cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
     cy.wait(3000)
   } else {
