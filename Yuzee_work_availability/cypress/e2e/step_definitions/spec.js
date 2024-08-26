@@ -13,15 +13,6 @@ import { fillRegistration,
               fillSkills,
               fillProjectDetails,
               fillPatentDetails,
-              assertGetToKnowMe,
-              assertContactDetails,
-              assertSkills,
-              assertAward, 
-              assertPublication, 
-              assertHobbies, 
-              assertPatent, 
-              assertProject, 
-              assertlanguage,
               assertDetails
              } from '../../support/function';
 
@@ -37,6 +28,34 @@ Given("the user is on Yuzee homepage is open", () => {
     cy.intercept('POST', 'https://auth.yuzee.click/users/api/v1/public/users/signup').as('signupRequest')
     cy.intercept('POST', 'https://auth.yuzee.click/quick-blox/api/v1/quickblox/login').as('signinRequest')
     cy.intercept('POST', 'https://auth.yuzee.click/users/api/v1/user/*/workexperience').as('workExpRequest')
+})
+
+//sign in
+When("the user initiate the sign in", () => {
+    cy.contains('Sign in').click()
+})
+
+When("the user provides valid sign in details", (dataTable) => {
+
+    dataTable.hashes().forEach(row => {
+        cy.get('[placeholder="Email"]').clear().type(row.email)
+        cy.get('[type="password"]').clear().type('Admin@1234')
+    })
+    
+})
+
+When("the user submit the sign in form", () => {
+    
+    cy.get('[type="submit"]').contains('Sign in').click()
+
+    cy.wait('@signinRequest', { timeout: 10000 }).then((interception) => {
+      
+        let statusCode = interception.response.statusCode;
+  
+        expect(statusCode).to.equal(200)
+
+    });
+
 })
 
 //sign up
@@ -96,7 +115,7 @@ Given("the user is in profile page", () => {
     cy.url().should('include', '/profile')
     cy.get('[class="col-md-4"]').contains('Kuala Lumpur,').scrollIntoView().should('be.visible')
     cy.get('[class="col-md-4"]').contains('Australian National University').scrollIntoView().should('be.visible')
-    cy.get('[class="mb-0 fw-400 fs-14"]').contains('Running Tours').should('be.visible')
+    cy.get('[class="suggestion-block ng-star-inserted"]').contains('Running Tours').should('be.visible')
 })
 
 //Edit profile photo if there is no photo
@@ -216,7 +235,7 @@ When("the user submits the Get to know me form", () => {
 
 Then("the user can view Get to know me on profile page", () => {
     cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Get to know me ').scrollIntoView().should('be.visible')
-    assertGetToKnowMe ()
+    assertDetails('getToKnowMe')
     
 })
 
@@ -266,7 +285,7 @@ When("the user submits the Contact details form", () => {
 
 Then("the user can view Contact details on profile page", (dataTable) => {
     cy.get('[class="pr-24"]').contains(' Contact Details ').scrollIntoView().should('be.visible')
-    assertContactDetails (dataTable)
+    assertDetails('contactDetails', dataTable )
 })
 
 //My docs
@@ -285,8 +304,8 @@ When("the user close the My Docs form", () => {
     cy.get('[type="button"]').contains('Yes').click()
 })
 
-Then("the user can view My Docs on profile page", () => {
-    cy.get('[class="pr-24"]').contains(' My Docs ').scrollIntoView().should('be.visible')
+Then("the user can view My Docs on profile page", (dataTable) => {
+    assertDetails('myDocs', dataTable )
 })
 
 
@@ -510,7 +529,7 @@ When("the user submit the Hobbies form update", () => {
 })
 Then("the user can view Hobbies on profile page", (dataTable) => {
     cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Interested Hobbies ').scrollIntoView().should('be.visible')
-    assertHobbies(dataTable)
+    assertDetails("hobbies", dataTable);
 })
 
 
@@ -541,9 +560,7 @@ When("the user submit the Skills form (update)", () => {
 })
 
 Then("the user can view Skills on profile page", (dataTable) => {
-    cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Skills and Endorsement ').scrollIntoView().should('be.visible')
-
-    assertSkills (dataTable)
+    assertDetails("skills", dataTable)
 })
 
 //Accomplishment
@@ -580,10 +597,7 @@ When("the user submits the Awards and certificates form", () => {
 })
 
 Then("the user can view Awards and certificates on profile page", () => {
-    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
-    cy.get('[class="accomplish-row"]').contains('Awards and Certificates').click()
-
-    assertAward ()
+    assertDetails("award");
 })
 
 //Publications
@@ -619,10 +633,7 @@ When("the user submits the Publications form", () => {
 })
 
 Then("the user can view Publications on profile page", () => {
-    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
-    cy.get('[class="accomplish-row"]').contains('Publication').click()
-
-    assertPublication ()
+    assertDetails("publication");
 })
 
 //Patent
@@ -645,11 +656,7 @@ When("the user submits the Patent form", () => {
 })
 
 Then("the user can view Patent on profile page", () => {
-    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
-    cy.get('[class="accomplish-row"]').contains('Patent').click()
-
-    // assertPatent ()
-    assertDetails('assertPatent')
+    assertDetails('patent')
 })
 
 //Projects
@@ -672,17 +679,11 @@ When("the user submits the Accomplishment projects form", () => {
 })
 
 Then("the user can view Accomplishment projects on profile page", () => {
-    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
-    cy.get('[class="accomplish-row"]').contains('Project').click()
-    
-    assertProject(false)
+    assertDetails("project", null, false)
 })
 
 Then("the user can view currently working Accomplishment projects on profile page", () => {
-    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
-    cy.get('[class="accomplish-row"]').contains('Project').click()
-    
-    assertProject(true)
+    assertDetails("project", null, true)
 })
 
 //Language
@@ -710,9 +711,5 @@ When("the user submits the Language form", () => {
 })
 
 Then("the user can view Language on profile page", (dataTable) => {
-    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
-    cy.get('[class="accomplish-row"]').contains('Language').click()
-
-    // assertlanguage (dataTable)
     assertDetails('language', dataTable);
 })

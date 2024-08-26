@@ -80,6 +80,17 @@ Feature: Yuzee user profile components
         | CV/Resume                              | cypress/images/2022-05-23.png    |
         And the user close the My Docs form
         Then the user can view My Docs on profile page
+        | documentType                           | filePath         |
+        | Australian keypass                     | 2022-05-23.png    |
+        | Birth certificate                      | 2022-05-23.png    |
+        | Passport                               | 2022-05-23.png    |
+        | Australian citizenship certificate     | 2022-05-23.png    |
+        | Medicare card                          | 2022-05-23.png    |
+        | Driving License                        | 2022-05-23.png    |
+        | Children Check                         | 2022-05-23.png    |
+        | Police Check                           | 2022-05-23.png    |
+        | First Aid Check                        | 2022-05-23.png    |
+        | CV/Resume                              | 2022-05-23.png    |
 
     # Education
       Scenario Outline: Add Education

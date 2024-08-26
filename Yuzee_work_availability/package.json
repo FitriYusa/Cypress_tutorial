@@ -2,6 +2,7 @@
   "dependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^20.1.2",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.2",
+    "cypress-cucumber-preprocessor": "^4.3.1",
     "cypress-mailosaur": "^2.15.0"
   },
   "name": "yuzee_work_availability",
@@ -10,7 +11,7 @@
   "devDependencies": {
     "@testomatio/reporter": "^1.4.10",
     "cypress": "^13.13.3",
-    "mocha": "^10.7.0"
+    "mocha": "^10.7.3"
   },
   "scripts": {
     "cy:open": "cypress open"

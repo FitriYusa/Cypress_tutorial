@@ -102,8 +102,8 @@ export function completeOnboarding(skip = false) {
     // cy.contains('Skip', { timeout: 10000 }).click();
 
     // Hobby
-    cy.wait(10000)
-    cy.get('[bindlabel="hobby_name"]', { timeout: 100000 }).type('run');
+    cy.wait(3000)
+    cy.get('[bindlabel="hobby_name"]', { timeout: 10000 }).type('run');
     cy.contains('Running').click();
     cy.wait(3000)
     cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
@@ -322,92 +322,7 @@ export function fillProjectDetails(isCurrent) {
   cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg');
 }
 
-// //Assertion function
-// //Get to know me
-// export function assertGetToKnowMe () {
-//   cy.get('[class="mt-3 ng-star-inserted"]')
-//     .should('contain.text', 'Accountant')
-//     .and('contain.text', 'Diploma of Beauty Therapy')
-//     .and('contain.text', 'Foundation')
-//     .and('contain.text', 'Kuala Lumpur')
-// }
-
-// //contact details
-// export function assertContactDetails (dataTable) {
-//   dataTable.hashes().forEach(detail => {
-//     cy.get('[class="detail-section ng-star-inserted"]')
-//       .should('contain.text', detail.method)
-//       .and('contain.text', detail.detail);
-//   });
-// }
-
-// //Hobbies
-// export function assertHobbies (dataTable) {
-//   dataTable.hashes().forEach(detail => {
-//     cy.get('[class="mb-0 fw-400 fs-14"]')
-//       .should('contain.text', detail.hobbies)
-//   });
-// }
-
-// //Skills
-// export function assertSkills (dataTable) {
-//   dataTable.hashes().forEach(detail => {
-//     cy.get('[class="mb-4"]')
-//       .should('contain.text', detail.skills)
-//   });
-// }
-
-// //Award and certificates
-// export function assertAward () {
-//   cy.get('[class="acc-content-block"]')
-//   .should('contain.text', 'Awards' )
-//   .and('contain.text', 'Aston University')
-//   .and('contain.text', '06/Aug/2020')
-//   .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
-// }
-
-// //Publication
-// export function assertPublication () {
-//   cy.get('[class="acc-content-block"]')
-//   .should('contain.text', 'Firecracker Award' )
-//   .and('contain.text', 'Aston University')
-//   .and('contain.text', '06/Aug/2020')
-//   .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
-// }
-
-// //Patent
-// export function assertPatent () {
-//   cy.get('[class="acc-content-block"]')
-//   .should('contain.text', 'Patent Title' )
-//   .and('contain.text', 'Patent Number: 32112333')
-//   .and('contain.text', '06/Aug/2020')
-//   .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
-// }
-
-// //Project
-// export function assertProject (isCurrent) {
-//   const projectDetails = cy.get('[class="acc-content-block"]')
-//   .should('contain.text', 'Project Juliet' )
-//   .and('contain.text', '02/Jul/2024')
-//   .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
-
-//   if (isCurrent) {
-//     projectDetails.and('contain.text', 'Present');
-//   } else {
-//     projectDetails.and('contain.text', '04/Aug/2024');
-//   }
-// }
-
-// //Language
-// export function assertlanguage (dataTable) {
-//   dataTable.hashes().forEach(row => {
-//     cy.get('[class="acc-content-block"]')
-//         .should('contain.text', row.language)
-//         .and('contain.text', row.proficient)
-//   });
-// }
-
-
+//Assertion function
 export function assertDetails(type, dataTable = null, isCurrent = false) {
   switch (type) {
     case 'getToKnowMe':
@@ -426,21 +341,34 @@ export function assertDetails(type, dataTable = null, isCurrent = false) {
       });
       break;
 
+    case 'myDocs':
+        cy.get('[class="pr-24 mb-3"]').contains(' My Docs ').scrollIntoView().should('be.visible')
+        dataTable.hashes().forEach(detail => {
+          cy.get('[class="doc-list ng-star-inserted"]')
+              .should('contain.text', detail.documentType)
+              .and('contain.text', detail.filePath)
+        });
+        break;
+
     case 'hobbies':
       dataTable.hashes().forEach(detail => {
-        cy.get('[class="mb-0 fw-400 fs-14"]')
+        cy.get('[class="suggestion-block ng-star-inserted"]')
           .should('contain.text', detail.hobbies);
       });
       break;
 
     case 'skills':
+      cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Skills and Endorsement ').scrollIntoView().should('be.visible')
       dataTable.hashes().forEach(detail => {
+        //class="suggestion-block ng-star-inserted"
         cy.get('[class="mb-4"]')
           .should('contain.text', detail.skills);
       });
       break;
 
     case 'award':
+      cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
+      cy.get('[class="accomplish-row"]').contains('Awards and Certificates').click()
       cy.get('[class="acc-content-block"]')
         .should('contain.text', 'Awards')
         .and('contain.text', 'Aston University')
@@ -449,6 +377,8 @@ export function assertDetails(type, dataTable = null, isCurrent = false) {
       break;
 
     case 'publication':
+      cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
+      cy.get('[class="accomplish-row"]').contains('Publication').click()
       cy.get('[class="acc-content-block"]')
         .should('contain.text', 'Firecracker Award')
         .and('contain.text', 'Aston University')
@@ -457,6 +387,8 @@ export function assertDetails(type, dataTable = null, isCurrent = false) {
       break;
 
     case 'patent':
+      cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
+      cy.get('[class="accomplish-row"]').contains('Patent').click()
       cy.get('[class="acc-content-block"]')
         .should('contain.text', 'Patent Title')
         .and('contain.text', 'Patent Number: 32112333')
@@ -465,6 +397,9 @@ export function assertDetails(type, dataTable = null, isCurrent = false) {
       break;
 
     case 'project':
+      cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
+      cy.get('[class="accomplish-row"]').contains('Project').click()
+
       const projectDetails = cy.get('[class="acc-content-block"]')
         .should('contain.text', 'Project Juliet')
         .and('contain.text', '02/Jul/2024')
@@ -478,6 +413,8 @@ export function assertDetails(type, dataTable = null, isCurrent = false) {
       break;
 
     case 'language':
+      cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
+      cy.get('[class="accomplish-row"]').contains('Language').click()
       dataTable.hashes().forEach(row => {
         cy.get('[class="acc-content-block"]')
           .should('contain.text', row.language)
