@@ -1,3 +1,136 @@
+//OTP
+export function verifyOTP () {
+
+  const serverID = "uhvpxryq";
+
+  cy.get('@uniqueEmail').then((emailAddress) => { 
+    // waiting for the API
+    cy.wait('@signupRequest', { timeout: 10000 }).then((interception) => {
+        
+        let statusCode = interception.response.statusCode;
+
+        if (statusCode === 200) {
+        
+        cy.contains("Verification Code")
+        cy.mailosaurGetMessage(serverID, {
+            sentTo: emailAddress
+        })
+        .then(email => {
+            const OTP = email.html.codes.map(code => code.value);
+
+            for (let i = 1; i <= 6; i++) {
+                cy.get(`input[formcontrolname="digit${i}"]`).type(`${OTP[i - 1]}`)
+            }
+            // cy.get('button[type="submit"]').contains("Continue").click();
+        });
+        }
+    });
+  })
+}
+
+// function to fill registration
+export function fillRegistration () {
+  
+  cy.generateUniqueEmail()
+    //First and last name
+    cy.get('[formcontrolname="firstName"]').type("ali")
+    cy.get('[formcontrolname="lastName"]').type("abu")
+
+    //Select date
+    cy.get('[class="calendar-icon icon-lg"]').click()
+    selectDate('Jul', '1997', '6');
+
+    //Gender
+    cy.get('[formcontrolname="gender"]').click()
+    cy.contains('Male').click()
+
+    cy.get('[formcontrolname="postal_code"]').type("3000")
+
+    cy.get('@uniqueEmail').then((emailAddress) => {
+        cy.get('[formcontrolname="email"]').type(emailAddress)
+    })
+    
+    cy.get('[formcontrolname="password"]').type("Admin@12345")
+    cy.get('[formcontrolname="confirmPassword"]').type("Admin@12345")
+}
+
+// Function to handle onboarding flow
+export function completeOnboarding(skip = false) {
+  cy.url().should('include', '/profile-setup');
+  cy.contains("Let's get this show on the road");
+  cy.get('[type="submit"]').contains('Start!').click();
+
+  cy.contains("How do you plan on using Yuzee?");
+  cy.get('[class="col-md-4 ng-star-inserted"]').contains('Internship').click();
+  cy.get('[class="col-md-4 ng-star-inserted"]').contains('Work Placement').click();
+  cy.get('[class="col-md-4 ng-star-inserted"]').contains('Course').click();
+  // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Job').click()
+  // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Traineeship').click()
+  cy.get('[type="submit"]').contains('Continue').click();
+
+  if (!skip) {
+    cy.get('span.slider.round').first().click();
+    cy.get('[placeholder="University/School"]').type('Australian National University')
+    cy.get('[role="option"]').contains('Australian National University').click()
+
+    // Set start and end dates
+    cy.get('[name="start_date"]').click();
+    cy.get('[title="Select year"]').select('2020');
+    cy.get('[title="Select month"]').select('Apr');
+    cy.get('[role="gridcell"]').contains('21').click();
+
+    cy.get('[name="end_date"]').click();
+    cy.get('[title="Select year"]').select('2025');
+    cy.get('[title="Select month"]').select('Jul');
+    cy.get('[role="gridcell"]').contains('21').click();
+
+    cy.get('[type="submit"]').contains('Continue').click();
+
+    // //profile photo
+    cy.wait(3000)
+    cy.get('[class="btn img-logo"]').find('img').click()
+    cy.get('input[type="file"]').invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png')
+    cy.get('[type="button"]', { timeout: 10000 }).contains('Save').click()
+    cy.get('[type="button"]', { timeout: 10000 }).contains('Ok').click()
+    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
+    // cy.contains('Skip', { timeout: 10000 }).click();
+
+    // Location
+    cy.get('[placeholder="Search location"]', { timeout: 10000 }).type('Kuala Lumpur')
+    cy.get('[role="option"]').contains('Kuala Lumpur').click()
+    cy.get('[type="submit"]').contains('Continue').click();
+    // cy.contains('Skip', { timeout: 10000 }).click();
+
+    // Hobby
+    cy.wait(10000)
+    cy.get('[bindlabel="hobby_name"]', { timeout: 100000 }).type('run');
+    cy.contains('Running').click();
+    cy.wait(3000)
+    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+    cy.wait(3000)
+
+    // Community
+    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+    cy.wait(3000)
+    cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
+    cy.wait(3000)
+  } else {
+    // If skipping the onboarding process
+    cy.get('span.slider.round').eq(1).click();
+    cy.get('[type="submit"]').contains('Continue').click();
+    cy.wait(3000)
+    cy.contains('Skip').click();
+    cy.wait(3000)
+    cy.get('[type="submit"]').contains('Skip').click();
+    cy.wait(3000)
+    cy.contains('Skip', { timeout: 10000 }).click();
+    cy.wait(3000)
+    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+    cy.wait(3000)
+    cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
+  }
+}
+
 // Utility function to select a date
 export function selectDate(month, year, day) {
     cy.get('[title="Select month"]').select(month);
@@ -98,152 +231,7 @@ export function uploadQualifications(dataTable) {
   });
 }
 
-// Utility function to add hobbies
-export function fillHobbies (dataTable) {
-  dataTable.hashes().forEach((row) => {
-      cy.get('[role="option"]').contains(row.hobbies).click()
-  });
-}
-
-// Utility function to add skills
-export function fillSkills (dataTable) {
-  dataTable.hashes().forEach((row) => {
-      cy.get('[role="option"]').contains(row.skills).click()
-  })
-}
-
-// function to fill registration
-export function fillRegistration () {
-  
-  cy.generateUniqueEmail()
-    //First and last name
-    cy.get('[formcontrolname="firstName"]').type("ali")
-    cy.get('[formcontrolname="lastName"]').type("abu")
-
-    //Select date
-    cy.get('[class="calendar-icon icon-lg"]').click()
-    selectDate('Jul', '1997', '6');
-
-    //Gender
-    cy.get('[formcontrolname="gender"]').click()
-    cy.contains('Male').click()
-
-    cy.get('[formcontrolname="postal_code"]').type("3000")
-
-    cy.get('@uniqueEmail').then((emailAddress) => {
-        cy.get('[formcontrolname="email"]').type(emailAddress)
-    })
-    
-    cy.get('[formcontrolname="password"]').type("Admin@12345")
-    cy.get('[formcontrolname="confirmPassword"]').type("Admin@12345")
-}
-
-export function verifyOTP () {
-
-  const serverID = "uhvpxryq";
-
-  cy.get('@uniqueEmail').then((emailAddress) => { 
-    // waiting for the API
-    cy.wait('@signupRequest', { timeout: 10000 }).then((interception) => {
-        
-        let statusCode = interception.response.statusCode;
-
-        if (statusCode === 200) {
-        
-        cy.contains("Verification Code")
-        cy.mailosaurGetMessage(serverID, {
-            sentTo: emailAddress
-        })
-        .then(email => {
-            const OTP = email.html.codes.map(code => code.value);
-
-            for (let i = 1; i <= 6; i++) {
-                cy.get(`input[formcontrolname="digit${i}"]`).type(`${OTP[i - 1]}`)
-            }
-            // cy.get('button[type="submit"]').contains("Continue").click();
-        });
-        }
-    });
-  })
-}
-
-// Function to handle onboarding flow
-export function completeOnboarding(skip = false) {
-  cy.url().should('include', '/profile-setup');
-  cy.contains("Let's get this show on the road");
-  cy.get('[type="submit"]').contains('Start!').click();
-
-  cy.contains("How do you plan on using Yuzee?");
-  cy.get('[class="col-md-4 ng-star-inserted"]').contains('Internship').click();
-  cy.get('[class="col-md-4 ng-star-inserted"]').contains('Work Placement').click();
-  cy.get('[class="col-md-4 ng-star-inserted"]').contains('Course').click();
-  // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Job').click()
-  // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Traineeship').click()
-  cy.get('[type="submit"]').contains('Continue').click();
-
-  if (!skip) {
-    cy.get('span.slider.round').first().click();
-    cy.get('[placeholder="University/School"]').type('Australian National University')
-    cy.get('[role="option"]').contains('Australian National University').click()
-
-    // Set start and end dates
-    cy.get('[name="start_date"]').click();
-    cy.get('[title="Select year"]').select('2020');
-    cy.get('[title="Select month"]').select('Apr');
-    cy.get('[role="gridcell"]').contains('21').click();
-
-    cy.get('[name="end_date"]').click();
-    cy.get('[title="Select year"]').select('2025');
-    cy.get('[title="Select month"]').select('Jul');
-    cy.get('[role="gridcell"]').contains('21').click();
-
-    cy.get('[type="submit"]').contains('Continue').click();
-
-    // //profile photo
-    cy.get('button.btn.img-logo').find('img').click()
-    cy.get('input[type="file"]').invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png')
-    cy.get('[type="button"]', { timeout: 10000 }).contains('Save').click()
-    cy.get('[type="button"]', { timeout: 10000 }).contains('Ok').click()
-    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
-    // cy.contains('Skip', { timeout: 10000 }).click();
-
-    // Location
-    cy.get('[placeholder="Search location"]', { timeout: 10000 }).type('Kuala Lumpur')
-    cy.get('[role="option"]').contains('Kuala Lumpur').click()
-    cy.contains('Continue').should('be.visible').click();
-    cy.get('[type="submit"]').contains('Continue').click();
-    // cy.contains('Skip', { timeout: 10000 }).click();
-
-    // Hobby
-    cy.wait(5000)
-    cy.get('[bindlabel="hobby_name"]', { timeout: 10000 }).type('run');
-    cy.contains('Running').click();
-    cy.wait(5000)
-    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
-    cy.wait(10000)
-
-    // Community
-    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
-    cy.wait(10000)
-    cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
-    cy.wait(3000)
-  } else {
-    // If skipping the onboarding process
-    cy.get('span.slider.round').eq(1).click();
-    cy.get('[type="submit"]').contains('Continue').click();
-    cy.wait(3000)
-    cy.contains('Skip').click();
-    cy.wait(3000)
-    cy.get('[type="submit"]').contains('Skip').click();
-    cy.wait(3000)
-    cy.contains('Skip', { timeout: 10000 }).click();
-    cy.wait(3000)
-    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
-    cy.wait(3000)
-    cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
-  }
-}
-
+//Function to fill available days
 export function fillDaysAvailable (dataTable) {
   let i=0;
   dataTable.hashes().forEach((row, index) => {
@@ -263,11 +251,241 @@ export function fillDaysAvailable (dataTable) {
   });
 }
 
-
-export function assertContactDetails (dataTable) {
-  dataTable.hashes().forEach(detail => {
-    cy.get('[class="detail-section ng-star-inserted"]')
-      .should('contain.text', detail.method)
-      .and('contain.text', detail.detail);
+// Utility function to add hobbies
+export function fillHobbies (dataTable) {
+  dataTable.hashes().forEach((row) => {
+      cy.get('[role="option"]').contains(row.hobbies).click()
   });
+}
+
+// Utility function to add skills
+export function fillSkills (dataTable) {
+  dataTable.hashes().forEach((row) => {
+      cy.get('[role="option"]').contains(row.skills).click()
+  })
+}
+
+//function to fill patent
+export function fillPatentDetails(isIssued) {
+  cy.get('[name="privacy_level"]').click();
+  cy.get('[class="content-block"]').contains('Public').should('be.visible').click();
+
+  cy.get('[id="title"]').type('Patent Title');
+  cy.get('[name="citizenship"]').click();
+  cy.get('[role="option"]').contains('Malaysia').scrollIntoView().click();
+
+  if (isIssued) {
+    cy.get('[id="Patent Issued"]').click();
+    cy.get('[id="patent_number"]').type('32112333');
+  } else {
+    cy.get('[id="Patent Pending"]').click();
+    cy.get('[id="application_number"]').type('32112333');
+  }
+
+  cy.get('[placeholder="Select a date"]').click();
+  selectDate('Aug', '2020', '6');
+  cy.get('[id="pat_url"]').type('fastr.com');
+  cy.get('[id="description"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
+
+  cy.get('[name="collaborations"]').type('adam');
+  cy.get('[role="option"]').contains(' Adam Cof ').click();
+
+  cy.contains('Other Inventors').click();
+
+  cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png');
+}
+
+//function to fill project
+export function fillProjectDetails(isCurrent) {
+  cy.get('[name="privacy_level"]').click();
+  cy.get('[class="content-block"]').contains('Public').should('be.visible').click();
+
+  cy.get('[id="title"]').type('Project Juliet');
+  cy.get('[name="projectUrl"]').type('https://example.com');
+
+  cy.get('[name="start_date"]').click();
+  selectDate('Jul', '2024', '2');
+  
+  if (isCurrent) {
+    cy.get('[class="custom-control custom-checkbox text-align mb-0"]').click();
+  } else {
+    cy.get('[name="end_date"]').click();
+    selectDate('Aug', '2024', '4');
+  }
+
+  cy.get('[name="details"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
+
+  cy.get('[name="collaborations"]').type('g');
+  cy.get('[role="option"]').contains(' Bridget Lynch ').click();
+  cy.get('[class="ng-star-inserted"]').contains('labels.Other Contributors').click();
+
+  cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg');
+}
+
+// //Assertion function
+// //Get to know me
+// export function assertGetToKnowMe () {
+//   cy.get('[class="mt-3 ng-star-inserted"]')
+//     .should('contain.text', 'Accountant')
+//     .and('contain.text', 'Diploma of Beauty Therapy')
+//     .and('contain.text', 'Foundation')
+//     .and('contain.text', 'Kuala Lumpur')
+// }
+
+// //contact details
+// export function assertContactDetails (dataTable) {
+//   dataTable.hashes().forEach(detail => {
+//     cy.get('[class="detail-section ng-star-inserted"]')
+//       .should('contain.text', detail.method)
+//       .and('contain.text', detail.detail);
+//   });
+// }
+
+// //Hobbies
+// export function assertHobbies (dataTable) {
+//   dataTable.hashes().forEach(detail => {
+//     cy.get('[class="mb-0 fw-400 fs-14"]')
+//       .should('contain.text', detail.hobbies)
+//   });
+// }
+
+// //Skills
+// export function assertSkills (dataTable) {
+//   dataTable.hashes().forEach(detail => {
+//     cy.get('[class="mb-4"]')
+//       .should('contain.text', detail.skills)
+//   });
+// }
+
+// //Award and certificates
+// export function assertAward () {
+//   cy.get('[class="acc-content-block"]')
+//   .should('contain.text', 'Awards' )
+//   .and('contain.text', 'Aston University')
+//   .and('contain.text', '06/Aug/2020')
+//   .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+// }
+
+// //Publication
+// export function assertPublication () {
+//   cy.get('[class="acc-content-block"]')
+//   .should('contain.text', 'Firecracker Award' )
+//   .and('contain.text', 'Aston University')
+//   .and('contain.text', '06/Aug/2020')
+//   .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+// }
+
+// //Patent
+// export function assertPatent () {
+//   cy.get('[class="acc-content-block"]')
+//   .should('contain.text', 'Patent Title' )
+//   .and('contain.text', 'Patent Number: 32112333')
+//   .and('contain.text', '06/Aug/2020')
+//   .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+// }
+
+// //Project
+// export function assertProject (isCurrent) {
+//   const projectDetails = cy.get('[class="acc-content-block"]')
+//   .should('contain.text', 'Project Juliet' )
+//   .and('contain.text', '02/Jul/2024')
+//   .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+
+//   if (isCurrent) {
+//     projectDetails.and('contain.text', 'Present');
+//   } else {
+//     projectDetails.and('contain.text', '04/Aug/2024');
+//   }
+// }
+
+// //Language
+// export function assertlanguage (dataTable) {
+//   dataTable.hashes().forEach(row => {
+//     cy.get('[class="acc-content-block"]')
+//         .should('contain.text', row.language)
+//         .and('contain.text', row.proficient)
+//   });
+// }
+
+
+export function assertDetails(type, dataTable = null, isCurrent = false) {
+  switch (type) {
+    case 'getToKnowMe':
+      cy.get('[class="mt-3 ng-star-inserted"]')
+        .should('contain.text', 'Accountant')
+        .and('contain.text', 'Diploma of Beauty Therapy')
+        .and('contain.text', 'Foundation')
+        .and('contain.text', 'Kuala Lumpur');
+      break;
+
+    case 'contactDetails':
+      dataTable.hashes().forEach(detail => {
+        cy.get('[class="detail-section ng-star-inserted"]')
+          .should('contain.text', detail.method)
+          .and('contain.text', detail.detail);
+      });
+      break;
+
+    case 'hobbies':
+      dataTable.hashes().forEach(detail => {
+        cy.get('[class="mb-0 fw-400 fs-14"]')
+          .should('contain.text', detail.hobbies);
+      });
+      break;
+
+    case 'skills':
+      dataTable.hashes().forEach(detail => {
+        cy.get('[class="mb-4"]')
+          .should('contain.text', detail.skills);
+      });
+      break;
+
+    case 'award':
+      cy.get('[class="acc-content-block"]')
+        .should('contain.text', 'Awards')
+        .and('contain.text', 'Aston University')
+        .and('contain.text', '06/Aug/2020')
+        .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
+      break;
+
+    case 'publication':
+      cy.get('[class="acc-content-block"]')
+        .should('contain.text', 'Firecracker Award')
+        .and('contain.text', 'Aston University')
+        .and('contain.text', '06/Aug/2020')
+        .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
+      break;
+
+    case 'patent':
+      cy.get('[class="acc-content-block"]')
+        .should('contain.text', 'Patent Title')
+        .and('contain.text', 'Patent Number: 32112333')
+        .and('contain.text', '06/Aug/2020')
+        .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
+      break;
+
+    case 'project':
+      const projectDetails = cy.get('[class="acc-content-block"]')
+        .should('contain.text', 'Project Juliet')
+        .and('contain.text', '02/Jul/2024')
+        .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
+
+      if (isCurrent) {
+        projectDetails.and('contain.text', 'Present');
+      } else {
+        projectDetails.and('contain.text', '04/Aug/2024');
+      }
+      break;
+
+    case 'language':
+      dataTable.hashes().forEach(row => {
+        cy.get('[class="acc-content-block"]')
+          .should('contain.text', row.language)
+          .and('contain.text', row.proficient);
+      });
+      break;
+
+    default:
+      throw new Error(`Unknown type: ${type}`);
+  }
 }

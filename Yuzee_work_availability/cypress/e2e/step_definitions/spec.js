@@ -1,6 +1,29 @@
 import { When, Then, Given } from "@badeball/cypress-cucumber-preprocessor"
 
-import { fillRegistration, verifyOTP, completeOnboarding, selectDate, fillSubjects, fillContactDetails, assertContactDetails, fillMyDocs, fillDaysAvailable, uploadQualifications, fillHobbies, fillSkills } from '../../support/function';
+import { fillRegistration,
+              verifyOTP,
+              completeOnboarding,
+              selectDate,
+              fillSubjects,
+              fillContactDetails,
+              fillMyDocs,
+              fillDaysAvailable,
+              uploadQualifications,
+              fillHobbies,
+              fillSkills,
+              fillProjectDetails,
+              fillPatentDetails,
+              assertGetToKnowMe,
+              assertContactDetails,
+              assertSkills,
+              assertAward, 
+              assertPublication, 
+              assertHobbies, 
+              assertPatent, 
+              assertProject, 
+              assertlanguage,
+              assertDetails
+             } from '../../support/function';
 
 // const serverID = "vvocqwdp";
 // const emailDomain = `@${serverID}.mailosaur.net`
@@ -63,6 +86,11 @@ When("the user initiate to Go to profile", () => {
     cy.get('[class="setting-item ml-0 ng-star-inserted"]').click()
 
 })
+
+Given("the user skip onboarding is in profile page", () => {
+    cy.url().should('include', '/profile')
+})
+
 
 Given("the user is in profile page", () => {
     cy.url().should('include', '/profile')
@@ -188,10 +216,7 @@ When("the user submits the Get to know me form", () => {
 
 Then("the user can view Get to know me on profile page", () => {
     cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Get to know me ').scrollIntoView().should('be.visible')
-    cy.get('[class="mt-3 ng-star-inserted"]').should('contain.text', 'Accountant')
-    cy.get('[class="mt-3 ng-star-inserted"]').should('contain.text', 'Diploma of Beauty Therapy')
-    cy.get('[class="mt-3 ng-star-inserted"]').should('contain.text', 'Foundation')
-    cy.get('[class="mt-3 ng-star-inserted"]').should('contain.text', 'Kuala Lumpur')
+    assertGetToKnowMe ()
     
 })
 
@@ -483,13 +508,9 @@ When("the user submit the Hobbies form", () => {
 When("the user submit the Hobbies form update", () => {
     cy.get('[type="button"]').contains('Update').click()
 })
-Then("the user can view Hobbies on profile page", () => {
+Then("the user can view Hobbies on profile page", (dataTable) => {
     cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Interested Hobbies ').scrollIntoView().should('be.visible')
-    cy.get('[class="mb-0 fw-400 fs-14"]').contains('Running Tours').should('be.visible')
-    cy.get('[class="mb-0 fw-400 fs-14"]').contains('Baseball').should('be.visible')
-    cy.get('[class="mb-0 fw-400 fs-14"]').contains('Fashion Shows & Tours').should('be.visible')
-    cy.get('[class="mb-0 fw-400 fs-14"]').contains('Historic Walking Areas').should('be.visible')
-    cy.get('[class="mb-0 fw-400 fs-14"]').contains('Squash').should('be.visible')
+    assertHobbies(dataTable)
 })
 
 
@@ -519,8 +540,10 @@ When("the user submit the Skills form (update)", () => {
     cy.get('[type="button"]').contains('Update').click()
 })
 
-Then("the user can view Skills on profile page", () => {
+Then("the user can view Skills on profile page", (dataTable) => {
     cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Skills and Endorsement ').scrollIntoView().should('be.visible')
+
+    assertSkills (dataTable)
 })
 
 //Accomplishment
@@ -559,6 +582,8 @@ When("the user submits the Awards and certificates form", () => {
 Then("the user can view Awards and certificates on profile page", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
     cy.get('[class="accomplish-row"]').contains('Awards and Certificates').click()
+
+    assertAward ()
 })
 
 //Publications
@@ -573,7 +598,8 @@ When("the user provides valid Publications details", () => {
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
 
     cy.get('[id="title"]').type('Firecracker Award')
-    cy.get('[name="publication"]').type('ae')
+    cy.get('[name="publication"]').type('as')
+    cy.get('[role="option"]').contains('Aston University').click()
     cy.get('[name="publicUrl"]').type('mass.com')
 
     cy.get('[placeholder="Select a date"]').click()
@@ -595,6 +621,8 @@ When("the user submits the Publications form", () => {
 Then("the user can view Publications on profile page", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
     cy.get('[class="accomplish-row"]').contains('Publication').click()
+
+    assertPublication ()
 })
 
 //Patent
@@ -605,31 +633,11 @@ When("the user initiate the Patent", () => {
 })
 
 When("the user provides valid Patent details", () => {
-    cy.get('[name="privacy_level"]').click()
-    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+    fillPatentDetails(true)
+})
 
-    cy.get('[id="title"]').type('ae')
-    cy.get('[name="citizenship"]').click()
-    cy.get('[role="option"]').contains('Malaysia').scrollIntoView().click()
-
-    //if patent issued
-    cy.get('[id="Patent Issued"]').click()
-
-    //if patent pending
-    // cy.get('[id="Patent Pending"]').click()
-
-    cy.get('[placeholder="Select a date"]').click()
-    selectDate('Aug', '2020', '6');
-    cy.get('[id="patent_number"]').type('32112333')
-    cy.get('[id="pat_url"]').type('fastr.com')
-    cy.get('[id="description"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
-
-   cy.get('[name="collaborations"]').type('adam')
-   cy.get('[role="option"]').contains(' Adam Cof ').click()
-
-   cy.contains('Other Inventors').click()
-
-   cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
+When("the user provides valid pending Patent details", () => {
+    fillPatentDetails(false)
 })
 
 When("the user submits the Patent form", () => {
@@ -639,6 +647,9 @@ When("the user submits the Patent form", () => {
 Then("the user can view Patent on profile page", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
     cy.get('[class="accomplish-row"]').contains('Patent').click()
+
+    // assertPatent ()
+    assertDetails('assertPatent')
 })
 
 //Projects
@@ -649,25 +660,11 @@ When("the user initiate the Accomplishment projects", () => {
 })
 
 When("the user provides valid Accomplishment projects details", () => {
-    cy.get('[name="privacy_level"]').click()
-    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+    fillProjectDetails(false);
+})
 
-    cy.get('[id="title"]').type('asdf adaw sdas')
-    cy.get('[name="projectUrl"]').type('https://example.com')
-
-    cy.get('[name="start_date"]').click()
-    selectDate('Jul', '2024', '2');
-
-    cy.get('[name="end_date"]').click()
-    selectDate('Aug', '2024', '4');
-
-    cy.get('[name="details"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
-
-    cy.get('[name="collaborations"]').type('g')
-    cy.get('[role="option"]').contains(' Bridget Lynch ').click()
-    cy.get('[class="ng-star-inserted"]').contains('labels.Other Contributors').click()
-
-    cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+When("the user provide valid currently working Accomplishment projects details", () => {
+    fillProjectDetails(true);
 })
 
 When("the user submits the Accomplishment projects form", () => {
@@ -677,6 +674,15 @@ When("the user submits the Accomplishment projects form", () => {
 Then("the user can view Accomplishment projects on profile page", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
     cy.get('[class="accomplish-row"]').contains('Project').click()
+    
+    assertProject(false)
+})
+
+Then("the user can view currently working Accomplishment projects on profile page", () => {
+    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
+    cy.get('[class="accomplish-row"]').contains('Project').click()
+    
+    assertProject(true)
 })
 
 //Language
@@ -703,7 +709,10 @@ When("the user submits the Language form", () => {
     cy.get('[type="button"]').contains('Save').should('be.visible').click()
 })
 
-Then("the user can view Language on profile page", () => {
+Then("the user can view Language on profile page", (dataTable) => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
     cy.get('[class="accomplish-row"]').contains('Language').click()
+
+    // assertlanguage (dataTable)
+    assertDetails('language', dataTable);
 })

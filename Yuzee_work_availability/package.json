@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@badeball/cypress-cucumber-preprocessor": "^20.1.1",
+    "@badeball/cypress-cucumber-preprocessor": "^20.1.2",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.2",
     "cypress-mailosaur": "^2.15.0"
   },
@@ -8,6 +8,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "devDependencies": {
+    "@testomatio/reporter": "^1.4.10",
+    "cypress": "^13.13.3",
     "mocha": "^10.7.0"
   },
   "scripts": {
