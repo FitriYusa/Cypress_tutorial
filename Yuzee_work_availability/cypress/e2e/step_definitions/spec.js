@@ -487,14 +487,6 @@ Then("the user can view Work Experience on profile page", () => {
     cy.get('[type="button"]').contains(' See more ').click()
 
     cy.get('[class="block-title-md mb-3 p-0 d-flex mar-r"]').should('contain.text', ' Work Experience ')
-
-    // cy.get('[class="col-md-4"]').contains('Australian Company').scrollIntoView().should('be.visible')
-    // cy.get('[class="post-title"]')
-    //     .should('contain.text', 'Accountant')
-    //     .and('contain.text', 'Australian Company')
-    //     .and('contain.text', '21/Aug/2020')
-    //     .and('contain.text', '21/Aug/2024')
-
     assertDetails("workExperience")
 })
 
@@ -533,8 +525,9 @@ When("the user submits the Work Availability form", () => {
     cy.get('[type="button"]').contains('Save').click()
 })
 
-Then("the user can view Work Availability on profile page", () => {
+Then("the user can view Work Availability on profile page", (dataTable) => {
     cy.get('[class="work-row"]').contains('Internship').scrollIntoView().click()
+    assertDetails('workAvailability', dataTable)
 })
 
 //Language Qualification

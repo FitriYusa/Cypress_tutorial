@@ -496,7 +496,16 @@ export function assertDetails(type, dataTable = null, isCurrent = false) {
           .and('contain.text', detail.detail);
       });
       break;
-
+    
+    case 'myDocs':
+        cy.get('[class="pr-24 mb-3"]').contains(' My Docs ').scrollIntoView().should('be.visible')
+        dataTable.hashes().forEach(detail => {
+          cy.get('[class="doc-list ng-star-inserted"]')
+              .should('contain.text', detail.documentType)
+              .and('contain.text', detail.filePath)
+        });
+        break;
+    
     case 'workExperience':
       cy.get('[class="col-md-4"]').contains('Australian Company').scrollIntoView().should('be.visible')
       cy.get('[class="post-title"]')
@@ -508,14 +517,20 @@ export function assertDetails(type, dataTable = null, isCurrent = false) {
       
           break;
 
-    case 'myDocs':
-        cy.get('[class="pr-24 mb-3"]').contains(' My Docs ').scrollIntoView().should('be.visible')
-        dataTable.hashes().forEach(detail => {
-          cy.get('[class="doc-list ng-star-inserted"]')
-              .should('contain.text', detail.documentType)
-              .and('contain.text', detail.filePath)
-        });
-        break;
+    case 'workAvailability':
+
+      dataTable.hashes().forEach((row) => {
+        cy.get('[class="common-scroll-bar pr-21"]')
+        .should('contain.text', 'Unemployed')
+        .and('contain.text', '30 Km')
+        .and('contain.text', '3')
+        .and('contain.text', 'Month')
+        .and('contain.text', 'Full_time')
+        .and('contain.text', row.day)
+        .and('contain.text', row.time)
+      })
+        
+      break;
 
     case 'hobbies':
       dataTable.hashes().forEach(detail => {

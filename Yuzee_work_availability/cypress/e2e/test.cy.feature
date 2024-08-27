@@ -11,10 +11,22 @@ Feature: Yuzee user profile components
       Then the new user will be redirect to the user control center page
       And the user initiate to Go to profile
 
-    # work experience
-      Scenario Outline: Add work experience
+    # work availability
+      Scenario Outline: Add work availability
         Given the user is student skipped onboarding is in profile page
-        When the user initiate the Work Experience
-        And the user provides valid work experience details
-        And the user submits the Work Experience form
-        Then the user can view Work Experience on profile page
+        When the user initiate the Work Availability
+        And the user provides valid work availability details
+        | day       | startTime | endTime   |
+        | Monday    | 8:00 AM   | 8:00 PM   |
+        | Tuesday   | 8:00 AM   | 8:00 PM   |
+        | Wednesday | 9:00 AM   | 6:00 PM   |
+        | Thursday  | 10:00 AM  | 7:00 PM   |
+        | Friday    | 10:00 AM  | 7:00 PM   |
+        And the user submits the Work Availability form
+        Then the user can view Work Availability on profile page
+        | day       | time                |
+        | Monday    | 8:00 AM - 8:00 PM      |
+        | Tuesday   | 8:00 AM - 8:00 PM   |
+        | Wednesday | 9:00 AM - 6:00 PM   |
+        | Thursday  | 10:00 AM - 7:00 PM  |
+        | Friday    | 10:00 AM - 7:00 PM  |
