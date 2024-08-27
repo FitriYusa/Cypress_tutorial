@@ -210,24 +210,43 @@ export function Onboarding(type) {
 
       break;
 
-    case 'noWorkCompleteOnboarding':
+    case 'noExperienceCompleteOnboarding':
       cy.get('span.slider.round').eq(1).click();
       cy.get('[type="submit"]').contains('Continue').click();
       cy.wait(3000)
-      cy.contains('Skip').click();
+      cy.get('[class="btn img-logo"]').find('img').click()
+      cy.get('input[type="file"]').invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png')
+      cy.get('[type="button"]', { timeout: 10000 }).contains('Save').click()
+      cy.get('[type="button"]', { timeout: 10000 }).contains('Ok').click()
+      cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
+      // cy.contains('Skip', { timeout: 10000 }).click();
+
+      // Location
+      cy.get('[placeholder="Search location"]', { timeout: 10000 }).type('Kuala Lumpur')
+      cy.get('[role="option"]').contains('Kuala Lumpur').click()
       cy.wait(3000)
-      cy.get('[type="submit"]').contains('Skip').click();
+      cy.get('[type="submit"]').contains('Continue').click();
+      // cy.contains('Skip', { timeout: 10000 }).click();
+
+      // Hobby
       cy.wait(3000)
-      cy.contains('Skip', { timeout: 10000 }).click();
+      cy.get('[bindlabel="hobby_name"]', { timeout: 10000 }).type('run');
+      cy.contains('Running').click();
       cy.wait(3000)
+      cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+      cy.wait(3000)
+
+      // Community
       cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
       cy.wait(3000)
       cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
       cy.wait(3000)
 
+      cy.wait(3000)
+
       break;
 
-    case 'noWorkSkipOnboarding':
+    case 'noExperienceSkipOnboarding':
       cy.get('span.slider.round').eq(1).click();
       cy.get('[type="submit"]').contains('Continue').click();
 

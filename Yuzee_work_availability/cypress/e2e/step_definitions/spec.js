@@ -79,16 +79,28 @@ When("the new user submits the verification code", () => {
     cy.get('button[type="submit"]').contains("Continue").click();
 })
 
-When("the new user will be redirect to completing the Onboarding", () => {
-    // Onboarding();
+When("the new user is student completing the Onboarding", () => {
+    Onboarding('studentCompleteOnboarding');
 })
 
-When("the new user will skip the onboarding process", () => {
-    // Onboarding(true);
+When("the new user is student skipping the onboarding process", () => {
+    Onboarding('studentSkipOnboarding');
 })
 
 When("the new user have work experience completing the onboarding", () => {
     Onboarding('workCompleteOnboarding')
+})
+
+When("the new user have work experience skipping the onboarding process", () => {
+    Onboarding('workSkipOnboarding');
+})
+
+When("the new user have no work experience completing the onboarding process", () => {
+    Onboarding('noExperienceCompleteOnboarding');
+})
+
+When("the new user have no work experience skipping the onboarding process", () => {
+    Onboarding('noExperienceSkipOnboarding');
 })
 
 //user home page and user profile page
@@ -110,11 +122,12 @@ When("the user initiate to Go to profile", () => {
 
 })
 
-Given("the user skip onboarding is in profile page", () => {
+Given("the user is student skipped onboarding is in profile page", () => {
     cy.url().should('include', '/profile')
+    cy.get('[class="col-md-4"]').contains('Australian National University').scrollIntoView().should('be.visible')
 })
 
-Given("the user completed onboarding is in profile page", () => {
+Given("the user is student skipped onboarding is in profile page", () => {
     cy.url().should('include', '/profile')
     cy.get('[class="col-md-4"]').contains('Kuala Lumpur,').scrollIntoView().should('be.visible')
     cy.get('[class="col-md-4"]').contains('Australian National University').scrollIntoView().should('be.visible')
@@ -141,13 +154,13 @@ Given("the user work skip onboarding is in profile page", () => {
 	.should('contain.text', 'Australian Company')
 })
 
-Given("the user no experience complete onboarding is in profile page", () => {
+Given("no experience user complete onboarding is in profile page", () => {
     cy.url().should('include', '/profile')
     cy.get('[class="col-md-4"]').contains('Kuala Lumpur,').scrollIntoView().should('be.visible')
     cy.get('[class="suggestion-block ng-star-inserted"]').contains('Running Tours').should('be.visible')
 })
 
-Given("the user no experience skip onboarding is in profile page", () => {
+Given("no experience user skip onboarding is in profile page", () => {
     cy.url().should('include', '/profile')
 })
 
@@ -561,7 +574,7 @@ When("the user submit the Hobbies form update", () => {
     cy.get('[type="button"]').contains('Update').click()
 })
 Then("the user can view Hobbies on profile page", (dataTable) => {
-    cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Interested Hobbies ').scrollIntoView().should('be.visible')
+    cy.get('[class="block-title-md p-0 mb-4 d-flex text-align"]').contains(' Interested Hobbies ').scrollIntoView().should('be.visible')
     assertDetails("hobbies", dataTable);
 })
 
