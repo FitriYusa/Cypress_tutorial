@@ -497,6 +497,17 @@ export function assertDetails(type, dataTable = null, isCurrent = false) {
       });
       break;
 
+    case 'workExperience':
+      cy.get('[class="col-md-4"]').contains('Australian Company').scrollIntoView().should('be.visible')
+      cy.get('[class="post-title"]')
+          .should('contain.text', 'Accountant')
+          .and('contain.text', 'Australian Company')
+          .and('contain.text', '21/Apr/2020')
+          .and('contain.text', '21/Apr/2024')
+          .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+      
+          break;
+
     case 'myDocs':
         cy.get('[class="pr-24 mb-3"]').contains(' My Docs ').scrollIntoView().should('be.visible')
         dataTable.hashes().forEach(detail => {
@@ -539,7 +550,7 @@ export function assertDetails(type, dataTable = null, isCurrent = false) {
         .should('contain.text', 'Firecracker Award')
         .and('contain.text', 'Aston University')
         .and('contain.text', '06/Aug/2020')
-        .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
+        .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
       break;
 
     case 'patent':
