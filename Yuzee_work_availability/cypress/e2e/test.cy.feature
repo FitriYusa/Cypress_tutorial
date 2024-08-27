@@ -7,13 +7,13 @@ Feature: Yuzee user profile components
       And the user submits the registration form
       Then the new user should receive verification code via email
       And the new user submits the verification code
-      And the new user will be redirect to completing the Onboarding
+      And the new user have work experience completing the onboarding
       Then the new user will be redirect to the user control center page
       And the user initiate to Go to profile
 
     # My Docs
       Scenario Outline: Add My Docs
-        Given the user is in profile page
+        Given the user work complete onboarding is in profile page
         When the user initiate the My Docs
         And the user provides valid My Docs details
         | documentType                           | filePath         |

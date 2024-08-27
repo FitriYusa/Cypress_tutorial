@@ -2,7 +2,7 @@ import { When, Then, Given } from "@badeball/cypress-cucumber-preprocessor"
 
 import { fillRegistration,
               verifyOTP,
-              completeOnboarding,
+              Onboarding,
               selectDate,
               fillSubjects,
               fillContactDetails,
@@ -80,11 +80,15 @@ When("the new user submits the verification code", () => {
 })
 
 When("the new user will be redirect to completing the Onboarding", () => {
-    completeOnboarding();
+    // Onboarding();
 })
 
 When("the new user will skip the onboarding process", () => {
-    completeOnboarding(true);
+    // Onboarding(true);
+})
+
+When("the new user have work experience completing the onboarding", () => {
+    Onboarding('workCompleteOnboarding')
 })
 
 //user home page and user profile page
@@ -110,12 +114,41 @@ Given("the user skip onboarding is in profile page", () => {
     cy.url().should('include', '/profile')
 })
 
-
-Given("the user is in profile page", () => {
+Given("the user completed onboarding is in profile page", () => {
     cy.url().should('include', '/profile')
     cy.get('[class="col-md-4"]').contains('Kuala Lumpur,').scrollIntoView().should('be.visible')
     cy.get('[class="col-md-4"]').contains('Australian National University').scrollIntoView().should('be.visible')
     cy.get('[class="suggestion-block ng-star-inserted"]').contains('Running Tours').should('be.visible')
+})
+
+Given("the user work complete onboarding is in profile page", () => {
+    cy.url().should('include', '/profile')
+    cy.get('[class="col-md-4"]').contains('Kuala Lumpur,').scrollIntoView().should('be.visible')
+    cy.get('[class="col-md-4"]').contains('Australian Company').scrollIntoView().should('be.visible')
+    cy.get('[class="suggestion-block ng-star-inserted"]').contains('Running Tours').should('be.visible')
+
+    cy.get('[class="student-experience-section mb-3"]')
+	.should('contain.text', 'Broadcast Technician')
+	.should('contain.text', 'Australian Company')
+})
+
+Given("the user work skip onboarding is in profile page", () => {
+    cy.url().should('include', '/profile')
+    cy.get('[class="col-md-4"]').contains('Australian Company').scrollIntoView().should('be.visible')
+
+    cy.get('[class="student-experience-section mb-3"]')
+	.should('contain.text', 'Broadcast Technician')
+	.should('contain.text', 'Australian Company')
+})
+
+Given("the user no experience complete onboarding is in profile page", () => {
+    cy.url().should('include', '/profile')
+    cy.get('[class="col-md-4"]').contains('Kuala Lumpur,').scrollIntoView().should('be.visible')
+    cy.get('[class="suggestion-block ng-star-inserted"]').contains('Running Tours').should('be.visible')
+})
+
+Given("the user no experience skip onboarding is in profile page", () => {
+    cy.url().should('include', '/profile')
 })
 
 //Edit profile photo if there is no photo

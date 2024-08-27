@@ -55,7 +55,7 @@ export function fillRegistration () {
 }
 
 // Function to handle onboarding flow
-export function completeOnboarding(skip = false) {
+export function Onboarding(type) {
   cy.url().should('include', '/profile-setup');
   cy.contains("Let's get this show on the road");
   cy.get('[type="submit"]').contains('Start!').click();
@@ -68,67 +68,204 @@ export function completeOnboarding(skip = false) {
   // cy.get('[class="col-md-4 ng-star-inserted"]').contains('Traineeship').click()
   cy.get('[type="submit"]').contains('Continue').click();
 
-  if (!skip) {
-    cy.get('span.slider.round').first().click();
-    cy.get('[placeholder="University/School"]').type('Australian National University')
-    cy.get('[role="option"]').contains('Australian National University').click()
+  switch(type) {
+    case 'studentCompleteOnboarding':
+      cy.get('span.slider.round').first().click();
+      cy.get('[placeholder="University/School"]').type('Australian National University')
+      cy.get('[role="option"]').contains('Australian National University').click()
 
-    // Set start and end dates
-    cy.get('[name="start_date"]').click();
-    cy.get('[title="Select year"]').select('2020');
-    cy.get('[title="Select month"]').select('Apr');
-    cy.get('[role="gridcell"]').contains('21').click();
+      // Set start and end dates
+      cy.get('[name="start_date"]').click();
+      cy.get('[title="Select year"]').select('2020');
+      cy.get('[title="Select month"]').select('Apr');
+      cy.get('[role="gridcell"]').contains('21').click();
 
-    cy.get('[name="end_date"]').click();
-    cy.get('[title="Select year"]').select('2025');
-    cy.get('[title="Select month"]').select('Jul');
-    cy.get('[role="gridcell"]').contains('21').click();
+      cy.get('[name="end_date"]').click();
+      cy.get('[title="Select year"]').select('2025');
+      cy.get('[title="Select month"]').select('Jul');
+      cy.get('[role="gridcell"]').contains('21').click();
 
-    cy.get('[type="submit"]').contains('Continue').click();
+      cy.get('[type="submit"]').contains('Continue').click();
 
-    // //profile photo
-    cy.wait(3000)
-    cy.get('[class="btn img-logo"]').find('img').click()
-    cy.get('input[type="file"]').invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png')
-    cy.get('[type="button"]', { timeout: 10000 }).contains('Save').click()
-    cy.get('[type="button"]', { timeout: 10000 }).contains('Ok').click()
-    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
-    // cy.contains('Skip', { timeout: 10000 }).click();
+      // //profile photo
+      cy.wait(3000)
+      cy.get('[class="btn img-logo"]').find('img').click()
+      cy.get('input[type="file"]').invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png')
+      cy.get('[type="button"]', { timeout: 10000 }).contains('Save').click()
+      cy.get('[type="button"]', { timeout: 10000 }).contains('Ok').click()
+      cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
+      // cy.contains('Skip', { timeout: 10000 }).click();
 
-    // Location
-    cy.get('[placeholder="Search location"]', { timeout: 10000 }).type('Kuala Lumpur')
-    cy.get('[role="option"]').contains('Kuala Lumpur').click()
-    cy.get('[type="submit"]').contains('Continue').click();
-    // cy.contains('Skip', { timeout: 10000 }).click();
+      // Location
+      cy.get('[placeholder="Search location"]', { timeout: 10000 }).type('Kuala Lumpur')
+      cy.get('[role="option"]').contains('Kuala Lumpur').click()
+      cy.get('[type="submit"]').contains('Continue').click();
+      // cy.contains('Skip', { timeout: 10000 }).click();
 
-    // Hobby
-    cy.wait(3000)
-    cy.get('[bindlabel="hobby_name"]', { timeout: 10000 }).type('run');
-    cy.contains('Running').click();
-    cy.wait(3000)
-    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
-    cy.wait(3000)
+      // Hobby
+      cy.wait(3000)
+      cy.get('[bindlabel="hobby_name"]', { timeout: 10000 }).type('run');
+      cy.contains('Running').click();
+      cy.wait(3000)
+      cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+      cy.wait(3000)
 
-    // Community
-    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
-    cy.wait(3000)
-    cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
-    cy.wait(3000)
-  } else {
-    // If skipping the onboarding process
-    cy.get('span.slider.round').eq(1).click();
-    cy.get('[type="submit"]').contains('Continue').click();
-    cy.wait(3000)
-    cy.contains('Skip').click();
-    cy.wait(3000)
-    cy.get('[type="submit"]').contains('Skip').click();
-    cy.wait(3000)
-    cy.contains('Skip', { timeout: 10000 }).click();
-    cy.wait(3000)
-    cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
-    cy.wait(3000)
-    cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
+      // Community
+      cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+      cy.wait(3000)
+      cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click()
+      cy.wait(3000)
+
+      break;
+
+    case 'studentSkipOnboarding':
+      cy.get('span.slider.round').first().click();
+      cy.get('[placeholder="University/School"]').type('Australian National University')
+      cy.get('[role="option"]').contains('Australian National University').click()
+  
+      // Set start and end dates
+      cy.get('[name="start_date"]').click();
+      cy.get('[title="Select year"]').select('2020');
+      cy.get('[title="Select month"]').select('Apr');
+      cy.get('[role="gridcell"]').contains('21').click();
+  
+      cy.get('[name="end_date"]').click();
+      cy.get('[title="Select year"]').select('2025');
+      cy.get('[title="Select month"]').select('Jul');
+      cy.get('[role="gridcell"]').contains('21').click();
+  
+      cy.get('[type="submit"]').contains('Continue').click();
+
+      cy.wait(3000)
+      cy.contains('Skip').click();
+      cy.wait(3000)
+      cy.get('[type="submit"]').contains('Skip').click();
+      cy.wait(3000)
+      cy.contains('Skip', { timeout: 10000 }).click();
+      cy.wait(3000)
+      cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+      cy.wait(3000)
+      cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
+      cy.wait(3000)
+      break;
+    
+    case 'workCompleteOnboarding':
+
+      cy.get('[id="job_title"]').type('Broadcast Technician')
+      cy.get('[role="option"]').contains('Broadcast Technician').click()
+      cy.get('[id="company_name"]').type('Australian Company')
+      cy.get('[role="option"]').contains('Australian Company').click()
+      cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
+      //profile photo
+      cy.wait(3000)
+      cy.get('[class="btn img-logo"]').find('img').click()
+      cy.get('input[type="file"]').invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png')
+      cy.get('[type="button"]', { timeout: 10000 }).contains('Save').click()
+      cy.get('[type="button"]', { timeout: 10000 }).contains('Ok').click()
+      cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
+      // cy.contains('Skip', { timeout: 10000 }).click();
+
+      // Location
+      cy.get('[placeholder="Search location"]', { timeout: 10000 }).type('Kuala Lumpur')
+      cy.get('[role="option"]').contains('Kuala Lumpur').click()
+      cy.wait(3000)
+      cy.get('[type="submit"]').contains('Continue').click();
+      // cy.contains('Skip', { timeout: 10000 }).click();
+
+      // Hobby
+      cy.wait(3000)
+      cy.get('[bindlabel="hobby_name"]', { timeout: 10000 }).type('run');
+      cy.contains('Running').click();
+      cy.wait(3000)
+      cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+      cy.wait(3000)
+
+      // Community
+      cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+      cy.wait(3000)
+      cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
+      cy.wait(3000)
+
+      break;
+    
+    case 'workSkipOnboarding':
+
+      cy.get('[id="job_title"]').type('Broadcast Technician')
+      cy.get('[role="option"]').contains('Broadcast Technician').click()
+      cy.get('[id="company_name"]').type('Australian Company')
+      cy.get('[role="option"]').contains('Australian Company').click()
+      cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
+
+      cy.wait(3000)
+      cy.contains('Skip').click();
+      cy.wait(3000)
+      cy.get('[type="submit"]').contains('Skip').click();
+      cy.wait(3000)
+      cy.contains('Skip', { timeout: 10000 }).click();
+      cy.wait(3000)
+      cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+      cy.wait(3000)
+      cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
+      cy.wait(3000)
+
+      break;
+
+    case 'noWorkCompleteOnboarding':
+      cy.get('span.slider.round').eq(1).click();
+      cy.get('[type="submit"]').contains('Continue').click();
+      cy.wait(3000)
+      cy.contains('Skip').click();
+      cy.wait(3000)
+      cy.get('[type="submit"]').contains('Skip').click();
+      cy.wait(3000)
+      cy.contains('Skip', { timeout: 10000 }).click();
+      cy.wait(3000)
+      cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+      cy.wait(3000)
+      cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
+      cy.wait(3000)
+
+      break;
+
+    case 'noWorkSkipOnboarding':
+      cy.get('span.slider.round').eq(1).click();
+      cy.get('[type="submit"]').contains('Continue').click();
+
+      //profile photo
+      cy.wait(3000)
+      cy.get('[class="btn img-logo"]').find('img').click()
+      cy.get('input[type="file"]').invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png')
+      cy.get('[type="button"]', { timeout: 10000 }).contains('Save').click()
+      cy.get('[type="button"]', { timeout: 10000 }).contains('Ok').click()
+      cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
+      // cy.contains('Skip', { timeout: 10000 }).click();
+
+      // Location
+      cy.get('[placeholder="Search location"]', { timeout: 10000 }).type('Kuala Lumpur')
+      cy.get('[role="option"]').contains('Kuala Lumpur').click()
+      cy.get('[type="submit"]').contains('Continue').click();
+      // cy.contains('Skip', { timeout: 10000 }).click();
+
+      // Hobby
+      cy.wait(3000)
+      cy.get('[bindlabel="hobby_name"]', { timeout: 10000 }).type('run');
+      cy.contains('Running').click();
+      cy.wait(3000)
+      cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+      cy.wait(3000)
+
+      // Community
+      cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click();
+      cy.wait(3000)
+      cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
+      cy.wait(3000)
+
+      break;
+
+    default:
+      throw new Error("Invalid onboarding flow type.");
   }
+
 }
 
 // Utility function to select a date
