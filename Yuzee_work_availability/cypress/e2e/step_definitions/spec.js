@@ -127,7 +127,7 @@ Given("the user is student skipped onboarding is in profile page", () => {
     cy.get('[class="col-md-4"]').contains('Australian National University').scrollIntoView().should('be.visible')
 })
 
-Given("the user is student skipped onboarding is in profile page", () => {
+Given("the user is student completed onboarding is in profile page", () => {
     cy.url().should('include', '/profile')
     cy.get('[class="col-md-4"]').contains('Kuala Lumpur,').scrollIntoView().should('be.visible')
     cy.get('[class="col-md-4"]').contains('Australian National University').scrollIntoView().should('be.visible')
@@ -243,8 +243,8 @@ When("the user submits the Edit profiles form", () => {
 
 Then("the edited profile information should be visible", () => {
     cy.url().should('include', '/profile')
-    cy.get('[class="col-md-8"]').should('include.text', ' Abu Ali ')
-    cy.get('[class="col-md-8"]').should('include.text','bio is correct and Minimum 30 characters are required')
+    cy.get('[class="col-md-8 popover-custom"]').should('include.text', ' Abu Ali ')
+    cy.get('[class="col-md-8 popover-custom"]').should('include.text','bio is correct and Minimum 30 characters are required')
 })
 
 
@@ -330,7 +330,7 @@ When("the user submits the Contact details form", () => {
 })
 
 Then("the user can view Contact details on profile page", (dataTable) => {
-    cy.get('[class="pr-24"]').contains(' Contact Details ').scrollIntoView().should('be.visible')
+    cy.get('[class="pr-24 mb-3"]').contains(' Contact Details ').scrollIntoView().should('be.visible')
     assertDetails('contactDetails', dataTable )
 })
 
@@ -360,12 +360,13 @@ Then("the user can view My Docs on profile page", (dataTable) => {
 When("the user initiate the Education", () => {
     cy.get('[id="dropdownBasic1"]').contains('Add to profile').should('be.visible').click()
     cy.get('[class="fs-14 fw-500"]').contains('Background').should('be.visible').click()
-    cy.get('[class="subpro-name"]').contains(' Education ').should('be.visible').click()
+    cy.get('[class="subpro-name"]').contains(' Education ').should('be.visible').click()    
 })
 
 When("the user provides valid Education details", (dataTable) => {
-    cy.get('[name="privacy_level"]').click()
-    cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
+    cy.get('[name="form"]').should('be.visible')
+    cy.get('[name="privacy_level"]').should('be.visible').click()
+    cy.get('[role="option"]').contains('Public').should('be.visible').click()
 
     cy.get('[name="education_title"]').click()
     cy.get('[role="option"]').contains('Diploma').click()

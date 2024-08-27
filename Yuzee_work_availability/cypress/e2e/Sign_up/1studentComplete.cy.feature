@@ -13,14 +13,14 @@ Feature: Yuzee user profile components
 
     # Background photo
       Scenario Outline: Edit background photo
-        Given the user is student skipped onboarding is in profile page
+        Given the user is student completed onboarding is in profile page
         When the user edit the background photo
         And the user submit the background photo
         Then the edited background photo should be visible
 
     # Edit profile
       Scenario Outline: Edit profile information
-        Given the user is student skipped onboarding is in profile page
+        Given the user is student completed onboarding is in profile page
         When the user initiate the edit profile
         And the user provides valid Edit profiles details
         And the user submits the Edit profiles form
@@ -28,7 +28,7 @@ Feature: Yuzee user profile components
 
     # Get to know me
       Scenario Outline: Add Get to know me
-        Given the user is student skipped onboarding is in profile page
+        Given the user is student completed onboarding is in profile page
         When the user initiate the Get to know me
         And the user provides valid Get to know me details
         And the user submits the Get to know me form
@@ -36,7 +36,7 @@ Feature: Yuzee user profile components
 
     # About me / Introductory videos
       Scenario Outline: Add introductory videos
-        Given the user is student skipped onboarding is in profile page
+        Given the user is student completed onboarding is in profile page
         When the user initiate the introductory videos
         And the user provides valid introductory videos details
         And the user submits the introductory videos form
@@ -44,7 +44,7 @@ Feature: Yuzee user profile components
 
     # Contact details
       Scenario Outline: Add Contact details
-        Given the user is student skipped onboarding is in profile page
+        Given the user is student completed onboarding is in profile page
         When the user initiate the Contact details
         And the user provides valid Contact details details
         | method    | detail                            | country   | phone       |
@@ -64,7 +64,7 @@ Feature: Yuzee user profile components
     
     # My Docs
       Scenario Outline: Add My Docs
-        Given the user is student skipped onboarding is in profile page
+        Given the user is student completed onboarding is in profile page
         When the user initiate the My Docs
         And the user provides valid My Docs details
         | documentType                           | filePath         |
@@ -94,7 +94,7 @@ Feature: Yuzee user profile components
 
     # Education
       Scenario Outline: Add Education
-        Given the user is student skipped onboarding is in profile page
+        Given the user is student completed onboarding is in profile page
         When the user initiate the Education
         And the user provides valid Education details
         | subjects       | grade |
@@ -113,7 +113,7 @@ Feature: Yuzee user profile components
 
     # work experience
       Scenario Outline: Add work experience
-        Given the user is student skipped onboarding is in profile page
+        Given the user is student completed onboarding is in profile page
         When the user initiate the Work Experience
         And the user provides valid work experience details
         And the user submits the Work Experience form
@@ -121,7 +121,7 @@ Feature: Yuzee user profile components
 
     # work availability
       Scenario Outline: Add work availability
-        Given the user is student skipped onboarding is in profile page
+        Given the user is student completed onboarding is in profile page
         When the user initiate the Work Availability
         And the user provides valid work availability details
         | day       | startTime | endTime   |
@@ -135,7 +135,7 @@ Feature: Yuzee user profile components
 
     # language qualification
       Scenario Outline: Add language qaulification
-        Given the user is student skipped onboarding is in profile page
+        Given the user is student completed onboarding is in profile page
         When the user initiate the Language qualification
         And the user provides valid language qualification details
         | Type              | scores         | file                                |
@@ -149,7 +149,7 @@ Feature: Yuzee user profile components
 
     # Hobbies
       Scenario Outline: Add Hobbies
-        Given the user is student skipped onboarding is in profile page
+        Given the user is student completed onboarding is in profile page
         When the user initiate the Hobbies
         And the user provides valid Hobbies details
         | hobbies                 |
@@ -167,7 +167,7 @@ Feature: Yuzee user profile components
 
     # Skills 
       Scenario Outline: Add Skills
-        Given the user is student skipped onboarding is in profile page
+        Given the user is student completed onboarding is in profile page
         When the user initiate the Skills
         And the user provides valid Skills details
         | skills                                     |
@@ -187,7 +187,7 @@ Feature: Yuzee user profile components
 
     # Award and certificate
       Scenario Outline: Add Award and certificates
-        Given the user is student skipped onboarding is in profile page
+        Given the user is student completed onboarding is in profile page
         When the user initiate the Awards and certificates
         And the user provides valid Awards and certificates details
         And the user submits the Awards and certificates form
@@ -195,7 +195,7 @@ Feature: Yuzee user profile components
 
     # Publications
       Scenario Outline: Add Publications
-        Given the user is student skipped onboarding is in profile page
+        Given the user is student completed onboarding is in profile page
         When the user initiate the Publications
         And the user provides valid Publications details
         And the user submits the Publications form
@@ -203,7 +203,7 @@ Feature: Yuzee user profile components
 
     # Patent
       Scenario Outline: Add Patent
-        Given the user is student skipped onboarding is in profile page
+        Given the user is student completed onboarding is in profile page
         When the user initiate the Patent
         And the user provides valid Patent details
         And the user submits the Patent form
@@ -211,7 +211,7 @@ Feature: Yuzee user profile components
 
     # Projects
       Scenario Outline: Add projects
-        Given the user is student skipped onboarding is in profile page
+        Given the user is student completed onboarding is in profile page
         When the user initiate the Accomplishment projects
         And the user provides valid Accomplishment projects details
         And the user submits the Accomplishment projects form
@@ -219,7 +219,7 @@ Feature: Yuzee user profile components
 
     # Accomplishment Language
       Scenario Outline: Add Language
-        Given the user is student skipped onboarding is in profile page
+        Given the user is student completed onboarding is in profile page
         When the user initiate the Language
         And the user provides valid Language details
         And the user submits the Language form
