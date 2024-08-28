@@ -132,6 +132,12 @@ Feature: Yuzee user profile components
         | Friday    | 10:00 AM  | 7:00 PM   |
         And the user submits the Work Availability form
         Then the user can view Work Availability on profile page
+        | day       | time   |
+        | Monday    | 8:00 AM - 8:00 PM   |
+        | Tuesday   | 8:00 AM - 8:00 PM   |
+        | Wednesday | 9:00 AM - 6:00 PM   |
+        | Thursday  | 10:00 AM - 7:00 PM   |
+        | Friday    | 10:00 AM - 7:00 PM   |
 
     # language qualification
       Scenario Outline: Add language qaulification
