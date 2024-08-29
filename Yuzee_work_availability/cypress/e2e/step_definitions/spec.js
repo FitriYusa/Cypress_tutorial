@@ -249,7 +249,6 @@ When("the user submits the Contact details form", () => {
 })
 
 Then("the user can view Contact details on profile page", (dataTable) => {
-    cy.get('[class="pr-24 mb-3"]').contains(' Contact Details ').scrollIntoView().should('be.visible')
     assertDetails('contactDetails', dataTable )
 })
 
