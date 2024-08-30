@@ -5,7 +5,7 @@ export function verifyOTP () {
 
   cy.get('@uniqueEmail').then((emailAddress) => { 
     // waiting for the API
-    cy.wait('@signupRequest', { timeout: 10000 }).then((interception) => {
+    cy.wait('@signupRequest', { timeout: 30000 }).then((interception) => {
         
         let statusCode = interception.response.statusCode;
 
@@ -204,12 +204,12 @@ export function Onboarding(type) {
   cy.wait(3000)
   cy.get('[type="submit"]', { timeout: 30000 }).contains('Continue').click();
   cy.wait(3000)
-  cy.get('[type="submit"]', { timeout: 300000 }).contains('Go!').click();
+  cy.get('[type="submit"]', { timeout: 30000 }).contains('Go!').click();
   cy.wait(3000)
 }
 
 // Utility function to select a date
-function selectDate(month, year, day) {
+export function selectDate(month, year, day) {
     cy.get('[title="Select month"]').select(month);
     cy.get('[title="Select year"]').select(year);
     cy.get('[role="gridcell"]').contains(day).click();
@@ -330,7 +330,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
 
       break;
 
-    case 'fillSubjects':
+    case 'fillEducation':
 
       cy.get('[name="form"]').should('be.visible')
       cy.get('[name="privacy_level"]').should('be.visible').click()
@@ -340,7 +340,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       cy.get('[role="option"]').contains('Diploma').click()
 
       cy.get('[name="institute_name"]').clear().type('Australian National University')
-      cy.get('[role="option"]').contains('Australian National University').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Australian National University').click()
 
       //location
       // cy.get('[name="description"]').type('Cyberjaya')
