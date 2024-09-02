@@ -11,37 +11,20 @@ Feature: Yuzee user profile components
       Then the new user will be redirect to the user control center page
       And the user initiate to Go to profile
 
-    # Skills 
-      Scenario Outline: Add Skills
+    # Accomplishment Language
+      Scenario Outline: Add Language
         Given no experience user skip onboarding is in profile page
-        When the user initiate the Skills
-        And the user provides valid Skills details
-        | skills                                     |
-        | Microsoft Access                           |
-        | Microsoft Applications                     |
-        | Microsoft Assessment and Planning Toolkit  |
-        | Microsoft Azure                            |
-        | Microsoft Backoffice                       |
-        And the user submit the Skills form
-        Then the user can view Skills on profile page
-        | skills                                     |
-        | Microsoft Access                           |
-        | Microsoft Applications                     |
-        | Microsoft Assessment and Planning Toolkit  |
-        | Microsoft Azure                            |
-        | Microsoft Backoffice                       |
-        And the user add more skills
-        | skills                                     |
-        | Microsoft Access                           |
-        | Microsoft Applications                     |
-        | Microsoft Assessment and Planning Toolkit  |
-        | Microsoft Azure                            |
-        | Microsoft Backoffice                       |
-        | ABC Analysis                               |
-        And the user delete skills
-        | skills                                     |
-        | ABC Analysis                               |
-        | Microsoft Applications                     |
-        | Microsoft Assessment and Planning Toolkit  |
-        | Microsoft Azure                            |
-        | Microsoft Backoffice                       |
+        When the user initiate the Language
+        And the user provides valid Language details
+        And the user submits the Language form
+        Then the user can view Language on profile page
+        | language | proficient |
+        | Malay    | Native or bilingual Proficiency |
+        And the user initiate edit Language
+        And the user provides valid edit Language details
+        And the user submit the edited Language form
+        Then the user can view edited Language form
+        | language | proficient |
+        | English    | Native or bilingual Proficiency |
+        And the user initiate delete Language
+        Then the user cannot view the Language

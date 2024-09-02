@@ -466,39 +466,39 @@ When("the user initiate the Awards and certificates", () => {
     cy.get('[class="fs-14 fw-500"]').contains('Accomplishments').should('be.visible').click()
     cy.get('[class="subpro-name"]').contains('Awards and Certificates').scrollIntoView().should('be.visible').click()
 })
-
 When("the user provides valid Awards and certificates details", () => {
     fillFunction('fillAward')
 })
-
 When("the user submits the Awards and certificates form", () => {
     cy.get('[type="button"]').contains(' Save ').click()
     // cy.get('[type="button"]').contains('Ok').click()
     //have error, after click on the Ok button, the popup does not close
 })
-
 Then("the user can view Awards and certificates on profile page", () => {
     assertDetails("award");
 })
-
-When("the user edit award", () => {
+//edit
+When("the user initiate edit award", () => {
     //edit button
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
-
+})
+When("the user provides valid edit awards and certificates details", () => {
     cy.get('[id="title"]').clear().type('New Awards')
     cy.get('[name="name"]').clear().type('Aston University')
     cy.get('[role="option"]').contains('Aston University, Aston Street, Birmingham, UK').click()
 
     cy.get('[placeholder="Select a date"]').click()
     selectDate('Aug', '2020', '15');
-
     cy.get('[name="details"]').clear().type('New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
     cy.get('[class="ng-value-icon right ng-star-inserted"]').click()
     cy.get('[name="collaborations"]').type('Daniyal Institution')
     cy.get('[role="option"]').contains(' Daniyal Institution Dubai - United Arab Emirates ').click()
     cy.contains('Associated with').click()
+})
+When("the user submit the edited award and certificates form", () => {
     cy.get('[type="button"]').contains('Update').click()
-
+})
+Then("the user can view edited award and certificates form", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
     cy.get('[class="accomplish-row"]').contains('Awards and Certificates').click()
     cy.get('[class="acc-content-block"]')
@@ -507,13 +507,14 @@ When("the user edit award", () => {
       .and('contain.text', '15/Aug/2020')
       .and('contain.text', 'New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
 })
-
-When("the user delete award", () => {
+//delete
+When("the user initiate delete award", () => {
     //edit button
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
     cy.get('[type="button"]').contains('Delete').click()
     cy.get('[type="button"]').contains('Yes').click()
-
+})
+Then("the user cannot view the award", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').should('not.contain.text','Accomplishments')
 })
 
@@ -523,22 +524,20 @@ When("the user initiate the Publications", () => {
     cy.get('[class="fs-14 fw-500"]').contains('Accomplishments').should('be.visible').click()
     cy.get('[class="subpro-name"]').contains(' Publications ').scrollIntoView().should('be.visible').click()
 })
-
 When("the user provides valid Publications details", () => {
     fillFunction('fillPublications')
 })
-
 When("the user submits the Publications form", () => {
     cy.get('[type="button"]').contains('Save').click()
 })
-
 Then("the user can view Publications on profile page", () => {
     assertDetails("publication");
 })
-
-When("the user edit publications", () => {
+//edit
+When("the user initiate edit publications", () => {
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
-
+})
+When("the user provides valid edit Publications details", () => {
     cy.get('[id="title"]').clear().type('New Awards')
     cy.get('[name="publication"]').clear().type('Aston University')
     cy.get('[role="option"]').contains('Aston University, Aston Street, Birmingham, UK').click()
@@ -562,9 +561,11 @@ When("the user edit publications", () => {
     cy.contains('Title').click()
 
     cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
-
+})
+When("the user submit the edited Publications form", () => {
     cy.get('[type="button"]').contains('Update').click()
-
+})
+Then("the user can view edited Publications form", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
     cy.get('[class="accomplish-row"]').contains('Publication').click()
     cy.get('[class="acc-content-block"]')
@@ -573,12 +574,13 @@ When("the user edit publications", () => {
       .and('contain.text', '16/Aug/2020')
       .and('contain.text', 'New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
 })
-
-When("the user delete publications", () => {
+//delete
+When("the user initiate delete Publications", () => {
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
     cy.get('[type="button"]').contains('Delete').click()
     cy.get('[type="button"]').contains('Yes').click()
-
+})
+Then("the user cannot view the Publication", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').should('not.contain.text','Publication')
 })
 
@@ -588,26 +590,23 @@ When("the user initiate the Patent", () => {
     cy.get('[class="fs-14 fw-500"]').contains('Accomplishments').should('be.visible').click()
     cy.get('[class="subpro-name"]').contains('Patents').scrollIntoView().should('be.visible').click()
 })
-
 When("the user provides valid Patent details", () => {
     fillFunction('fillPatentDetails', null, {isIssued : true})
 })
-
 When("the user provides valid pending Patent details", () => {
     fillFunction('fillPatentDetails', null, {isIssued : false})
 })
-
 When("the user submits the Patent form", () => {
     cy.get('[type="button"]').contains('Save').should('be.visible').click()
 })
-
 Then("the user can view Patent on profile page", () => {
     assertDetails('patent')
 })
-
-When("the user edit patent", () => {
+//edit
+When("the user initiate edit patent", () => {
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
-
+})
+When("the user provides valid edit Patent details", () => {
     cy.get('[name="privacy_level"]').click();
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click();
   
@@ -629,9 +628,11 @@ When("the user edit patent", () => {
     cy.contains('Description').click();
   
     cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png');
-
+})
+When("the user submit the edited Patent form", () => {
     cy.get('[type="button"]').contains('Update').click()
-
+})
+Then("the user can view edited Patent form", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
     cy.get('[class="accomplish-row"]').contains('Patent').click()
     cy.get('[class="acc-content-block"]')
@@ -640,12 +641,13 @@ When("the user edit patent", () => {
         .and('contain.text', '14/Aug/2020')
         .and('contain.text', 'New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
 })
-
-When("the user delete patent", () => {
+//delete
+When("the user initiate delete Patent", () => {
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
     cy.get('[type="button"]').contains('Delete').click()
     cy.get('[type="button"]').contains('Yes').click()
-
+})
+Then("the user cannot view the Patent", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').should('not.contain.text','Patent')
 })
 
@@ -655,30 +657,26 @@ When("the user initiate the Accomplishment projects", () => {
     cy.get('[class="fs-14 fw-500"]').contains('Accomplishments').should('be.visible').click()
     cy.get('[class="subpro-name"]').contains('Projects').scrollIntoView().should('be.visible').click()
 })
-
 When("the user provides valid Accomplishment projects details", () => {
     fillFunction('fillProjectDetails', null, {isCurrent : false})
 })
-
 When("the user provide valid currently working Accomplishment projects details", () => {
     fillFunction('fillProjectDetails', null, {isCurrent : true})
 })
-
 When("the user submits the Accomplishment projects form", () => {
     cy.get('[type="button"]').contains('Save').click()
 })
-
 Then("the user can view Accomplishment projects on profile page", () => {
     assertDetails("project", null, false)
 })
-
 Then("the user can view currently working Accomplishment projects on profile page", () => {
     assertDetails("project", null, true)
 })
-
-When("the user edit project", () => {
+//edit
+When("the user initiate edit Accomplishment project", () => {
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
-
+})
+When("the user provides valid edit Accomplishment project details", () => {
     cy.get('[name="privacy_level"]').click();
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click();
     
@@ -697,9 +695,12 @@ When("the user edit project", () => {
     cy.get('[class="ng-star-inserted"]').contains('labels.Other Contributors').click();
 
     cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg');
+})
+When("the user submit the edited Accomplishment project form", () => {
+    cy.get('[type="button"]').contains('Update').click()  
+})
 
-    cy.get('[type="button"]').contains('Update').click()
-
+Then("the user can view edited Accomplishment project form", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
     cy.get('[class="accomplish-row"]').contains('Project').click()
 
@@ -707,15 +708,16 @@ When("the user edit project", () => {
         .should('contain.text', 'Project Juliet')
         .and('contain.text', '02/Jul/2024')
         .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
-        .and('contain.text', 'Present')
+        .and('contain.text', 'Present')    
 })
-
-When("the user delete project", () => {
+When("the user initiate delete Accomplishment project", () => {
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
     cy.get('[type="button"]').contains('Delete').click()
     cy.get('[type="button"]').contains('Yes').click()
-
+})
+Then("the user cannot view the Accomplishment project", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').should('not.contain.text','Project')
+
 })
 
 //Language
@@ -724,22 +726,20 @@ When("the user initiate the Language", () => {
     cy.get('[class="fs-14 fw-500"]').contains('Accomplishments').should('be.visible').click()
     cy.get('[class="subpro-name"]').contains('Languages').scrollIntoView().should('be.visible').click()
 })
-
 When("the user provides valid Language details", () => {
     fillFunction('fillLanguage')
 })
-
 When("the user submits the Language form", () => {
     cy.get('[type="button"]').contains('Save').should('be.visible').click()
 })
-
 Then("the user can view Language on profile page", (dataTable) => {
     assertDetails('language', dataTable);
 })
-
-When("the user edit language", (dataTable) => {
+//edit
+When("the user initiate edit Language", (   ) => {
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
-
+})
+When("the user provides valid edit Language details", () => {
     cy.get('[name="privacy_level"]').click()
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
 
@@ -750,22 +750,25 @@ When("the user edit language", (dataTable) => {
     cy.get('[role="option"]').contains('Native or bilingual Proficiency').should('be.visible').click()
 
     cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
-
-    cy.get('[type="button"]').contains('Update').click()
-
+})
+When("the user submit the edited Language form", () => {
+    cy.get('[type="button"]').contains('Update').click() 
+})
+Then("the user can view edited Language form", (dataTable) => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
     cy.get('[class="accomplish-row"]').contains('Language').click()
     dataTable.hashes().forEach(row => {
       cy.get('[class="acc-content-block"]')
         .should('contain.text', row.language)
         .and('contain.text', row.proficient);
-    });
+    });    
 })
-
-When("the user delete language", () => {
+//delete
+When("the user initiate delete Language", () => {
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
     cy.get('[type="button"]').contains('Delete').click()
     cy.get('[type="button"]').contains('Yes').click()
-
+})
+Then("the user cannot view the Language", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').should('not.contain.text','Langauge')
 })
