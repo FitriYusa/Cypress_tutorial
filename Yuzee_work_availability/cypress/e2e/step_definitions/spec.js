@@ -1,6 +1,6 @@
 import { When, Then, Given } from "@badeball/cypress-cucumber-preprocessor"
 
-import {verifyOTP, selectDate, Onboarding, fillFunction, assertDetails} from '../../support/function';
+import {verifyOTP, selectDate, Onboarding, fillFunction, assertDetails, editDetails} from '../../support/function';
 
 Given("the user is on Yuzee homepage is open", () => {
     cy.visit('/')
@@ -212,6 +212,23 @@ Then("the user can view Get to know me on profile page", () => {
     assertDetails('getToKnowMe')
     
 })
+When("the user initiate edit Get to know me", () => {
+    cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
+
+})
+When("the user provides valid edit Get to know me details", () => {
+    editDetails('getToKnowMe')
+})
+When("the user submit the edited Get to know me form", () => {
+    cy.get('[type="button"]').contains('Save').click()
+})
+Then("the user can view edited Get to know me form", () => {
+    cy.get('[class="mt-3 ng-star-inserted"]')
+    .should('contain.text', 'Actor')
+    .and('contain.text', 'Bachlor in Visual Communication')
+    .and('contain.text', 'Education')
+    .and('contain.text', 'Kuala Lumpur');
+})
 
 //About me - video introductory
 When("the user initiate the introductory videos", () => {
@@ -375,22 +392,41 @@ When("the user initiate the Hobbies", () => {
     cy.get('[class="fs-14 fw-500"]').contains('Interests').should('be.visible').click()
     cy.get('[class="subpro-name"]').contains(' Interested Hobbies ').scrollIntoView().should('be.visible').click()
 })
-
 When("the user provides valid Hobbies details", (dataTable) => {
     fillFunction('fillHobbies', dataTable)
 })
-
 When("the user submit the Hobbies form", () => {
     cy.get('[type="button"]').contains('Save').click()
 })
-
 When("the user submit the Hobbies form update", () => {
     cy.get('[type="button"]').contains('Update').click()
 })
 Then("the user can view Hobbies on profile page", (dataTable) => {
     assertDetails("hobbies", dataTable);
 })
+When("the user add more hobbies", (dataTable) => {
+    editDetails('addHobbies', dataTable)
+})
+When("the user delete hobbies", (dataTable) => {
+    cy.get('[class="btn btn-dots mr-0 edit-blue-btn ng-star-inserted"]').click()
 
+    cy.get('[class="ng-value ng-star-inserted"]')
+        .contains('Historic Walking Areas')
+        .parent()
+        .find('[class="ng-value-icon right ng-star-inserted"]')
+        .click()
+        cy.get('[type="button"]').contains('Update').click()
+
+        assertDetails("hobbies", dataTable);
+
+    cy.get('[class="btn btn-dots mr-0 edit-blue-btn ng-star-inserted"]').click()
+    
+    cy.get('[type="button"]').contains('Delete').click()
+    cy.get('[type="button"]').contains('Yes').click()
+
+    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').should('not.contain.text','Hobbies')
+
+})
 
 //Skills
 When("the user initiate the Skills", () => {
@@ -398,46 +434,23 @@ When("the user initiate the Skills", () => {
     cy.get('[class="fs-14 fw-500"]').contains('Skills').should('be.visible').click()
     cy.get('[class="subpro-name"]').contains('Skills').scrollIntoView().should('be.visible').click()
 })
-
 When("the user provides valid Skills details", (dataTable) => {
     fillFunction('fillSkills', dataTable)
 })
-
 When("the user submit the Skills form", () => {
     cy.get('[type="button"]').contains('Save').click()
 })
-
 When("the user submit the Skills form (update)", () => {
     cy.get('[type="button"]').contains('Update').click()
 })
-
 Then("the user can view Skills on profile page", (dataTable) => {
     assertDetails("skills", dataTable)
 })
-
+//add skills
 When("the user add more skills", (dataTable) => {
-    cy.get('[class="block-sec block-sec-pad pr-0 ng-star-inserted"]')
-        .parent()
-        .find('[class="btn btn-dots mr-0 edit-blue-btn ng-star-inserted"]')
-        .click()
-
-    cy.get('[name="skills"]').type('ab')
-    cy.get('[role="option"]').contains('ABC Analysis').click()
-
-    cy.get('[class="col-md-12 common-input-mb"]').contains('Skills and Endorsement').click()
-    cy.get('[type="button"]').contains('Update').click()
-
-    cy.get('[class="block-sec block-sec-pad pr-0 ng-star-inserted"]').contains('Skills').scrollIntoView().should('be.visible')
-    dataTable.hashes().forEach(detail => {
-      //class="suggestion-block ng-star-inserted"
-      cy.get('[class="mb-4"]')
-        .should('contain.text', detail.skills);
-    });
-
-    cy.pause()
-
+    editDetails('addSkills', dataTable)
 })
-
+//delete skills
 When("the user delete skills", (dataTable) => {
     cy.get('[class="block-sec block-sec-pad pr-0 ng-star-inserted"]')
     .parent()
@@ -483,17 +496,7 @@ When("the user initiate edit award", () => {
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
 })
 When("the user provides valid edit awards and certificates details", () => {
-    cy.get('[id="title"]').clear().type('New Awards')
-    cy.get('[name="name"]').clear().type('Aston University')
-    cy.get('[role="option"]').contains('Aston University, Aston Street, Birmingham, UK').click()
-
-    cy.get('[placeholder="Select a date"]').click()
-    selectDate('Aug', '2020', '15');
-    cy.get('[name="details"]').clear().type('New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
-    cy.get('[class="ng-value-icon right ng-star-inserted"]').click()
-    cy.get('[name="collaborations"]').type('Daniyal Institution')
-    cy.get('[role="option"]').contains(' Daniyal Institution Dubai - United Arab Emirates ').click()
-    cy.contains('Associated with').click()
+    editDetails('award')
 })
 When("the user submit the edited award and certificates form", () => {
     cy.get('[type="button"]').contains('Update').click()
@@ -538,29 +541,7 @@ When("the user initiate edit publications", () => {
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
 })
 When("the user provides valid edit Publications details", () => {
-    cy.get('[id="title"]').clear().type('New Awards')
-    cy.get('[name="publication"]').clear().type('Aston University')
-    cy.get('[role="option"]').contains('Aston University, Aston Street, Birmingham, UK').click()
-    cy.get('[name="publicUrl"]').clear().type('NewURLlink.com')
-
-    cy.get('[placeholder="Select a date"]').click()
-    selectDate('Aug', '2020', '16');
-
-    cy.get('[name="details"]').clear().type('New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
-
-    // cy.get('[class="ng-value-icon right ng-star-inserted"]').eq(0).click()
-
-    cy.get('[class="ng-value ng-star-inserted"]')
-        .contains(' Adam Cof ')
-        .parent()   
-        .find('[class="ng-value-icon right ng-star-inserted"]')
-        .click()
-
-    cy.get('[name="collaborations"]').type('adam')
-    cy.get('[role="option"]').contains(' Adam John ').click()
-    cy.contains('Title').click()
-
-    cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
+    editDetails('publication')
 })
 When("the user submit the edited Publications form", () => {
     cy.get('[type="button"]').contains('Update').click()

@@ -11,20 +11,25 @@ Feature: Yuzee user profile components
       Then the new user will be redirect to the user control center page
       And the user initiate to Go to profile
 
-    # Accomplishment Language
-      Scenario Outline: Add Language
+    # Hobbies
+      Scenario Outline: Add Hobbies
         Given no experience user skip onboarding is in profile page
-        When the user initiate the Language
-        And the user provides valid Language details
-        And the user submits the Language form
-        Then the user can view Language on profile page
-        | language | proficient |
-        | Malay    | Native or bilingual Proficiency |
-        And the user initiate edit Language
-        And the user provides valid edit Language details
-        And the user submit the edited Language form
-        Then the user can view edited Language form
-        | language | proficient |
-        | English    | Native or bilingual Proficiency |
-        And the user initiate delete Language
-        Then the user cannot view the Language
+        When the user initiate the Hobbies
+        And the user provides valid Hobbies details
+        | hobbies                 |
+        | Baseball                |
+        | Fashion Shows & Tours   |
+        | Historic Walking Areas  |
+        | Squash                  |
+        And the user submit the Hobbies form
+        Then the user can view Hobbies on profile page
+        | hobbies                 |
+        | Baseball                |
+        | Fashion Shows & Tours   |
+        | Historic Walking Areas  |
+        | Squash                  |
+        And the user add more hobbies
+        | hobbies                 |
+        | Polo                    |
+        | Water Polo              |
+        And the user delete hobbies
