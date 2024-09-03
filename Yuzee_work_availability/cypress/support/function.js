@@ -828,6 +828,19 @@ export function editDetails(type, dataTable = null){
       cy.get('[name="reason"]').type('New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
       break;
     
+    case 'education':
+      cy.get('[class="ng-value ng-star-inserted"]')
+      .contains(' English ')
+      .parent()
+      .find('[class="ng-value-icon right ng-star-inserted"]')
+      .click()
+  
+
+    cy.contains('Study Language').click()
+    cy.get('[name="studyMode"]').click()
+    cy.get('[role="option"]').contains('Classroom').click()
+      break;
+
     case 'addHobbies':
       cy.get('[class="btn btn-dots mr-0 edit-blue-btn ng-star-inserted"]').click()
 
@@ -843,7 +856,6 @@ export function editDetails(type, dataTable = null){
               .click()
           }
       })
-      cy.wait(5000)
       cy.contains('Tell us your hobbies').click()
   
       cy.get('[type="button"]').contains('Update').click()

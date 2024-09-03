@@ -287,6 +287,8 @@ When("the user close the My Docs form", () => {
 
 Then("the user can view My Docs on profile page", (dataTable) => {
     assertDetails('myDocs', dataTable )
+
+    cy.get('[class="btn edit-blue-btn ml-auto"]').click()
 })
 
 
@@ -317,7 +319,48 @@ When("the user submits the Education form", () => {
 })
 
 Then("the user can view Education on profile page", () => {
-     cy.get('[class="block-sec block-sec-pad pr-0 ng-star-inserted"]').contains(' Education ').scrollIntoView().should('be.visible')
+    cy.get('[class="block-sec block-sec-pad pr-0 ng-star-inserted"]').contains(' Education ').scrollIntoView().should('be.visible')
+
+    cy.get('[type="button"]').contains(' See more ').click()
+    cy.get('[class="post-title"]')
+        .should('contain.text', ' Diploma In Infomation Technology ')
+        .and('contain.text', 'Australian National University')
+        .and('contain.text', 'Campbellfield')
+        .and('contain.text', 'Mar/2022')
+        .and('contain.text', 'Nov/2025')
+        .and('contain.text', 'CGPA: 3.5')
+    
+    cy.wait(5000)
+    cy.get('[class="close"]').click()
+})
+//edit
+When("the user initiate edit education", () => {
+    cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
+})
+When("the user provides valid edit Education details", () => {
+    editDetails('education')
+})
+When("the user submit the edited Education form", () => {
+    cy.get('[type="button"]').contains('Update').click()    
+    cy.get('[type="button"]').contains('Ok').click()    
+})
+Then("the user can view edited Education", () => {
+    cy.get('[type="button"]').contains(' See more ').click()
+    cy.get('[class="suggestion-block ng-star-inserted"]').should('not.contain.text', 'English')
+    
+    cy.get('[class="cus-list-pipe pl-0 list-unstyled"]').should('not.contain.text', 'Online')
+    cy.get('[class="cus-list-pipe pl-0 list-unstyled"]').should('contain.text', 'Classroom')
+})
+//delete
+When("the user initiate delete Education", () => {
+    cy.get('[class="close"]').click()
+    cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
+    
+    cy.get('[type="button"]').contains('Delete').click()
+    cy.get('[type="button"]').contains('Yes').click()
+})
+Then("the user cannot view the Education", () => {
+    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').should('not.contain.text','Education')
 })
 
 //Work Experience
@@ -344,6 +387,53 @@ When("the user submits the Work Experience form", () => {
 Then("the user can view Work Experience on profile page", () => {
     assertDetails("workExperience")
 })
+//edit
+When("the user initiate edit Work Experience", () => {
+    cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
+})
+When("the user provides valid edit Work Experience details", () => {
+    //Job title
+    cy.get('[name="job_title"]').clear().type('Information')
+    cy.get('[role="option"]').contains('Computer and Information Research Scientist').should('be.visible').click()
+
+    //Company name
+    cy.get('[name="company_name"]').clear().type('Federation')
+    cy.get('[role="listbox"]').contains('Federation University Australia').should('be.visible').click()
+
+    //start and end date
+    cy.get('[name="start_date"]').click()
+    selectDate('Mar', '2020', '21');
+
+    cy.get('[name="end_date"]').click()
+    selectDate('Mar', '2024', '21');
+
+    //Job description
+    cy.get('[name="job_description"]').clear().type('New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+    cy.get('[name="showSkills"]').click()
+    cy.get('[role="option"]').contains(' .NET ').click()
+    cy.get('[class="col-md-12 common-input-mb"]').contains('Skills').click()
+})
+When("the user submit the edited Work Experience form", () => {
+    cy.get('[type="button"]').contains('Update').click()    
+    cy.get('[type="button"]').contains('Ok').click()    
+})
+Then("the user can view edited Work Experience", () => {
+    cy.get('[type="button"]').contains(' See more ').click()
+    cy.get('[class="block-title-md mb-3 p-0 d-flex mar-r"]').should('contain.text', ' Work Experience ')
+    cy.get('[class="post-title"]')
+        .should('contain.text', 'Computer and Information Research Scientist')
+        .and('contain.text', 'Federation University Australia')
+        .and('contain.text', '21/Mar/2020')
+        .and('contain.text', '21/Mar/2024')
+        .and('contain.text', 'New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+})
+When("the user initiate delete Work Experience", () => {
+
+})
+Then("the user cannot view the Work Experience", () => {
+
+})
+
 
 //Work Availability
 When("the user initiate the Work Availability", () => {
@@ -363,6 +453,38 @@ When("the user submits the Work Availability form", () => {
 
 Then("the user can view Work Availability on profile page", (dataTable) => {
     assertDetails('workAvailability', dataTable)
+
+    
+})
+
+When("the user initiate edit work availability", (dataTable) => {
+    // cy.get('[class="work-row"]').contains('Internship').scrollIntoView().click()
+    cy.get('[class="common-scroll-bar pr-21"]')
+        .parent()
+        .find('[class="ico-w-14"]')
+        .click()
+
+    let i=0;
+    dataTable.hashes().forEach((row, index) => {
+    
+        // cy.get('[bindvalue="id"]').eq(index + 1).click()
+        // cy.get('[role="option"]').eq(index).contains(row.day).should('be.visible').click()
+        cy.get('[name="selectTime"]').eq(index + i).click()
+        cy.get('[role="option"]').contains(row.startTime).click()
+        cy.get('[name="selectTime"]').eq(index + 1 + i).click()
+        cy.get('[role="option"]').contains(row.endTime).click()
+  
+        // if(index < (dataTable.hashes().length - 1)){
+        //     cy.contains('Add Availability').should('be.visible').click()
+        //     i++
+        // }
+        let j = 0;
+        if(j<4){
+            i++
+            j++
+        }
+    })
+    cy.get('[type="button"]').contains('Update').click()
 })
 
 //Language Qualification

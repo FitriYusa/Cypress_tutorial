@@ -11,35 +11,29 @@ Feature: Yuzee user profile components
       Then the new user will be redirect to the user control center page
       And the user initiate to Go to profile
 
-    # Hobbies
-      Scenario Outline: Add Hobbies
+    # work availability
+      Scenario Outline: Add work availability
         Given no experience user skip onboarding is in profile page
-        When the user initiate the Hobbies
-        And the user provides valid Hobbies details
-        | hobbies                 |
-        | Baseball                |
-        | Fashion Shows & Tours   |
-        | Historic Walking Areas  |
-        | Squash                  |
-        And the user submit the Hobbies form
-        Then the user can view Hobbies on profile page
-        | hobbies                 |
-        | Baseball                |
-        | Fashion Shows & Tours   |
-        | Historic Walking Areas  |
-        | Squash                  |
-        And the user add more hobbies
-        | hobbies                 | new_hobbies |
-        | Baseball                | Polo        |
-        | Fashion Shows & Tours   | Water Polo  |
-        | Historic Walking Areas  |             |
-        | Squash                  |             |
-        | Polo                    |             |
-        | Water Polo              |             |
-        And the user delete hobbies
-        | hobbies                 |
-        | Baseball                |
-        | Fashion Shows & Tours   |
-        | Squash                  |
-        | Polo                    |
-        | Water Polo              |
+        When the user initiate the Work Availability
+        And the user provides valid work availability details
+        | day       | startTime | endTime   |
+        | Monday    | 8:00 AM   | 8:00 PM   |
+        | Tuesday   | 8:00 AM   | 8:00 PM   |
+        | Wednesday | 9:00 AM   | 6:00 PM   |
+        | Thursday  | 10:00 AM  | 7:00 PM   |
+        | Friday    | 10:00 AM  | 7:00 PM   |
+        And the user submits the Work Availability form
+        Then the user can view Work Availability on profile page
+        | day       | time   |
+        | Monday    | 8:00 AM - 8:00 PM   |
+        | Tuesday   | 8:00 AM - 8:00 PM   |
+        | Wednesday | 9:00 AM - 6:00 PM   |
+        | Thursday  | 10:00 AM - 7:00 PM   |
+        | Friday    | 10:00 AM - 7:00 PM   |
+        And the user initiate edit work availability
+        | day       | startTime | endTime   |
+        | Monday    | 8:00 AM   | 8:00 PM   |
+        | Tuesday   | 8:00 AM   | 8:00 PM   |
+        | Wednesday | 8:00 AM   | 8:00 PM   |
+        | Thursday  | 8:00 AM   | 8:00 PM   |
+        | Friday    | 8:00 AM   | 8:00 PM   |
