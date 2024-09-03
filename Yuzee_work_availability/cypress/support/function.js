@@ -241,7 +241,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       cy.get('[formcontrolname="password"]').type("Admin@12345")
       cy.get('[formcontrolname="confirmPassword"]').type("Admin@12345")
       break;
-
+    
     case 'fillEditProfile':
       cy.get('.select-control > .ng-select-container > .ng-value-container').click()
       cy.get('[role="option"]').contains('Job').click()
@@ -284,7 +284,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
   
       cy.get('[name="reason"]').type('Asdasdf fsadf asfda dfwqda sdcasd')
       break;
-
+    
     case 'fillIntroductoryVideo':
       cy.get('[name="privacy_level"]').click()
       cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
@@ -295,7 +295,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
 
       cy.get('input[type="file"]').eq(1).invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png');
       break;
-
+    
     case 'fillContactDetails':
       dataTable.hashes().forEach((contact, index) => {
         // Select the contact method
@@ -320,7 +320,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       });
 
       break;
-
+    
     case 'fillMyDocs':
       dataTable.hashes().forEach((row) => {
         cy.get('[class="menu-div"]').contains(row.documentType).click();
@@ -329,7 +329,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       });
 
       break;
-
+    
     case 'fillEducation':
 
       cy.get('[name="form"]').should('be.visible')
@@ -440,7 +440,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       cy.get('[ type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')  
 
       break;
-
+    
     case 'fillWorkAvailability':
       
       cy.get('[name="privacy_level"]').click()
@@ -478,7 +478,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
           
       });
       break;
-
+    
     case 'fillLanguageQualifications':
       let comboboxStartIndex = 1; // Start index for the comboboxes
       cy.get('[name="privacy_level"]').click()
@@ -517,7 +517,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
         }
       });
       break;
-
+    
     case 'fillHobbies':
       cy.get('[name="privacy_level"]').click()
       cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
@@ -530,7 +530,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
 
       cy.contains('Tell us your hobbies').click()
       break;
-
+    
     case 'fillSkills':
 
       cy.get('[name="privacy_level"]').click()
@@ -543,7 +543,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       })
       cy.get('[class="col-md-12 common-input-mb"]').contains('Skills and Endorsement').click()
       break;
-
+    
     case 'fillAward':
       cy.get('[name="privacy_level"]').click()
       cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
@@ -614,7 +614,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
     
       cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png');
       break;
-
+    
     case 'fillProjectDetails':
       const { isCurrent } = additionalData;
       cy.get('[name="privacy_level"]').click();
@@ -641,7 +641,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
     
       cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg');
       break;
-
+    
     case 'fillLanguage':
       cy.get('[name="privacy_level"]').click()
       cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
@@ -654,7 +654,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
   
       cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
       break;
-
+    
     default:
       throw new Error(`Unknown action type: ${actionType}`);
   }
@@ -670,7 +670,7 @@ export function assertDetails(type, dataTable = null, isCurrent = false) {
         .and('contain.text', 'Foundation')
         .and('contain.text', 'Kuala Lumpur');
       break;
-
+    
     case 'contactDetails':
       cy.get('[class="pr-24 mb-3"]', {timeout: 10000}).contains(' Contact Details ').scrollIntoView().should('be.visible')
       dataTable.hashes().forEach(detail => {
@@ -714,16 +714,15 @@ export function assertDetails(type, dataTable = null, isCurrent = false) {
         .and('contain.text', row.day)
         .and('contain.text', row.time)
       })
-        
       break;
-
+      
     case 'hobbies':
       dataTable.hashes().forEach(detail => {
         cy.get('[class="suggestion-block ng-star-inserted"]')
           .should('contain.text', detail.hobbies);
       });
       break;
-
+    
     case 'skills':
       cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Skills and Endorsement ').scrollIntoView().should('be.visible')
       dataTable.hashes().forEach(detail => {
@@ -732,7 +731,7 @@ export function assertDetails(type, dataTable = null, isCurrent = false) {
           .should('contain.text', detail.skills);
       });
       break;
-
+    
     case 'award':
       cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
       cy.get('[class="accomplish-row"]').contains('Awards and Certificates').click()
@@ -742,7 +741,7 @@ export function assertDetails(type, dataTable = null, isCurrent = false) {
         .and('contain.text', '06/Aug/2020')
         .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
       break;
-
+    
     case 'publication':
       cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
       cy.get('[class="accomplish-row"]').contains('Publication').click()
@@ -752,7 +751,7 @@ export function assertDetails(type, dataTable = null, isCurrent = false) {
         .and('contain.text', '06/Aug/2020')
         .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
       break;
-
+    
     case 'patent':
       cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
       cy.get('[class="accomplish-row"]').contains('Patent').click()
@@ -762,7 +761,7 @@ export function assertDetails(type, dataTable = null, isCurrent = false) {
         .and('contain.text', '06/Aug/2020')
         .and('contain.text', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
       break;
-
+    
     case 'project':
       cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
       cy.get('[class="accomplish-row"]').contains('Project').click()
@@ -778,7 +777,7 @@ export function assertDetails(type, dataTable = null, isCurrent = false) {
         projectDetails.and('contain.text', '04/Aug/2024');
       }
       break;
-
+    
     case 'language':
       cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
       cy.get('[class="accomplish-row"]').contains('Language').click()
@@ -788,7 +787,7 @@ export function assertDetails(type, dataTable = null, isCurrent = false) {
           .and('contain.text', row.proficient);
       });
       break;
-
+    
     default:
       throw new Error(`Unknown type: ${type}`);
   }
@@ -828,6 +827,7 @@ export function editDetails(type, dataTable = null){
 
       cy.get('[name="reason"]').type('New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
       break;
+    
     case 'addHobbies':
       cy.get('[class="btn btn-dots mr-0 edit-blue-btn ng-star-inserted"]').click()
 
@@ -838,15 +838,19 @@ export function editDetails(type, dataTable = null){
       
       dataTable.hashes().forEach((row) => {
           if (row.new_hobbies && row.new_hobbies.trim()) {
-              cy.get('[role="option"]', {timeout : 10000}).contains(row.new_hobbies).click();
-            }
-      });
+            cy.get('[role="option"]', {timeout : 10000})
+            .contains(row.new_hobbies)
+              .click()
+          }
+      })
+      cy.wait(5000)
       cy.contains('Tell us your hobbies').click()
   
       cy.get('[type="button"]').contains('Update').click()
   
       assertDetails("hobbies", dataTable);
       break;
+    
     case 'addSkills':
       cy.get('[class="btn btn-dots mr-0 edit-blue-btn ng-star-inserted"]').click()
 
@@ -863,6 +867,7 @@ export function editDetails(type, dataTable = null){
           .should('contain.text', detail.skills);
       });
       break;
+    
     case 'award':
       cy.get('[id="title"]').clear().type('New Awards')
       cy.get('[name="name"]').clear().type('Aston University')
@@ -876,6 +881,7 @@ export function editDetails(type, dataTable = null){
       cy.get('[role="option"]').contains(' Daniyal Institution Dubai - United Arab Emirates ').click()
       cy.contains('Associated with').click()
       break;
+    
     case 'publication':
       cy.get('[id="title"]').clear().type('New Awards')
       cy.get('[name="publication"]').clear().type('Aston University')
@@ -901,6 +907,7 @@ export function editDetails(type, dataTable = null){
   
       cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
       break;
+    
     case 'patent':
       cy.get('[name="privacy_level"]').click();
       cy.get('[class="content-block"]').contains('Public').should('be.visible').click();
@@ -924,6 +931,7 @@ export function editDetails(type, dataTable = null){
     
       cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png');
       break;
+    
     case 'project':
       cy.get('[name="privacy_level"]').click();
       cy.get('[class="content-block"]').contains('Public').should('be.visible').click();
@@ -944,6 +952,7 @@ export function editDetails(type, dataTable = null){
   
       cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg');
       break;
+    
     case 'language':
       cy.get('[name="privacy_level"]').click()
       cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
@@ -956,5 +965,8 @@ export function editDetails(type, dataTable = null){
   
       cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
       break;
+    
+    default:
+      throw new Error(`Unknown type: ${type}`);
   }
 }

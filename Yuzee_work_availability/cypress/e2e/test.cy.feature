@@ -29,7 +29,17 @@ Feature: Yuzee user profile components
         | Historic Walking Areas  |
         | Squash                  |
         And the user add more hobbies
+        | hobbies                 | new_hobbies |
+        | Baseball                | Polo        |
+        | Fashion Shows & Tours   | Water Polo  |
+        | Historic Walking Areas  |             |
+        | Squash                  |             |
+        | Polo                    |             |
+        | Water Polo              |             |
+        And the user delete hobbies
         | hobbies                 |
+        | Baseball                |
+        | Fashion Shows & Tours   |
+        | Squash                  |
         | Polo                    |
         | Water Polo              |
-        And the user delete hobbies

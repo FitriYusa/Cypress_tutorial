@@ -417,7 +417,7 @@ When("the user delete hobbies", (dataTable) => {
         .click()
         cy.get('[type="button"]').contains('Update').click()
 
-        assertDetails("hobbies", dataTable);
+    assertDetails("hobbies", dataTable)
 
     cy.get('[class="btn btn-dots mr-0 edit-blue-btn ng-star-inserted"]').click()
     
