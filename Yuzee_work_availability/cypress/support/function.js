@@ -288,9 +288,9 @@ export function fillFunction (type, dataTable, additionalData = {}) {
     case 'fillIntroductoryVideo':
       cy.get('[name="privacy_level"]').click()
       cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
-      cy.get('input[type="file"]').eq(0).invoke('removeClass', 'd-none').selectFile('cypress/images/3209828-uhd_3840_2160_25fps.mp4')
+      cy.get('input[type="file"]').eq(0).invoke('removeClass', 'd-none').selectFile('cypress\\images\\5948574-sd_426_240_30fps.mp4')
       
-      cy.get('[name="title"]').type('asdkmndlf asdasd')
+      cy.get('[name="title"]').type('Video title')
       cy.get('[id="description"').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
 
       cy.get('input[type="file"]').eq(1).invoke('removeClass', 'd-none').selectFile('cypress\\images\\2022-05-23.png');
@@ -841,6 +841,46 @@ export function editDetails(type, dataTable = null){
     cy.get('[role="option"]').contains('Classroom').click()
       break;
 
+    case 'workExperience':
+      //Job title
+      cy.get('[name="job_title"]').clear().type('Information')
+      cy.get('[role="option"]').contains('Computer and Information Research Scientist').should('be.visible').click()
+
+      //Company name
+      cy.get('[name="company_name"]').clear().type('Federation')
+      cy.get('[role="listbox"]').contains('Federation University Australia').should('be.visible').click()
+
+      //start and end date
+      cy.get('[name="start_date"]').click()
+      selectDate('Mar', '2020', '21');
+
+      cy.get('[name="end_date"]').click()
+      selectDate('Mar', '2024', '21');
+
+      //Job description
+      cy.get('[name="job_description"]').clear().type('New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+      cy.get('[name="showSkills"]').click()
+      cy.get('[role="option"]').contains(' .NET ').click()
+      cy.get('[class="col-md-12 common-input-mb"]').contains('Skills').click()
+      break;
+
+    case 'workAvailability':
+      let i=0;
+      let j = 0;
+      //change time
+      dataTable.hashes().forEach((row, index) => {
+          cy.get('[name="selectTime"]').eq(index + i).click()
+          cy.get('[role="option"]').contains(row.startTime).click()
+          cy.get('[name="selectTime"]').eq(index + 1 + i).click()
+          cy.get('[role="option"]').contains(row.endTime).click()
+          
+          if(j<4){
+              i++
+              j++
+          }
+      })
+      break;
+
     case 'addHobbies':
       cy.get('[class="btn btn-dots mr-0 edit-blue-btn ng-star-inserted"]').click()
 
@@ -980,5 +1020,14 @@ export function editDetails(type, dataTable = null){
     
     default:
       throw new Error(`Unknown type: ${type}`);
+  }
+}
+
+export function deleteDetails(type) {
+  switch(type){
+    case 'deleteFunction':
+      cy.get('[type="button"]').contains('Delete').click()
+      cy.get('[type="button"]').contains('Yes').click()
+      break;
   }
 }

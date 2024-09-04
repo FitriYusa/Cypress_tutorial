@@ -1,6 +1,6 @@
 import { When, Then, Given } from "@badeball/cypress-cucumber-preprocessor"
 
-import {verifyOTP, selectDate, Onboarding, fillFunction, assertDetails, editDetails} from '../../support/function';
+import {verifyOTP, selectDate, Onboarding, fillFunction, assertDetails, editDetails, deleteDetails} from '../../support/function';
 
 Given("the user is on Yuzee homepage is open", () => {
     cy.visit('/')
@@ -13,17 +13,16 @@ Given("the user is on Yuzee homepage is open", () => {
 When("the user initiate the sign in", () => {
     cy.contains('Sign in').click()
 })
-
 When("the user provides valid sign in details", (dataTable) => {
     dataTable.hashes().forEach(row => {
         cy.get('[placeholder="Email"]').clear().type(row.email)
         cy.get('[type="password"]').clear().type('Admin@1234')
     })
 })
-
 When("the user submit the sign in form", () => { 
     cy.get('[type="submit"]').contains('Sign in').click()
 
+    
     cy.wait('@signinRequest', { timeout: 10000 }).then((interception) => {
       
         let statusCode = interception.response.statusCode;
@@ -36,69 +35,55 @@ When("the user submit the sign in form", () => {
 When("the new user initiate the account creation process", () => {
     cy.contains('Join Yuzee').click()
 })
-
 When("the new user provides valid registration details", () => {
     fillFunction('fillRegistration')
 })
-
 When("the user submits the registration form", () => {
     cy.get('[type="submit"]').contains('Sign Up').click()
 })
-
 Then("the new user should receive verification code via email", () => {
     verifyOTP ()
 })
-
 When("the new user submits the verification code", () => {
     cy.get('button[type="submit"]').contains("Continue").click();
 })
-
 When("the new user is student completing the Onboarding", () => {
     Onboarding('studentCompleteOnboarding');
 })
-
 When("the new user is student skipping the onboarding process", () => {
     Onboarding('studentSkipOnboarding');
 })
-
 When("the new user have work experience completing the onboarding", () => {
     Onboarding('workCompleteOnboarding')
 })
-
 When("the new user have work experience skipping the onboarding process", () => {
     Onboarding('workSkipOnboarding');
 })
-
 When("the new user have no work experience completing the onboarding process", () => {
     Onboarding('noExperienceCompleteOnboarding');
 })
-
 When("the new user have no work experience skipping the onboarding process", () => {
     Onboarding('noExperienceSkipOnboarding');
 })
 
 //user home page and user profile page
 Then("the new user will be redirect to the user control center page", () => {
-    cy.url({ timeout: 10000 }).should('include', '/user-control-center/landing')
+    cy.url({ timeout: 60000 }).should('include', '/user-control-center/landing')
 })
-
 When("the user initiate to Go to profile", () => {
     cy.get('[class="nav-item d-none-from-me"]').click()
     cy.get('[class="setting-item ml-0 ng-star-inserted"]').click()
 })
-
 Given("the user is student skipped onboarding is in profile page", () => {
     cy.url().should('include', '/profile')
     cy.get('[class="col-md-4"]').contains('Australian National University').scrollIntoView().should('be.visible')
 })
-
 Given("the user is student completed onboarding is in profile page", () => {
     cy.url().should('include', '/profile')
     cy.get('[class="col-md-4"]').contains('Kuala Lumpur,').scrollIntoView().should('be.visible')
     cy.get('[class="col-md-4"]').contains('Australian National University').scrollIntoView().should('be.visible')
     cy.get('[class="suggestion-block ng-star-inserted"]').contains('Running Tours').should('be.visible')
 })
-
 Given("the user work complete onboarding is in profile page", () => {
     cy.url().should('include', '/profile')
     cy.get('[class="col-md-4"]').contains('Kuala Lumpur,').scrollIntoView().should('be.visible')
@@ -109,7 +94,6 @@ Given("the user work complete onboarding is in profile page", () => {
 	.should('contain.text', 'Broadcast Technician')
 	.should('contain.text', 'Australian Company')
 })
-
 Given("the user work skip onboarding is in profile page", () => {
     cy.url().should('include', '/profile')
     cy.get('[class="col-md-4"]').contains('Australian Company').scrollIntoView().should('be.visible')
@@ -118,13 +102,11 @@ Given("the user work skip onboarding is in profile page", () => {
 	.should('contain.text', 'Broadcast Technician')
 	.should('contain.text', 'Australian Company')
 })
-
 Given("no experience user complete onboarding is in profile page", () => {
     cy.url().should('include', '/profile')
     cy.get('[class="col-md-4"]').contains('Kuala Lumpur,').scrollIntoView().should('be.visible')
     cy.get('[class="suggestion-block ng-star-inserted"]').contains('Running Tours').should('be.visible')
 })
-
 Given("no experience user skip onboarding is in profile page", () => {
     cy.url().should('include', '/profile')
 })
@@ -176,15 +158,12 @@ Then("the edited background photo should be visible", () => {
 When("the user initiate the edit profile", () =>{
     cy.get('[type="button"]').contains(' Edit Profile ').click()
 })
-
 When("the user provides valid Edit profiles details", () => {
     fillFunction('fillEditProfile')
 })
-
 When("the user submits the Edit profiles form", () => {
     cy.get('[type="submit"]').contains('Update').click()
 })
-
 Then("the edited profile information should be visible", () => {
     cy.url().should('include', '/profile')
     cy.get('[class="col-md-8 popover-custom"]').should('include.text', ' Abu Ali ')
@@ -198,15 +177,12 @@ When("the user initiate the Get to know me", () => {
     cy.get('[class="fs-14 fw-500"]').contains('Intro').should('be.visible').click()
     cy.get('[class="subpro-name"]').contains(' Get to know me ').should('be.visible').click()
 })
-
 When("the user provides valid Get to know me details", () =>{
     fillFunction('fillGetToKnowMe')
 })
-
 When("the user submits the Get to know me form", () => {
     cy.get('[type="button"]').contains('Save').click()
 })
-
 Then("the user can view Get to know me on profile page", () => {
     cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains(' Get to know me ').scrollIntoView().should('be.visible')
     assertDetails('getToKnowMe')
@@ -236,17 +212,46 @@ When("the user initiate the introductory videos", () => {
     cy.get('[class="fs-14 fw-500"]').contains('Intro').should('be.visible').click()
     cy.get('[class="subpro-name"]').contains(' About Me ').should('be.visible').click()
 })
-
 When("the user provides valid introductory videos details", () => {
     fillFunction('fillIntroductoryVideo')
 })
-
 When("the user submits the introductory videos form", () => {
     cy.get('[type="button"]').contains('Save').click()
 })
-
 Then("the user can view introductory videos on profile page", () => {
     cy.get('[class="block-title-md p-0 d-flex"]').contains(' Introductory Videos ').scrollIntoView().should('be.visible')
+    cy.get('[class="pr-1 wrap-txt-double fs-13 fw-500 desc-w"]',{timeout : 60000}).should('contain.text', 'Video Title')
+
+    cy.get('[class="dropdown-toggle border-0 btn btn-dots img-hover"]')
+        .click()
+        .get('[class="dropdown-item"]')
+        .contains('Edit')
+        .click()
+    cy.get('input[type="file"]').eq(0).invoke('removeClass', 'd-none').selectFile('cypress/images/3209828-uhd_3840_2160_25fps.mp4')
+
+    cy.get('[name="title"]').clear().type('New Video title')
+    cy.get('[id="description"').clear().type('New description. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+
+    cy.get('input[type="file"]').eq(1).invoke('removeClass', 'd-none').selectFile('cypress\\images\\pexels-alex-andrews-271121-2295744.jpg');
+
+    cy.get('[type="button"]').contains('Update').click()
+
+    cy.get('[class="pr-1 wrap-txt-double fs-13 fw-500 desc-w"]',{timeout : 60000}).should('contain.text', 'New Video Title')
+
+    cy.get('[class="cursor-pointer h-owl"]').click()
+    cy.get('[class="pt-4"]').should('contain.text', 'New description. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+
+    cy.get('[class="close"]').click()
+    cy.get('[class="dropdown-toggle border-0 btn btn-dots img-hover"]')
+        .click()
+        .get('[class="dropdown-item"]')
+        .contains('Remove')
+        .click()
+
+    cy.get('[type="button"]').contains('Yes').click()
+
+    cy.get('[class="about-video video-width vid-shadow"]').should('not.be.visible')
+    
 })
 
 //About
@@ -256,15 +261,12 @@ When("the user initiate the Contact details", () => {
     cy.get('[class="fs-14 fw-500"]').contains('About').should('be.visible').click()
     cy.get('[class="subpro-name"]').contains(' Contact Details ').should('be.visible').click()
 })
-
 When("the user provides valid Contact details details", (dataTable) =>{
     fillFunction('fillContactDetails', dataTable);
 })
-
 When("the user submits the Contact details form", () => {
     cy.get('[type="submit"]').contains('Save').click()
 })
-
 Then("the user can view Contact details on profile page", (dataTable) => {
     assertDetails('contactDetails', dataTable )
 })
@@ -275,22 +277,18 @@ When("the user initiate the My Docs", () => {
     cy.get('[class="fs-14 fw-500"]').contains('About').should('be.visible').click()
     cy.get('[class="subpro-name"]').contains(' My Docs ').should('be.visible').click()
 })
-
 When("the user provides valid My Docs details", (dataTable) => {
     fillFunction('fillMyDocs', dataTable)
 })
-
 When("the user close the My Docs form", () => {
     cy.get('[class="close"]').click()
     cy.get('[type="button"]').contains('Yes').click()
 })
-
 Then("the user can view My Docs on profile page", (dataTable) => {
     assertDetails('myDocs', dataTable )
 
     cy.get('[class="btn edit-blue-btn ml-auto"]').click()
 })
-
 
 //Background
 //Education
@@ -306,18 +304,15 @@ When("the user initiate the Education", () => {
         expect(interception.response.statusCode).to.equal(200)
     })
 })
-
 When("the user provides valid Education details", (dataTable) => {
     fillFunction('fillEducation', dataTable)
 })
-
 When("the user submits the Education form", () => {
    
     cy.get('[type="submit"]').contains('Save').click()
 
     cy.get('[type="button"]',{timeout : 10000}).contains('Ok').click()
 })
-
 Then("the user can view Education on profile page", () => {
     cy.get('[class="block-sec block-sec-pad pr-0 ng-star-inserted"]').contains(' Education ').scrollIntoView().should('be.visible')
 
@@ -356,8 +351,7 @@ When("the user initiate delete Education", () => {
     cy.get('[class="close"]').click()
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
     
-    cy.get('[type="button"]').contains('Delete').click()
-    cy.get('[type="button"]').contains('Yes').click()
+    deleteDetails('deleteFunction')
 })
 Then("the user cannot view the Education", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').should('not.contain.text','Education')
@@ -370,11 +364,9 @@ When("the user initiate the Work Experience", () => {
     cy.get('[class="subpro-name"]').contains(' Work Experience ').should('be.visible').click()
 
 })
-
 When("the user provides valid work experience details", () => {
     fillFunction('fillWorkExperience')
 })
-
 When("the user submits the Work Experience form", () => {
     cy.get('[type="button"]').contains('Save').click()
     cy.get('[type="button"]').contains('Ok').click()
@@ -383,7 +375,6 @@ When("the user submits the Work Experience form", () => {
             expect(interception.response.statusCode).to.equal(200)
         })
 })
-
 Then("the user can view Work Experience on profile page", () => {
     assertDetails("workExperience")
 })
@@ -392,26 +383,7 @@ When("the user initiate edit Work Experience", () => {
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
 })
 When("the user provides valid edit Work Experience details", () => {
-    //Job title
-    cy.get('[name="job_title"]').clear().type('Information')
-    cy.get('[role="option"]').contains('Computer and Information Research Scientist').should('be.visible').click()
-
-    //Company name
-    cy.get('[name="company_name"]').clear().type('Federation')
-    cy.get('[role="listbox"]').contains('Federation University Australia').should('be.visible').click()
-
-    //start and end date
-    cy.get('[name="start_date"]').click()
-    selectDate('Mar', '2020', '21');
-
-    cy.get('[name="end_date"]').click()
-    selectDate('Mar', '2024', '21');
-
-    //Job description
-    cy.get('[name="job_description"]').clear().type('New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
-    cy.get('[name="showSkills"]').click()
-    cy.get('[role="option"]').contains(' .NET ').click()
-    cy.get('[class="col-md-12 common-input-mb"]').contains('Skills').click()
+    editDetails('workExperience')
 })
 When("the user submit the edited Work Experience form", () => {
     cy.get('[type="button"]').contains('Update').click()    
@@ -427,13 +399,13 @@ Then("the user can view edited Work Experience", () => {
         .and('contain.text', '21/Mar/2024')
         .and('contain.text', 'New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
 })
+//delete
 When("the user initiate delete Work Experience", () => {
 
 })
 Then("the user cannot view the Work Experience", () => {
 
 })
-
 
 //Work Availability
 When("the user initiate the Work Availability", () => {
@@ -442,49 +414,51 @@ When("the user initiate the Work Availability", () => {
     cy.get('[class="subpro-name"]').contains(' Work Availability ').should('be.visible').click()
 
 })
-
 When("the user provides valid work availability details", (dataTable) => {
     fillFunction('fillWorkAvailability', dataTable)
 })
-
 When("the user submits the Work Availability form", () => {
     cy.get('[type="button"]').contains('Save').click()
 })
-
 Then("the user can view Work Availability on profile page", (dataTable) => {
     assertDetails('workAvailability', dataTable)
-
-    
 })
-
-When("the user initiate edit work availability", (dataTable) => {
+//edit
+When("the user initiate edit work availability", () => {
     // cy.get('[class="work-row"]').contains('Internship').scrollIntoView().click()
     cy.get('[class="common-scroll-bar pr-21"]')
         .parent()
         .find('[class="ico-w-14"]')
         .click()
-
-    let i=0;
-    dataTable.hashes().forEach((row, index) => {
-    
-        // cy.get('[bindvalue="id"]').eq(index + 1).click()
-        // cy.get('[role="option"]').eq(index).contains(row.day).should('be.visible').click()
-        cy.get('[name="selectTime"]').eq(index + i).click()
-        cy.get('[role="option"]').contains(row.startTime).click()
-        cy.get('[name="selectTime"]').eq(index + 1 + i).click()
-        cy.get('[role="option"]').contains(row.endTime).click()
-  
-        // if(index < (dataTable.hashes().length - 1)){
-        //     cy.contains('Add Availability').should('be.visible').click()
-        //     i++
-        // }
-        let j = 0;
-        if(j<4){
-            i++
-            j++
-        }
+})
+When("the user provides valid edit work availability details", (dataTable) => {
+    editDetails('workAvailability', dataTable)
+})
+When("the user submit the edited work availability form", () => {
+    cy.get('[type="button"]').contains('Update').click()    
+})
+Then("the user can view edited work availability", (dataTable) => {
+    dataTable.hashes().forEach((row) => {
+      cy.get('[class="common-scroll-bar pr-21"]')
+      .should('contain.text', 'Unemployed')
+      .and('contain.text', '30 Km')
+      .and('contain.text', '3')
+      .and('contain.text', 'Month')
+      .and('contain.text', 'Full_time')
+      .and('contain.text', row.day)
+      .and('contain.text', row.time)
     })
-    cy.get('[type="button"]').contains('Update').click()
+})
+//delete
+When("the user initiate delete work availability", () => {
+    cy.get('[class="common-scroll-bar pr-21"]')
+        .parent()
+        .find('[class="ico-w-14"]')
+        .click()
+    deleteDetails('deleteFunction')
+})
+Then("the user cannot view the work availability", () => {
+    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').should('not.contain.text',' Work Availability ')
 })
 
 //Language Qualification
@@ -493,19 +467,50 @@ When("the user initiate the Language qualification", () => {
     cy.get('[class="fs-14 fw-500"]').contains('Background').should('be.visible').click()
     cy.get('[class="subpro-name"]').contains(' Language Qualification ').should('be.visible').click()
 })
-
 When("the user provides valid language qualification details", (dataTable) => {
     fillFunction('fillLanguageQualifications', dataTable)
 })
-
 When("the user submits the language qualification form", () => {
     cy.get('[type="button"]').contains('Save').click()
 })
-
-Then("the user can view language qualification on profile page", () => {
+Then("the user can view language qualification on profile page", (dataTable) => {
     cy.wait(3000)
     cy.get('[class="block-sec block-sec-pad ng-star-inserted"]').contains('Language Qualification').scrollIntoView().should('be.visible')
+
+    dataTable.hashes().forEach((row) => {
+        cy.get('[class="col-6 text-align ng-star-inserted"]').should('contain.text', row.Type)
+        cy.get('[class="col-6 align-end"]').should('contain.text', row.scores)
+    })
 })
+//edit
+When("the user initiate edit language qualification", () => {
+    cy.get('[class="btn btn-dots mr-0 edit-blue-btn edit-btn ng-star-inserted"]').click()
+})
+When("the user provides valid edit language qualification details", () => {
+    for(let i =2; i<6 ;i++){
+        cy.get('[role="combobox"]').eq(i).click();
+        cy.get('[role="option"]').contains(/^8$/).click();
+    }
+    cy.get(`[id^="over_all_marks_1"]`).clear().type('6')
+    cy.get(`[id^="over_all_marks_4"]`).clear().type('6')
+})
+When("the user submit the edited language qualification form", () => {
+    cy.get('[type="button"]').contains('Update').click()
+})
+Then("the user can view edited language qualification", (dataTable) => {
+        dataTable.hashes().forEach((row) => {
+        cy.get('[class="col-6 text-align ng-star-inserted"]').should('contain.text', row.Type)
+        cy.get('[class="col-6 align-end"]').should('contain.text', row.scores)
+    })
+})
+//delete
+When("the user initiate delete language qualification", () => {
+    cy.get('[class="btn btn-dots mr-0 edit-blue-btn edit-btn ng-star-inserted"]').click()
+    deleteDetails('deleteFunction')    
+})
+Then("the user cannot view the language qualification", () => [
+    cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').should('not.contain.text',' Language Qualification ')
+])
 
 //Interest
 //Hobbies
@@ -526,9 +531,11 @@ When("the user submit the Hobbies form update", () => {
 Then("the user can view Hobbies on profile page", (dataTable) => {
     assertDetails("hobbies", dataTable);
 })
+//add hobbies
 When("the user add more hobbies", (dataTable) => {
     editDetails('addHobbies', dataTable)
 })
+//delete hobbies
 When("the user delete hobbies", (dataTable) => {
     cy.get('[class="btn btn-dots mr-0 edit-blue-btn ng-star-inserted"]').click()
 
@@ -543,8 +550,7 @@ When("the user delete hobbies", (dataTable) => {
 
     cy.get('[class="btn btn-dots mr-0 edit-blue-btn ng-star-inserted"]').click()
     
-    cy.get('[type="button"]').contains('Delete').click()
-    cy.get('[type="button"]').contains('Yes').click()
+    deleteDetails('deleteFunction')
 
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').should('not.contain.text','Hobbies')
 
@@ -636,8 +642,7 @@ Then("the user can view edited award and certificates form", () => {
 When("the user initiate delete award", () => {
     //edit button
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
-    cy.get('[type="button"]').contains('Delete').click()
-    cy.get('[type="button"]').contains('Yes').click()
+    deleteDetails('deleteFunction')
 })
 Then("the user cannot view the award", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').should('not.contain.text','Accomplishments')
@@ -680,8 +685,7 @@ Then("the user can view edited Publications form", () => {
 //delete
 When("the user initiate delete Publications", () => {
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
-    cy.get('[type="button"]').contains('Delete').click()
-    cy.get('[type="button"]').contains('Yes').click()
+    deleteDetails('deleteFunction')
 })
 Then("the user cannot view the Publication", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').should('not.contain.text','Publication')
@@ -735,7 +739,7 @@ When("the user provides valid edit Patent details", () => {
 When("the user submit the edited Patent form", () => {
     cy.get('[type="button"]').contains('Update').click()
 })
-Then("the user can view edited Patent form", () => {
+Then("the user can view edited Patent", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').contains(' Accomplishments ').scrollIntoView().should('be.visible')
     cy.get('[class="accomplish-row"]').contains('Patent').click()
     cy.get('[class="acc-content-block"]')
@@ -747,8 +751,7 @@ Then("the user can view edited Patent form", () => {
 //delete
 When("the user initiate delete Patent", () => {
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
-    cy.get('[type="button"]').contains('Delete').click()
-    cy.get('[type="button"]').contains('Yes').click()
+    deleteDetails('deleteFunction')
 })
 Then("the user cannot view the Patent", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').should('not.contain.text','Patent')
@@ -815,8 +818,7 @@ Then("the user can view edited Accomplishment project form", () => {
 })
 When("the user initiate delete Accomplishment project", () => {
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
-    cy.get('[type="button"]').contains('Delete').click()
-    cy.get('[type="button"]').contains('Yes').click()
+    deleteDetails('deleteFunction')
 })
 Then("the user cannot view the Accomplishment project", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').should('not.contain.text','Project')
@@ -869,8 +871,7 @@ Then("the user can view edited Language form", (dataTable) => {
 //delete
 When("the user initiate delete Language", () => {
     cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
-    cy.get('[type="button"]').contains('Delete').click()
-    cy.get('[type="button"]').contains('Yes').click()
+    deleteDetails('deleteFunction')
 })
 Then("the user cannot view the Language", () => {
     cy.get('[class="block-title-md p-0 mb-3 d-flex text-align"]').should('not.contain.text','Langauge')
