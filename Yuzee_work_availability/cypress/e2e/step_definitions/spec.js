@@ -250,7 +250,7 @@ Then("the user can view introductory videos on profile page", () => {
 
     cy.get('[type="button"]').contains('Yes').click()
 
-    cy.get('[class="about-video video-width vid-shadow"]').should('not.be.visible')
+    cy.get('[class="about-video video-width vid-shadow"]').should('not.exist')
     
 })
 
