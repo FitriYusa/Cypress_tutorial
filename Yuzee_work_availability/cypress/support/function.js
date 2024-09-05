@@ -828,6 +828,24 @@ export function editDetails(type, dataTable = null){
       cy.get('[name="reason"]').type('New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
       break;
     
+    case 'introductoryVideos':
+      cy.get('input[type="file"]').eq(0).invoke('removeClass', 'd-none').selectFile('cypress/images/3209828-uhd_3840_2160_25fps.mp4')
+
+      cy.get('[name="title"]').clear().type('New Video title')
+      cy.get('[id="description"').clear().type('New description. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+  
+      cy.get('input[type="file"]').eq(1).invoke('removeClass', 'd-none').selectFile('cypress\\images\\pexels-alex-andrews-271121-2295744.jpg');
+      break;
+
+    case 'myDocs':
+      dataTable.hashes().forEach((row) => {
+        cy.get('[class="menu-div"]').contains(row.documentType).click();
+        cy.get('[type="file"]').selectFile(row.filePath);
+        cy.get('[type="button"]', { timeout: 10000 }).contains('Yes').click();
+        cy.get('[type="button"]', { timeout: 10000 }).contains('Yes').click();
+    })
+      break;
+
     case 'education':
       cy.get('[class="ng-value ng-star-inserted"]')
       .contains(' English ')
@@ -847,9 +865,9 @@ export function editDetails(type, dataTable = null){
       cy.get('[role="option"]').contains('Computer and Information Research Scientist').should('be.visible').click()
 
       //Company name
-      cy.get('[name="company_name"]').clear().type('Federation')
-      cy.get('[role="listbox"]').contains('Federation University Australia').should('be.visible').click()
-
+      cy.get('[name="company_name"]').clear().type('Eztek software')
+      cy.get('[role="listbox"]').contains('Eztek software').should('be.visible').click()
+      
       //start and end date
       cy.get('[name="start_date"]').click()
       selectDate('Mar', '2020', '21');
@@ -860,7 +878,7 @@ export function editDetails(type, dataTable = null){
       //Job description
       cy.get('[name="job_description"]').clear().type('New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
       cy.get('[name="showSkills"]').click()
-      cy.get('[role="option"]').contains(' .NET ').click()
+      cy.get('[role="option"]').contains(' .com ').click()
       cy.get('[class="col-md-12 common-input-mb"]').contains('Skills').click()
       break;
 
@@ -1029,5 +1047,17 @@ export function deleteDetails(type) {
       cy.get('[type="button"]').contains('Delete').click()
       cy.get('[type="button"]').contains('Yes').click()
       break;
+    case 'introductoryVideos':
+      cy.get('[class="close"]').click()
+      cy.get('[class="dropdown-toggle border-0 btn btn-dots img-hover"]')
+          .click()
+          .get('[class="dropdown-item"]')
+          .contains('Remove')
+          .click()
+  
+      cy.get('[type="button"]').contains('Yes').click()    
+      break;
+    default:
+      throw new Error(`Unknown action type: ${actionType}`);
   }
 }

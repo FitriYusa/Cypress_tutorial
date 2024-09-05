@@ -219,39 +219,33 @@ When("the user submits the introductory videos form", () => {
     cy.get('[type="button"]').contains('Save').click()
 })
 Then("the user can view introductory videos on profile page", () => {
-    cy.get('[class="block-title-md p-0 d-flex"]').contains(' Introductory Videos ').scrollIntoView().should('be.visible')
-    cy.get('[class="pr-1 wrap-txt-double fs-13 fw-500 desc-w"]',{timeout : 60000}).should('contain.text', 'Video Title')
-
+    cy.get('[class="block-title-md p-0 d-flex"]',{timeout : 60000}).contains(' Introductory Videos ').scrollIntoView().should('be.visible')
+    cy.get('[class="pr-1 wrap-txt-double fs-13 fw-500 desc-w"]',{timeout : 60000}).should('contain.text', 'Video Title') 
+})
+When("the user initiate edit introductory videos", () => {
     cy.get('[class="dropdown-toggle border-0 btn btn-dots img-hover"]')
         .click()
         .get('[class="dropdown-item"]')
         .contains('Edit')
         .click()
-    cy.get('input[type="file"]').eq(0).invoke('removeClass', 'd-none').selectFile('cypress/images/3209828-uhd_3840_2160_25fps.mp4')
-
-    cy.get('[name="title"]').clear().type('New Video title')
-    cy.get('[id="description"').clear().type('New description. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
-
-    cy.get('input[type="file"]').eq(1).invoke('removeClass', 'd-none').selectFile('cypress\\images\\pexels-alex-andrews-271121-2295744.jpg');
-
-    cy.get('[type="button"]').contains('Update').click()
-
+})
+When("the user provides valid edit introductory videos details", () => {
+    editDetails('introductoryVideos')    
+})
+When("the user submit the edited introductory videos form", () => {
+    cy.get('[type="button"]').contains('Update').click()    
+})
+Then("the user can view edited introductory videos", () => {
     cy.get('[class="pr-1 wrap-txt-double fs-13 fw-500 desc-w"]',{timeout : 60000}).should('contain.text', 'New Video Title')
 
     cy.get('[class="cursor-pointer h-owl"]').click()
-    cy.get('[class="pt-4"]').should('contain.text', 'New description. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
-
-    cy.get('[class="close"]').click()
-    cy.get('[class="dropdown-toggle border-0 btn btn-dots img-hover"]')
-        .click()
-        .get('[class="dropdown-item"]')
-        .contains('Remove')
-        .click()
-
-    cy.get('[type="button"]').contains('Yes').click()
-
+    cy.get('[class="pt-4"]').should('contain.text', 'New description. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')    
+})
+When("the user initiate delete introductory videos", () => {
+    deleteDetails('introductoryVideos')
+})
+Then("the user cannot view the introductory videos", () => {    
     cy.get('[class="about-video video-width vid-shadow"]').should('not.exist')
-    
 })
 
 //About
@@ -270,6 +264,46 @@ When("the user submits the Contact details form", () => {
 Then("the user can view Contact details on profile page", (dataTable) => {
     assertDetails('contactDetails', dataTable )
 })
+//edit
+When("the user initiate edit Contact details", () => {
+    cy.get('[class="btn edit-blue-btn ml-auto ng-star-inserted"]').click()    
+})
+When("the user provides valid edit Contact details", () => {
+    cy.get('[type="text"]', {timeout : 10000}).eq(6).clear().type('aasd_123');    
+})
+When("the user submit the edited Contact details form", () => {
+    cy.get('[type="submit"]').contains('Update').click()    
+    cy.wait(5000)
+})
+Then("the user can view edited Contact details", () => {
+    cy.get('[class="detail-section ng-star-inserted"]')
+    .should('contain.text', 'Instagram')
+    .and('contain.text', 'aasd_123');    
+})
+//delete
+Then("the user initiate delete one Contact details", () => {
+    cy.get('[class="btn edit-blue-btn ml-auto ng-star-inserted"]').click()
+    cy.get('.row')
+    .find('.select-txt')     // Locate the element with the text 'Email'
+    .contains('Email')        // Ensure it contains the text 'Email'
+    .parents('.row')          // Go back up to the parent '.row'
+    .find('.ico-w-12')        // Find the button with the class 'ico-w-12'
+    .click();                 // Click the button
+
+    cy.get('[type="submit"]').contains('Update').click()
+    cy.wait(5000)
+})
+When("the user cannot view the deleted Contact Details", () => {
+    cy.get('[class="detail-section ng-star-inserted"]', {timeout : 10000}).should('not.contain.text', 'yovami3872@biscoine.com')
+})
+Then("the user initiate delete Contact details", () => {
+    cy.get('[class="btn edit-blue-btn ml-auto ng-star-inserted"]').click()
+    deleteDetails('deleteFunction')
+})
+When("the user cannot view the Contact details", () => {
+    cy.get('[class="detail-section ng-star-inserted"]').should('not.exist')       
+})
+
 
 //My docs
 When("the user initiate the My Docs", () => {
@@ -280,14 +314,40 @@ When("the user initiate the My Docs", () => {
 When("the user provides valid My Docs details", (dataTable) => {
     fillFunction('fillMyDocs', dataTable)
 })
-When("the user close the My Docs form", () => {
+Then("the user can view My Docs on profile page", (dataTable) => {
     cy.get('[class="close"]').click()
     cy.get('[type="button"]').contains('Yes').click()
-})
-Then("the user can view My Docs on profile page", (dataTable) => {
-    assertDetails('myDocs', dataTable )
 
-    cy.get('[class="btn edit-blue-btn ml-auto"]').click()
+    assertDetails('myDocs', dataTable )
+})
+When("the user initiate edit My Docs", () => {
+    cy.get('[class="btn btn-dots edit-blue-btn ml-auto ng-star-inserted"]').scrollIntoView().click()
+})
+When("the user provides valid edit My Docs details", (dataTable) => {
+    editDetails('myDocs', dataTable)
+    cy.wait(5000)  
+})
+Then("the user can view edited My Docs", (dataTable) => {
+    cy.get('[class="close"]').click()
+    cy.get('[type="button"]').contains('Yes').click()
+
+    assertDetails('myDocs', dataTable )
+})
+When("the user initiate delete My Docs", (dataTable) => {
+    cy.get('[class="btn btn-dots edit-blue-btn ml-auto ng-star-inserted"]').scrollIntoView().click()
+
+    dataTable.hashes().forEach((row) => {
+        cy.get('[class="menu-div"]').contains(row.documentType).click();
+        cy.get('[class="txt-button btn border-0 btn-remove ng-star-inserted"]').contains(' Delete ').click()
+
+        cy.get('[type="button"]', { timeout: 10000 }).contains('Yes').click();
+    })
+})
+Then("the user cannot view the My Docs", () => {
+    cy.get('[class="close"]').click()
+    cy.get('[type="button"]').contains('Yes').click()
+
+    cy.get('[class="doc-list ng-star-inserted"]').should('not.exist')
 })
 
 //Background
@@ -386,25 +446,28 @@ When("the user provides valid edit Work Experience details", () => {
     editDetails('workExperience')
 })
 When("the user submit the edited Work Experience form", () => {
-    cy.get('[type="button"]').contains('Update').click()    
+    cy.get('[type="button"]').contains('Update').click()
     cy.get('[type="button"]').contains('Ok').click()    
 })
 Then("the user can view edited Work Experience", () => {
     cy.get('[type="button"]').contains(' See more ').click()
     cy.get('[class="block-title-md mb-3 p-0 d-flex mar-r"]').should('contain.text', ' Work Experience ')
     cy.get('[class="post-title"]')
-        .should('contain.text', 'Computer and Information Research Scientist')
-        .and('contain.text', 'Federation University Australia')
+        .should('contain.text', ' Computer And Information Research Scientist ')
+        .and('contain.text', 'Eztek Software')
         .and('contain.text', '21/Mar/2020')
         .and('contain.text', '21/Mar/2024')
         .and('contain.text', 'New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
 })
 //delete
 When("the user initiate delete Work Experience", () => {
-
+    cy.get('[class="btn btn-dots ml-auto edit-blue-btn ng-star-inserted"]').click()
+    deleteDetails('deleteFunction')
 })
 Then("the user cannot view the Work Experience", () => {
-
+    cy.get('[class="post-title"]')
+        .contains('Computer And Information Research Scientist')
+        .should('not.exist')
 })
 
 //Work Availability
@@ -435,7 +498,7 @@ When("the user provides valid edit work availability details", (dataTable) => {
     editDetails('workAvailability', dataTable)
 })
 When("the user submit the edited work availability form", () => {
-    cy.get('[type="button"]').contains('Update').click()    
+    cy.get('[type="button"]').contains('Update').click()
 })
 Then("the user can view edited work availability", (dataTable) => {
     dataTable.hashes().forEach((row) => {
