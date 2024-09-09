@@ -110,6 +110,107 @@ Given("no experience user complete onboarding is in profile page", () => {
 Given("no experience user skip onboarding is in profile page", () => {
     cy.url().should('include', '/profile')
 })
+Given("the user in home page", () => {
+    cy.url({ timeout: 60000 }).should('include', '/user-control-center/landing')
+
+    cy.get('[class="text-center pt-2 mb-3"]').contains('Education').click()
+    cy.get('[class="post-title cursor-pointer mt-3"]').contains(' Vocational ').click()
+})
+
+When("the user initiate the education application", () => {
+    cy.url({ timeout: 60000 }).should('include', '/create-course-application/id')
+
+    cy.get('[class="btn-content-inner"]').contains(' Direct application ').click()
+    cy.get('[class="btn-content-inner"]').contains(' Create New ').click()
+    cy.get('[class="btn-content-inner"]').contains(' Direct application ').click()
+    cy.get('[class="btn-content-inner"]').contains(' Create New ').click()
+    cy.wait(5000)
+
+    cy.get('[class="pl-18 img-content-width ng-star-inserted"]').contains('Ali Abu').click()
+
+    cy.get('[class="select-card-content"]')
+        .contains(' Profile Details ')
+        .parent()
+        .find('[class="mt-3 btn txt-button border-0 mb-2 fs-14 p-0"]')
+        .contains(' Edit details ')
+        .click()
+    fillFunction('fillEditProfile')
+
+    cy.get('[type="submit"]').contains('Update').click()
+
+})
+
+When("the user edit the fill education", (dataTable) => {
+    cy.get('[class="select-card-content"]')
+        .contains(' Education ')
+        .parent()
+        .find('[class="mt-3 btn txt-button border-0 mb-2 fs-14 p-0"]')
+        .contains(' Edit details ')
+        .click()
+    
+    fillFunction('fillEducation', dataTable)
+
+    cy.get('[type="submit"]').contains('Save').click()
+    cy.get('[type="button"]').contains('Ok').click()
+
+    cy.get('[name="institute_id"]').type('aus')
+    cy.get('[role="option"]',{timeout : 10000}).contains(' Aust Link Pty Ltd ').click()
+    
+
+    cy.get('[name="courses"]').click()
+    cy.wait(5000)
+    cy.get('[role="option"]').contains(' Certificate III Civil Construction Plant Operations ').click()
+
+    cy.get('[id="intake_date"]').click()
+    cy.get('[role="option"]').contains(' February 2024 - January 2025 ').click()
+
+    cy.get('[id="study_mode"]').click()
+    cy.get('[role="option"]').contains('PART_TIME').click()
+
+    cy.get('[id="delivery_mode"]').click()
+    cy.get('[role="option"]').contains('CLASSROOM').click()
+
+    cy.contains('button', 'Next').click();
+
+    cy.get('[class="btn-cont-block btn-input min-h"]')
+        .parent()
+        .find('[class="btn-content-inner"]')
+        .contains(' Myself / Family member ')
+        .click()
+
+    cy.contains('button', 'Next').click()
+    cy.get('[class="dropdown-toggle btn border-0 p-0 arrow-none m-0"]').eq(0).click()
+    cy.get('[name="file1"').invoke('removeClass', 'd-none').selectFile('cypress\\images\\5948574-sd_426_240_30fps.mp4')
+    cy.get('[class="dropdown-toggle btn border-0 p-0 arrow-none m-0"]').eq(1).click()    
+    cy.get('[name="file2"').invoke('removeClass', 'd-none').selectFile('cypress\\images\\5948574-sd_426_240_30fps.mp4')
+    cy.get('[class="dropdown-toggle btn border-0 p-0 arrow-none m-0"]').eq(1).click()
+    cy.get('[name="file3"').invoke('removeClass', 'd-none').selectFile('cypress\\images\\5948574-sd_426_240_30fps.mp4')
+    cy.contains('button', 'Next').click()
+    cy.get('[id="DESCRIPTION"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+    cy.get('[type="file"]')
+        .invoke('removeClass', 'd-none')
+        .eq(2)
+        .selectFile('cypress\\images\\Fitri_Weekly log (Week 1 - Week 4).pdf')
+    cy.get('[id="YES"]').click()
+    cy.get('[id="SUPERVISOR_NAME"]').type('Ali')
+    cy.get('[name="SUPERVISIOR_EMAIL"]').type('muhamad@gmail.com')
+    cy.get('[name="PHONE_NUMBER_TYPE"]').click()
+    cy.get('[role="option"]').contains(' ( +60 ) Malaysia ').click()
+    cy.get('[name="SUPERVISOR_PHONE"]').type('01198353743')
+    cy.get('[name="INSTITUTE_NAME"]').type('Aus')
+    cy.get('[role="option"]').contains(' Aust Link Pty Ltd ').click()
+    cy.get('[name="DEPARTMENT"]').type('IT')
+    cy.wait(5000)
+    cy.contains('button', 'Next').click()
+    cy.wait(5000)
+    cy.contains('button', 'Next').click()
+    cy.get('[class="btn btn-dots mr-0 edit-blue-btn"]').click()
+    fillFunction('fillMyDocs',dataTable)
+    cy.wait(5000)
+    cy.contains('button', 'Preview').click()
+
+
+})
 
 //Edit profile photo if there is no photo
 When("the user edit the profile photo", () => {

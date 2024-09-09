@@ -261,9 +261,24 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       cy.get('[role="listbox"]').scrollIntoView().contains('Malaysia').click()
   
       //location
-      cy.get('[name="description"]', { timeout: 10000 }).type('Kuala Lumpur')
-      cy.get('[role="option"]').contains('Kuala Lumpur').click()
-      cy.get('[name="postalCode"]').clear().type('3432')
+      // cy.get('[name="description"]', { timeout: 10000 }).type('Kuala Lumpur')
+      // cy.get('[role="option"]').contains('Kuala Lumpur').click()
+      cy.get('[name="description"]', { timeout: 10000 }).type('Aus')
+      cy.get('[role="option"]').contains('Australian National').click()
+      // cy.get('[name="postalCode"]').clear().type('3432')
+
+      cy.get('[id="citizenshipType"]').click()
+      cy.get('[role="option"]').contains('Australian Citizen').click()
+     
+  
+      for(let i=0; i<2; i++){
+          cy.get('[class="iti__selected-flag dropdown-toggle"]').eq(i).click()
+          cy.get('[id="country-search-box"]').eq(i).type('Malaysia')
+          cy.get('[class="iti__country-list"]').eq(i).contains('Malaysia').click()
+          cy.get('[id="phone"]').eq(i).type('01123425354')
+      }
+      cy.get('[id="alternative_email"]').type('asd@gmail.com')
+      cy.wait(5000)
       break;
     
     case 'fillGetToKnowMe':
