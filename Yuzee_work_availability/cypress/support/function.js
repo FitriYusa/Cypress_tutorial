@@ -280,7 +280,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       cy.get('[id="alternative_email"]').type('asd@gmail.com')
       cy.wait(5000)
       break;
-    
+
     case 'fillGetToKnowMe':
       cy.get('[name="jobs"]').type(' Accountant ')
       cy.get('[role="option"]').contains('Accountant').click()
@@ -670,8 +670,125 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
       break;
     
+    case 'fillVocational':
+      const options = [
+        'Advanced Diploma of Building Biology',
+        'Aboriginal Health and Wellbeing ',
+        ' Foundation + Diploma ',
+        ' Undergraduate '
+        // Add more options here if needed
+      ]; 
+
+      cy.get('[class="select-card-content"]')
+      .contains(' Profile Details ')
+      .parent()
+      .find('[class="mt-3 btn txt-button border-0 mb-2 fs-14 p-0"]')
+      .contains(' Edit details ')
+      .click()
+      fillFunction('fillEditProfile')
+
+      cy.get('[type="submit"]').contains('Update').click()
+
+      cy.get('[class="select-card-content"]')
+          .contains(' Education ')
+          .parent()
+          .find('[class="mt-3 btn txt-button border-0 mb-2 fs-14 p-0"]')
+          .contains(' Edit details ')
+          .click()
+      
+      fillFunction('fillEducation', dataTable)
+
+      cy.get('[type="submit"]').contains('Save').click()
+      cy.get('[type="button"]', {timeout : 10000}).contains('Ok').click() 
+      cy.get('[class="btn-content-inner"]').contains('Select from Existing').click()
+      cy.get('[class="btn-content-inner"]').contains(' Create New ').click()
+      cy.get('[class="pl-18 img-content-width ng-star-inserted"]').contains('Abu Ali').click()
+      if(additionalData.applicationType === 'direct-application'){
+        cy.get('[name="institute_id"]').type('aus')
+        cy.get('[role="option"]',{timeout : 10000}).contains(' Australian National University ').click()
+        
+        cy.get('[name="courses"]').click()
+        cy.wait(5000)
+        cy.get('[role="option"]').contains(' Angular Js ').click()
+    
+        cy.get('[id="intake_date"]').click()
+        cy.get('[role="option"]').contains(' January 2025 ').click()
+    
+        cy.get('[id="study_mode"]').click()
+        cy.get('[role="option"]').contains('FULL_TIME').click()
+    
+        cy.get('[id="delivery_mode"]').click()
+        cy.get('[role="option"]').contains('ONLINE').click()
+      }else if(additionalData.applicationType === 'multiple-offer'){
+        cy.get('[bindlabel="keyword"]').click()
+        cy.wait(3000)
+
+        selectOption(options);
+        cy.get('[name="study_mode"]').click()
+        cy.get('[role="option"]').contains(' Full-Time ').click()
+    
+        cy.get('[name="delivery_mode"]').click()
+        cy.get('[role="option"]').contains(' Online ').click()
+    
+        cy.get('[name="level"]').click()
+        selectOption(options);
+    
+        cy.get('[name="intake_date"]').click()
+        cy.get('[role="option"]').contains(' September 2024 ').click()
+    
+        cy.get('[name="description"]').type('australia')
+        cy.get('[role="option"]').contains('Australian National University').click()
+    
+        cy.get('[name="why_interested"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+      }
+      cy.contains('button', 'Next').click()
+      cy.wait(5000)
+      cy.get('[class="btn-cont-block btn-input min-h"]')
+          .parent()
+          .find('[class="btn-content-inner"]')
+          .contains(' Myself / Family member ')
+          .click()
+      cy.wait(5000)
+      cy.contains('button', 'Next').click()
+      cy.get('[class="dropdown-toggle btn border-0 p-0 arrow-none m-0"]', {timeout : 10000}).eq(0).click()
+      cy.get('[name="file1"').invoke('removeClass', 'd-none').selectFile('cypress\\images\\5948574-sd_426_240_30fps.mp4')
+      cy.get('[class="dropdown-toggle btn border-0 p-0 arrow-none m-0"]', {timeout : 10000}).eq(1).click()    
+      cy.get('[name="file2"').invoke('removeClass', 'd-none').selectFile('cypress\\images\\5948574-sd_426_240_30fps.mp4')
+      cy.get('[class="dropdown-toggle btn border-0 p-0 arrow-none m-0"]', {timeout : 10000}).eq(1).click()
+      cy.get('[name="file3"').invoke('removeClass', 'd-none').selectFile('cypress\\images\\5948574-sd_426_240_30fps.mp4')
+      cy.contains('button', 'Next').click()
+      cy.wait(5000)
+      cy.contains('button', 'Next').click()
+      cy.wait(5000)
+      cy.get('[class="btn btn-dots mr-0 edit-blue-btn"]', {timeout : 10000}).click()
+      fillFunction('fillMyDocs',dataTable)
+      cy.wait(5000)
+      cy.get('[class="close"]').click()
+      cy.get('[type="button"]').contains('Yes').click()
+      cy.wait(5000)
+      cy.contains('button', 'Preview').click()
+      break;
+
     default:
       throw new Error(`Unknown action type: ${actionType}`);
+  }
+}
+
+function selectOption(options) {
+  let optionFound = false;
+
+  options.forEach(option => {
+      cy.get('body').then($body => {
+          if ($body.find(`[role="option"]:contains("${option}")`).length > 0) {
+              cy.get('[role="option"]').contains(option).click();
+              optionFound = true;
+              return false; // Exit the loop once the option is found and clicked
+          }
+      });
+  });
+
+  if (!optionFound) {
+      cy.log('None of the options were found');
   }
 }
 
