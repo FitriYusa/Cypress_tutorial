@@ -12,7 +12,26 @@ Feature: Yuzee user profile components
 
     #Vocational
       Scenario Outline: Add vocational direct application
-        Given the user is in home page
+        Given the user is in apply page
+        When the user initiate the vocational education application
+        And the user provides valid direct application details
+        | subjects       | grade |  documentType                           | filePath         |
+        | Communications | A     |  Australian keypass                     | cypress/images/2022-05-23.png    |
+        | OOP            | A     |  Birth certificate                      | cypress/images/2022-05-23.png    |
+        | HTML           | A     |  Passport                               | cypress/images/2022-05-23.png    |
+        | Business       | A     |  Australian citizenship certificate     | cypress/images/2022-05-23.png    |
+        | JS             | A     |  Medicare card                          | cypress/images/2022-05-23.png    |
+        | Economics      | A     |  Driving License                        | cypress/images/2022-05-23.png    |
+        | Physics        | B     |  Children Check                         | cypress/images/2022-05-23.png    |
+        | Chemistry      | A     |  Police Check                           | cypress/images/2022-05-23.png    |
+        | Literature     | B     |  First Aid Check                        | cypress/images/2022-05-23.png    |
+        | Art            | A     |  CV/Resume                              | cypress/images/2022-05-23.png    |
+        And the user submits the direct application form
+        Then the user can view the direct application application
+
+    #Undergraduate
+      Scenario Outline: Add vocational direct application
+        Given the user is in apply page
         When the user initiate the Undergraduate education application
         And the user provides valid direct application details
         | subjects       | grade |  documentType                           | filePath         |
@@ -28,12 +47,12 @@ Feature: Yuzee user profile components
         | Art            | A     |  CV/Resume                              | cypress/images/2022-05-23.png    |
         And the user submits the direct application form
         Then the user can view the direct application application
-        
-    #Vocational
-      Scenario Outline: Add vocational multiple offer application
-        Given the user is in home page
-        When the user initiate the Undergraduate education application
-        And the user provides valid mulitple offer details
+
+    #Postgraduate
+      Scenario Outline: Add vocational direct application
+        Given the user is in apply page
+        When the user initiate the Postgraduate education application
+        And the user provides valid direct application details
         | subjects       | grade |  documentType                           | filePath         |
         | Communications | A     |  Australian keypass                     | cypress/images/2022-05-23.png    |
         | OOP            | A     |  Birth certificate                      | cypress/images/2022-05-23.png    |
@@ -45,5 +64,5 @@ Feature: Yuzee user profile components
         | Chemistry      | A     |  Police Check                           | cypress/images/2022-05-23.png    |
         | Literature     | B     |  First Aid Check                        | cypress/images/2022-05-23.png    |
         | Art            | A     |  CV/Resume                              | cypress/images/2022-05-23.png    |
-        And the user submits the mulitple offer form
-        Then the user can view the mulitple offer application    
+        And the user submits the direct application form
+        Then the user can view the direct application application

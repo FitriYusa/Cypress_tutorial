@@ -110,20 +110,41 @@ Given("no experience user complete onboarding is in profile page", () => {
 Given("no experience user skip onboarding is in profile page", () => {
     cy.url().should('include', '/profile')
 })
-Given("the user is in home page", () => {
-    cy.url({ timeout: 60000 }).should('include', '/user-control-center/landing')
+Given("the user is in apply page", () => {
+    cy.get('[class="nav-item d-none-from-apply ng-star-inserted"]').click()
+    cy.url({ timeout: 60000 }).should('include', '/apply/home')
 })
 
 //Education Application
 //Vocational
 When("the user initiate the vocational education application", () => {
-    cy.get('[class="text-center pt-2 mb-3"]').contains('Education').click()
-    cy.get('[class="post-title cursor-pointer mt-3"]').contains(' Vocational ').click()
+    cy.get('[class="text-center icon-block cursor-pointer"]')
+        .parent()
+        .find('[class="mb-0"]')
+        .contains('Vocational')
+        .click()
+    // cy.get('[class="text-center pt-2 mb-3"]').contains('Education').click()
+    // cy.get('[class="post-title cursor-pointer mt-3"]').contains(' Vocational ').click()
 })
 //Undergraduate
 When("the user initiate the Undergraduate education application", () => {
-    cy.get('[class="text-center pt-2 mb-3"]').contains('Education').click()
-    cy.get('[class="post-title cursor-pointer mt-3"]').contains(' Undergraduate ').click()
+        cy.get('[class="text-center icon-block cursor-pointer"]')
+            .parent()
+            .find('[class="mb-0"]')
+            .contains('Undergraduates')
+            .click()
+    // cy.get('[class="text-center pt-2 mb-3"]').contains('Education').click()
+    // cy.get('[class="post-title cursor-pointer mt-3"]').contains(' Undergraduate ').click()
+})
+//Postgraduate
+When("the user initiate the Postgraduate education application", () => {
+        cy.get('[class="text-center icon-block cursor-pointer"]')
+            .parent()
+            .find('[class="mb-0"]')
+            .contains('Postgraduates')
+            .click()
+    // cy.get('[class="text-center pt-2 mb-3"]').contains('Education').click()
+    // cy.get('[class="post-title cursor-pointer mt-3"]').contains('Postgraduate').click()
 })
 
 //direct appliction
@@ -138,7 +159,7 @@ When("the user provides valid direct application details", (dataTable) => {
 
     cy.get('[class="pl-18 img-content-width ng-star-inserted"]').contains('Ali Abu').click()
 
-    fillFunction('fillVocational', dataTable, { applicationType: 'direct-application' })
+    fillFunction('fillEducationApplication', dataTable, { applicationType: 'direct-application' })
 })
 When("the user submits the direct application form", () => {
     cy.wait(5000)
@@ -169,7 +190,7 @@ When("the user provides valid mulitple offer details" , (dataTable) => {
     cy.wait(5000)
 
     cy.get('[class="pl-18 img-content-width ng-star-inserted"]').contains('Ali Abu').click()
-    fillFunction('fillVocational', dataTable, { applicationType: 'multiple-offer' })
+    fillFunction('fillEducationApplication', dataTable, { applicationType: 'multiple-offer' })
 })
 When("the user submits the mulitple offer form", () => {
 
@@ -620,7 +641,7 @@ When("the user initiate edit language qualification", () => {
 When("the user provides valid edit language qualification details", () => {
     for(let i =2; i<6 ;i++){
         cy.get('[role="combobox"]').eq(i).click();
-        cy.get('[role="option"]').contains(/^8$/).click();
+        cy.get('[role="option"]', {timeout : 10000}).contains(/^8$/).click();
     }
     cy.get(`[id^="over_all_marks_1"]`).clear().type('6')
     cy.get(`[id^="over_all_marks_4"]`).clear().type('6')
@@ -850,7 +871,7 @@ When("the user provides valid edit Patent details", () => {
   
     cy.get('[id="title"]').clear().type('New Patent Title');
     cy.get('[name="citizenship"]').click();
-    cy.get('[role="option"]').contains('Malaysia').scrollIntoView().click();
+    cy.get('[role="option"]', {timeout : 10000}).contains('Malaysia').scrollIntoView().click();
   
     cy.get('[id="Patent Pending"]').click();
     cy.get('[id="application_number"]').type('62112333');
@@ -861,7 +882,7 @@ When("the user provides valid edit Patent details", () => {
     cy.get('[id="description"]').clear().type('New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
   
     cy.get('[name="collaborations"]').type('adam');
-    cy.get('[role="option"]').contains('Adam John').click();
+    cy.get('[role="option"]', {timeout : 10000}).contains('Adam John').click();
   
     cy.contains('Description').click();
   
@@ -928,7 +949,7 @@ When("the user provides valid edit Accomplishment project details", () => {
     cy.get('[name="details"]').clear().type('New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
 
     cy.get('[name="collaborations"]').type('Adam');
-    cy.get('[role="option"]').contains('Adam John').click();
+    cy.get('[role="option"]', {timeout : 10000}).contains('Adam John').click();
     cy.get('[class="ng-star-inserted"]').contains('labels.Other Contributors').click();
 
     cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg');
@@ -980,10 +1001,10 @@ When("the user provides valid edit Language details", () => {
     cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
 
     cy.get('[formcontrolname="title"]').click()
-    cy.get('[role="option"]').contains('English').scrollIntoView().click()
+    cy.get('[role="option"]', {timeout : 10000}).contains('English').scrollIntoView().click()
 
     cy.get('[formcontrolname="language_proficiency_type"]').click()
-    cy.get('[role="option"]').contains('Native or bilingual Proficiency').should('be.visible').click()
+    cy.get('[role="option"]', {timeout : 10000}).contains('Native or bilingual Proficiency').should('be.visible').click()
 
     cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
 })

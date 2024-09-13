@@ -46,7 +46,7 @@ export function Onboarding(type) {
     case 'studentCompleteOnboarding':
       cy.get('span.slider.round').first().click();
       cy.get('[placeholder="University/School"]').type('Australian National University')
-      cy.get('[role="option"]').contains('Australian National University').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Australian National University').click()
 
       // Set start and end dates
       cy.get('[name="start_date"]').click();
@@ -72,7 +72,7 @@ export function Onboarding(type) {
 
       // Location
       cy.get('[placeholder="Search location"]', { timeout: 10000 }).type('Kuala Lumpur')
-      cy.get('[role="option"]').contains('Kuala Lumpur').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Kuala Lumpur').click()
       cy.get('[type="submit"]').contains('Continue').click();
       // cy.contains('Skip', { timeout: 10000 }).click();
 
@@ -88,7 +88,7 @@ export function Onboarding(type) {
     case 'studentSkipOnboarding':
       cy.get('span.slider.round').first().click();
       cy.get('[placeholder="University/School"]').type('Australian National University')
-      cy.get('[role="option"]').contains('Australian National University').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Australian National University').click()
   
       // Set start and end dates
       cy.get('[name="start_date"]').click();
@@ -114,9 +114,9 @@ export function Onboarding(type) {
     case 'workCompleteOnboarding':
 
       cy.get('[id="job_title"]').type('Broadcast Technician')
-      cy.get('[role="option"]').contains('Broadcast Technician').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Broadcast Technician').click()
       cy.get('[id="company_name"]').type('Australian Company')
-      cy.get('[role="option"]').contains('Australian Company').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Australian Company').click()
       cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
       //profile photo
       cy.wait(3000)
@@ -129,7 +129,7 @@ export function Onboarding(type) {
 
       // Location
       cy.get('[placeholder="Search location"]', { timeout: 10000 }).type('Kuala Lumpur')
-      cy.get('[role="option"]').contains('Kuala Lumpur').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Kuala Lumpur').click()
       cy.wait(3000)
       cy.get('[type="submit"]').contains('Continue').click();
       // cy.contains('Skip', { timeout: 10000 }).click();
@@ -146,9 +146,9 @@ export function Onboarding(type) {
     case 'workSkipOnboarding':
 
       cy.get('[id="job_title"]').type('Broadcast Technician')
-      cy.get('[role="option"]').contains('Broadcast Technician').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Broadcast Technician').click()
       cy.get('[id="company_name"]').type('Australian Company')
-      cy.get('[role="option"]').contains('Australian Company').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Australian Company').click()
       cy.get('[type="submit"]', { timeout: 10000 }).contains('Continue').click()
 
       cy.wait(3000)
@@ -172,7 +172,7 @@ export function Onboarding(type) {
 
       // Location
       cy.get('[placeholder="Search location"]', { timeout: 10000 }).type('Kuala Lumpur')
-      cy.get('[role="option"]').contains('Kuala Lumpur').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Kuala Lumpur').click()
       cy.wait(3000)
       cy.get('[type="submit"]').contains('Continue').click();
       // cy.contains('Skip', { timeout: 10000 }).click();
@@ -244,13 +244,13 @@ export function fillFunction (type, dataTable, additionalData = {}) {
     
     case 'fillEditProfile':
       cy.get('.select-control > .ng-select-container > .ng-value-container').click()
-      cy.get('[role="option"]').contains('Job').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Job').click()
   
       cy.get('[placeholder="Select a date"]').click()
       selectDate('Jul', '1997', '6');
   
       cy.get('[name="gender"]').click()
-      cy.get('[role="option"]').contains('Male')
+      cy.get('[role="option"]', {timeout : 10000}).contains('Male')
   
       cy.get('[name="firstName"]').clear().type('Abu')
       cy.get('[name="lastName"]').clear().type('Ali')
@@ -262,13 +262,13 @@ export function fillFunction (type, dataTable, additionalData = {}) {
   
       //location
       // cy.get('[name="description"]', { timeout: 10000 }).type('Kuala Lumpur')
-      // cy.get('[role="option"]').contains('Kuala Lumpur').click()
+      // cy.get('[role="option"]', {timeout : 10000}).contains('Kuala Lumpur').click()
       cy.get('[name="description"]', { timeout: 10000 }).type('Aus')
-      cy.get('[role="option"]').contains('Australian National').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Australian National').click()
       // cy.get('[name="postalCode"]').clear().type('3432')
 
       cy.get('[id="citizenshipType"]').click()
-      cy.get('[role="option"]').contains('Australian Citizen').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Australian Citizen').click()
      
   
       for(let i=0; i<2; i++){
@@ -283,19 +283,19 @@ export function fillFunction (type, dataTable, additionalData = {}) {
 
     case 'fillGetToKnowMe':
       cy.get('[name="jobs"]').type(' Accountant ')
-      cy.get('[role="option"]').contains('Accountant').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Accountant').click()
       cy.contains('My ideal jobs').click()
   
       cy.get('[name="courses"]').type('beauty')
-      cy.get('[role="option"]').contains(' Diploma of Beauty Therapy ').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains(' Diploma of Beauty Therapy ').click()
       cy.contains('My ideal jobs').click()
   
       cy.get('[name="fields"]').click()
-      cy.get('[role="option"]').contains(' Foundation ').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains(' Foundation ').click()
       cy.contains('My ideal jobs').click()
   
       cy.get('[name="searchVal"]', { timeout: 10000 }).type('Kuala Lumpur')
-      cy.get('[role="option"]').contains('Kuala Lumpur').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Kuala Lumpur').click()
   
       cy.get('[name="reason"]').type('Asdasdf fsadf asfda dfwqda sdcasd')
       break;
@@ -315,7 +315,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       dataTable.hashes().forEach((contact, index) => {
         // Select the contact method
         cy.get('[class="select-control"]').eq(index + 1).click();
-        cy.get('[role="option"]').contains(contact.method).click();
+        cy.get('[role="option"]', {timeout : 10000}).contains(contact.method).click();
     
         // Handle country selection if phone is true
         if (contact.phone === 'true') {
@@ -349,29 +349,29 @@ export function fillFunction (type, dataTable, additionalData = {}) {
 
       cy.get('[name="form"]').should('be.visible')
       cy.get('[name="privacy_level"]').should('be.visible').click()
-      cy.get('[role="option"]').contains('Public').should('be.visible').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Public').should('be.visible').click()
 
       cy.get('[name="education_title"]').click()
-      cy.get('[role="option"]').contains('Diploma').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Diploma').click()
 
       cy.get('[name="institute_name"]').clear().type('Australian National University')
-      cy.get('[role="option"]', {timeout : 10000}).contains('Australian National University').click()
+      cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains('Australian National University').click()
 
       //location
       // cy.get('[name="description"]').type('Cyberjaya')
-      // cy.get('[role="option"]').contains('Cyberjaya').click()
+      // cy.get('[role="option"]', {timeout : 10000}).contains('Cyberjaya').click()
       // cy.get('[name="postal_code"]').type('43300')
 
       cy.get('[name="course_name"]').type('Diploma in Infomation Technology')
 
       cy.get('[name="examType"]').click() 
-      cy.get('[role="option"]').contains(' Malay ').click()
-      // cy.get('[role="option"]').contains(' English ').click()
-      cy.get('[role="option"]').contains(' Korean ').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains(' Malay ').click()
+      // cy.get('[role="option"]', {timeout : 10000}).contains(' English ').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains(' Korean ').click()
 
       cy.contains('Study Language').click()
       cy.get('[name="studyMode"]').click()
-      cy.get('[role="option"]').contains('Online').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Online').click()
 
       cy.get('[name="start_date"]').click()
       selectDate('Mar', '2022', '22');
@@ -380,12 +380,12 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       selectDate('Nov', '2025', '22');
 
       cy.get('[name="system"]').click()
-      cy.get('[role="option"]').contains('C-GPA (out of 5)').scrollIntoView().should('be.visible').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('C-GPA (out of 5)').scrollIntoView().should('be.visible').click()
       cy.get('[name="cgpa"]').type('3.5')
 
       cy.get('[class="slider round"]').click()
       cy.get('[id="type_0"]').click()
-      cy.get('[role="option"]').contains('Semester').should('be.visible').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Semester').should('be.visible').click()
       
       let index = 0;
       dataTable.hashes().forEach((entry, i) => {
@@ -415,11 +415,11 @@ export function fillFunction (type, dataTable, additionalData = {}) {
 
       //Job title
       cy.get('[name="job_title"]').type('Accountant')
-      cy.get('[role="option"]').contains('Accountant').should('be.visible').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Accountant').should('be.visible').click()
 
       //Job type
       cy.get('[name="preferredWorkTypes"]').click();
-      cy.get('[role="option"]').contains('Internship').should('be.visible').click();
+      cy.get('[role="option"]', {timeout : 10000}).contains('Internship').should('be.visible').click();
 
       //Company name
       cy.get('[name="company_name"]').type('Australian Company')
@@ -427,7 +427,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
 
       //Location
       // cy.get('[name="description"]').clear().type('Geelong Victoria, Australia').should('have.value', 'Geelong Victoria, Australia')
-      // cy.get('[role="option"]').contains('Geelong Victoria, Australia').should('be.visible').click()
+      // cy.get('[role="option"]', {timeout : 10000}).contains('Geelong Victoria, Australia').should('be.visible').click()
       // cy.get('[name="postal_code"]').type('3435')
 
       //Checkbox
@@ -443,12 +443,12 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       //Job description
       cy.get('[name="job_description"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
       cy.get('[name="showSkills"]').click()
-      cy.get('[role="option"]').contains(' .NET ').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains(' .NET ').click()
       cy.get('[class="col-md-12 common-input-mb"]').contains('Skills').click()
 
       //collaborations
       cy.get('[name="collaborations"]').should('be.visible').click()
-      cy.get('[role="option"]').contains(' Abu Ali ').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains(' Abu Ali ').click()
       cy.get('[class="col-md-12 common-input-mb"]').contains('Skills').click()
 
       //attach file
@@ -462,7 +462,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
 
       cy.get('[name="preferredWorkTypes"]').click();
-      cy.get('[role="option"]').contains('Internship').should('be.visible').click();
+      cy.get('[role="option"]', {timeout : 10000}).contains('Internship').should('be.visible').click();
       
       cy.get('[name="work_status"]').click()
       cy.contains('Unemployed').should('be.visible').click()
@@ -480,11 +480,11 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       dataTable.hashes().forEach((row, index) => {
     
           cy.get('[bindvalue="id"]').eq(index + 1).click()
-          cy.get('[role="option"]').eq(index).contains(row.day).should('be.visible').click()
+          cy.get('[role="option"]', {timeout : 10000}).eq(index).contains(row.day).should('be.visible').click()
           cy.get('[name="selectTime"]').eq(index + i).click()
-          cy.get('[role="option"]').contains(row.startTime).click()
+          cy.get('[role="option"]', {timeout : 10000}).contains(row.startTime).click()
           cy.get('[name="selectTime"]').eq(index + 1 + i).click()
-          cy.get('[role="option"]').contains(row.endTime).click()
+          cy.get('[role="option"]', {timeout : 10000}).contains(row.endTime).click()
     
           if(index < (dataTable.hashes().length - 1)){
               cy.contains('Add Availability').should('be.visible').click()
@@ -502,7 +502,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       dataTable.hashes().forEach((qualification, index) => {
         // Select the exam type
         cy.get('[role="combobox"]').eq(comboboxStartIndex).click();
-        cy.get('[role="option"]').contains(qualification.Type).click();
+        cy.get('[role="option"]', {timeout : 10000}).contains(qualification.Type).click();
     
         // Declare scores outside the if-else block to use later
         let scores = [];
@@ -515,7 +515,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
           scores = qualification.scores.split(',');
           scores.forEach((score, scoreIndex) => {
             cy.get('[role="combobox"]').eq(comboboxStartIndex + 1 + scoreIndex).click();
-            cy.get('[role="option"]').contains(score).click();
+            cy.get('[role="option"]', {timeout : 10000}).contains(score).click();
           });
         }
     
@@ -540,7 +540,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       cy.get('[name="hobbies"]').type('as')
 
       dataTable.hashes().forEach((row) => {
-        cy.get('[role="option"]').contains(row.hobbies).click()
+        cy.get('[role="option"]', {timeout : 10000}).contains(row.hobbies).click()
       });
 
       cy.contains('Tell us your hobbies').click()
@@ -554,7 +554,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       cy.get('[name="skills"]').type('microsoft')
 
       dataTable.hashes().forEach((row) => {
-        cy.get('[role="option"]').contains(row.skills).click()
+        cy.get('[role="option"]', {timeout : 10000}).contains(row.skills).click()
       })
       cy.get('[class="col-md-12 common-input-mb"]').contains('Skills and Endorsement').click()
       break;
@@ -572,7 +572,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
   
       cy.get('[name="details"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
       cy.get('[name="collaborations"]').type(' Australian National University ')
-      cy.get('[role="option"]').contains(' Australian National University ').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains(' Australian National University ').click()
       cy.contains('Associated with').click()
   
       cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
@@ -585,7 +585,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
   
       cy.get('[id="title"]').type('Firecracker Award')
       cy.get('[name="publication"]').type('Tata Consultancy Services')
-      cy.get('[role="option"]').contains('Tata Consultancy Services').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Tata Consultancy Services').click()
       cy.get('[name="publicUrl"]').type('mass.com')
   
       cy.get('[placeholder="Select a date"]').click()
@@ -594,7 +594,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       cy.get('[name="details"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
   
       cy.get('[name="collaborations"]').type('adam')
-      cy.get('[role="option"]').contains(' Adam Cof ').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains(' Adam Cof ').click()
       cy.contains('Other Authors').click()
   
       cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
@@ -607,7 +607,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
     
       cy.get('[id="title"]').type('Patent Title');
       cy.get('[name="citizenship"]').click();
-      cy.get('[role="option"]').contains('Malaysia').scrollIntoView().click();
+      cy.get('[role="option"]', {timeout : 10000}).contains('Malaysia').scrollIntoView().click();
     
       if (isIssued) {
         cy.get('[id="Patent Issued"]').click();
@@ -623,7 +623,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       cy.get('[id="description"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
     
       cy.get('[name="collaborations"]').type('adam');
-      cy.get('[role="option"]').contains(' Adam Cof ').click();
+      cy.get('[role="option"]', {timeout : 10000}).contains(' Adam Cof ').click();
     
       cy.contains('Other Inventors').click();
     
@@ -651,7 +651,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       cy.get('[name="details"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
     
       cy.get('[name="collaborations"]').type('g');
-      cy.get('[role="option"]').contains(' Bridget Lynch ').click();
+      cy.get('[role="option"]', {timeout : 10000}).contains(' Bridget Lynch ').click();
       cy.get('[class="ng-star-inserted"]').contains('labels.Other Contributors').click();
     
       cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg');
@@ -662,15 +662,15 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
   
       cy.get('[formcontrolname="title"]').click()
-      cy.get('[role="option"]').contains('Malay').scrollIntoView().click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Malay').scrollIntoView().click()
   
       cy.get('[formcontrolname="language_proficiency_type"]').click()
-      cy.get('[role="option"]').contains('Native or bilingual Proficiency').should('be.visible').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Native or bilingual Proficiency').should('be.visible').click()
   
       cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
       break;
     
-    case 'fillVocational':
+    case 'fillEducationApplication':
       const options = [
         'Advanced Diploma of Building Biology',
         'Aboriginal Health and Wellbeing ',
@@ -705,45 +705,45 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       cy.get('[class="pl-18 img-content-width ng-star-inserted"]').contains('Abu Ali').click()
       if(additionalData.applicationType === 'direct-application'){
         cy.get('[name="institute_id"]').type('aus')
-        cy.get('[role="option"]',{timeout : 10000}).contains(' Australian National University ').click()
+        cy.get('[role="option"]', {timeout : 10000},{timeout : 10000}).contains(' Australian National University ').click()
         
         cy.get('[name="courses"]').click()
         cy.wait(5000)
-        cy.get('[role="option"]').contains(' Angular Js ').click()
+        cy.get('[role="option"]', {timeout : 10000}).contains(' Angular Js ').click()
     
         cy.get('[id="intake_date"]').click()
-        cy.get('[role="option"]').contains(' January 2025 ').click()
+        cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains(' January 2025 ').click()
     
         cy.get('[id="study_mode"]').click()
-        cy.get('[role="option"]').contains('FULL_TIME').click()
+        cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains('FULL_TIME').click()
     
         cy.get('[id="delivery_mode"]').click()
-        cy.get('[role="option"]').contains('ONLINE').click()
+        cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains('ONLINE').click()
       }else if(additionalData.applicationType === 'multiple-offer'){
         cy.get('[bindlabel="keyword"]').click()
         cy.wait(3000)
 
         selectOption(options);
         cy.get('[name="study_mode"]').click()
-        cy.get('[role="option"]').contains(' Full-Time ').click()
+        cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains(' Full-Time ').click()
     
         cy.get('[name="delivery_mode"]').click()
-        cy.get('[role="option"]').contains(' Online ').click()
+        cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains(' Online ').click()
     
         cy.get('[name="level"]').click()
         selectOption(options);
     
         cy.get('[name="intake_date"]').click()
-        cy.get('[role="option"]').contains(' September 2024 ').click()
+        cy.get('[role="option"]', {timeout : 10000}).contains(' September 2024 ').click()
     
         cy.get('[name="description"]').type('australia')
-        cy.get('[role="option"]').contains('Australian National University').click()
+        cy.get('[role="option"]', {timeout : 10000}).contains('Australian National University').click()
     
         cy.get('[name="why_interested"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
       }
       cy.contains('button', 'Next').click()
       cy.wait(5000)
-      cy.get('[class="btn-cont-block btn-input min-h"]')
+      cy.get('[class="btn-cont-block btn-input min-h"]', {timeout:10000})
           .parent()
           .find('[class="btn-content-inner"]')
           .contains(' Myself / Family member ')
@@ -780,7 +780,7 @@ function selectOption(options) {
   options.forEach(option => {
       cy.get('body').then($body => {
           if ($body.find(`[role="option"]:contains("${option}")`).length > 0) {
-              cy.get('[role="option"]').contains(option).click();
+              cy.get('[role="option"]', {timeout : 10000}).contains(option).click();
               optionFound = true;
               return false; // Exit the loop once the option is found and clicked
           }
@@ -934,7 +934,7 @@ export function editDetails(type, dataTable = null){
         .find('[class="ng-value-icon right ng-star-inserted"]')
         .click()  
       cy.get('[name="jobs"]').type('Actor')
-      cy.get('[role="option"]').contains('Actor').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Actor').click()
       cy.contains('My ideal jobs').click()
 
       cy.get('[name="fields"]').click()
@@ -944,7 +944,7 @@ export function editDetails(type, dataTable = null){
           .find('[class="ng-value-icon right ng-star-inserted"]')
           .click() 
       cy.get('[name="courses"]').type('Visual')
-      cy.get('[role="option"]').contains(' Bachlor in Visual Communication ').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains(' Bachlor in Visual Communication ').click()
       cy.contains('My ideal jobs').click()
 
       cy.get('[name="fields"]').click()
@@ -954,7 +954,7 @@ export function editDetails(type, dataTable = null){
           .find('[class="ng-value-icon right ng-star-inserted"]')
           .click()   
           
-      cy.get('[role="option"]').contains(' Education ').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains(' Education ').click()
       cy.contains('My ideal jobs').click()
 
       cy.get('[name="reason"]').type('New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
@@ -988,13 +988,13 @@ export function editDetails(type, dataTable = null){
 
     cy.contains('Study Language').click()
     cy.get('[name="studyMode"]').click()
-    cy.get('[role="option"]').contains('Classroom').click()
+    cy.get('[role="option"]', {timeout : 10000}).contains('Classroom').click()
       break;
 
     case 'workExperience':
       //Job title
       cy.get('[name="job_title"]').clear().type('Information')
-      cy.get('[role="option"]').contains('Computer and Information Research Scientist').should('be.visible').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Computer and Information Research Scientist').should('be.visible').click()
 
       //Company name
       cy.get('[name="company_name"]').clear().type('Eztek software')
@@ -1010,7 +1010,7 @@ export function editDetails(type, dataTable = null){
       //Job description
       cy.get('[name="job_description"]').clear().type('New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
       cy.get('[name="showSkills"]').click()
-      cy.get('[role="option"]').contains(' .com ').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains(' .com ').click()
       cy.get('[class="col-md-12 common-input-mb"]').contains('Skills').click()
       break;
 
@@ -1020,9 +1020,9 @@ export function editDetails(type, dataTable = null){
       //change time
       dataTable.hashes().forEach((row, index) => {
           cy.get('[name="selectTime"]').eq(index + i).click()
-          cy.get('[role="option"]').contains(row.startTime).click()
+          cy.get('[role="option"]', {timeout : 10000}).contains(row.startTime).click()
           cy.get('[name="selectTime"]').eq(index + 1 + i).click()
-          cy.get('[role="option"]').contains(row.endTime).click()
+          cy.get('[role="option"]', {timeout : 10000}).contains(row.endTime).click()
           
           if(j<4){
               i++
@@ -1041,7 +1041,7 @@ export function editDetails(type, dataTable = null){
       
       dataTable.hashes().forEach((row) => {
           if (row.new_hobbies && row.new_hobbies.trim()) {
-            cy.get('[role="option"]', {timeout : 10000})
+            cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000})
             .contains(row.new_hobbies)
               .click()
           }
@@ -1057,7 +1057,7 @@ export function editDetails(type, dataTable = null){
       cy.get('[class="btn btn-dots mr-0 edit-blue-btn ng-star-inserted"]').click()
 
       cy.get('[name="skills"]').type('ab')
-      cy.get('[role="option"]').contains('ABC Analysis').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('ABC Analysis').click()
   
       cy.get('[class="col-md-12 common-input-mb"]').contains('Skills and Endorsement').click()
       cy.get('[type="button"]').contains('Update').click()
@@ -1073,21 +1073,21 @@ export function editDetails(type, dataTable = null){
     case 'award':
       cy.get('[id="title"]').clear().type('New Awards')
       cy.get('[name="name"]').clear().type('Aston University')
-      cy.get('[role="option"]').contains('Aston University, Aston Street, Birmingham, UK').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Aston University, Aston Street, Birmingham, UK').click()
   
       cy.get('[placeholder="Select a date"]').click()
       selectDate('Aug', '2020', '15');
       cy.get('[name="details"]').clear().type('New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
       cy.get('[class="ng-value-icon right ng-star-inserted"]').click()
       cy.get('[name="collaborations"]').type('Daniyal Institution')
-      cy.get('[role="option"]').contains(' Daniyal Institution Dubai - United Arab Emirates ').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains(' Daniyal Institution Dubai - United Arab Emirates ').click()
       cy.contains('Associated with').click()
       break;
     
     case 'publication':
       cy.get('[id="title"]').clear().type('New Awards')
       cy.get('[name="publication"]').clear().type('Aston University')
-      cy.get('[role="option"]').contains('Aston University, Aston Street, Birmingham, UK').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Aston University, Aston Street, Birmingham, UK').click()
       cy.get('[name="publicUrl"]').clear().type('NewURLlink.com')
   
       cy.get('[placeholder="Select a date"]').click()
@@ -1104,7 +1104,7 @@ export function editDetails(type, dataTable = null){
           .click()
   
       cy.get('[name="collaborations"]').type('adam')
-      cy.get('[role="option"]').contains(' Adam John ').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains(' Adam John ').click()
       cy.contains('Title').click()
   
       cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg')
@@ -1116,7 +1116,7 @@ export function editDetails(type, dataTable = null){
     
       cy.get('[id="title"]').clear().type('New Patent Title');
       cy.get('[name="citizenship"]').click();
-      cy.get('[role="option"]').contains('Malaysia').scrollIntoView().click();
+      cy.get('[role="option"]', {timeout : 10000}).contains('Malaysia').scrollIntoView().click();
     
       cy.get('[id="Patent Pending"]').click();
       cy.get('[id="application_number"]').type('62112333');
@@ -1127,7 +1127,7 @@ export function editDetails(type, dataTable = null){
       cy.get('[id="description"]').clear().type('New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
     
       cy.get('[name="collaborations"]').type('adam');
-      cy.get('[role="option"]').contains('Adam John').click();
+      cy.get('[role="option"]', {timeout : 10000}).contains('Adam John').click();
     
       cy.contains('Description').click();
     
@@ -1149,7 +1149,7 @@ export function editDetails(type, dataTable = null){
       cy.get('[name="details"]').clear().type('New description is correct. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.');
   
       cy.get('[name="collaborations"]').type('Adam');
-      cy.get('[role="option"]').contains('Adam John').click();
+      cy.get('[role="option"]', {timeout : 10000}).contains('Adam John').click();
       cy.get('[class="ng-star-inserted"]').contains('labels.Other Contributors').click();
   
       cy.get('[type="file"]').selectFile('cypress\\images\\photo_2022-07-15_12-06-13 - Copy (2).jpg');
@@ -1160,10 +1160,10 @@ export function editDetails(type, dataTable = null){
       cy.get('[class="content-block"]').contains('Public').should('be.visible').click()
   
       cy.get('[formcontrolname="title"]').click()
-      cy.get('[role="option"]').contains('English').scrollIntoView().click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('English').scrollIntoView().click()
   
       cy.get('[formcontrolname="language_proficiency_type"]').click()
-      cy.get('[role="option"]').contains('Native or bilingual Proficiency').should('be.visible').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Native or bilingual Proficiency').should('be.visible').click()
   
       cy.get('[type="file"]').selectFile('cypress\\images\\2022-05-23.png')
       break;
