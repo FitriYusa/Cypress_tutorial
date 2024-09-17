@@ -147,6 +147,16 @@ When("the user initiate the Postgraduate education application", () => {
     // cy.get('[class="post-title cursor-pointer mt-3"]').contains('Postgraduate').click()
 })
 
+When("the user initiate the Upskilling application", () => {
+    cy.get('[class="text-center icon-block cursor-pointer"]')
+        .parent()
+        .find('[class="mb-0"]')
+        .contains('Upskilling')
+        .click()
+// cy.get('[class="text-center pt-2 mb-3"]').contains('Education').click()
+// cy.get('[class="post-title cursor-pointer mt-3"]').contains('Postgraduate').click()
+})
+
 //direct appliction
 When("the user provides valid direct application details", (dataTable) => {
     cy.url({ timeout: 60000 }).should('include', '/create-course-application/id')
@@ -162,7 +172,7 @@ When("the user provides valid direct application details", (dataTable) => {
     fillFunction('fillEducationApplication', dataTable, { applicationType: 'direct-application' })
 })
 When("the user submits the direct application form", () => {
-    cy.wait(5000)
+    cy.wait(10000)
     cy.contains('button', 'Submit').click()
 })
 Then("the user can view the direct application application", () => {
@@ -170,6 +180,8 @@ Then("the user can view the direct application application", () => {
     cy.contains('button', 'Go to my Applications ').click()
     cy.get('[class="sec-block-pad section-bg"]')
         .should('be.visible')
+    cy.get('[class="d-flex align-items-center mb-4"]')
+        .should('contain.text', 'Direct')
     cy.get('[class="default-content-list"]')
         .should('contain.text', 'Angular Js')
         .and('contain.text', 'Australian National University')
@@ -193,10 +205,21 @@ When("the user provides valid mulitple offer details" , (dataTable) => {
     fillFunction('fillEducationApplication', dataTable, { applicationType: 'multiple-offer' })
 })
 When("the user submits the mulitple offer form", () => {
-
+    cy.wait(10000)
+    cy.contains('button', 'Submit').click()
 })
 Then("the user can view the mulitple offer application", () => {
-
+    cy.wait(5000)
+    cy.contains('button', 'Go to my Applications ').click()
+    cy.get('[class="sec-block-pad section-bg"]')
+        .should('be.visible')
+    cy.get('[class="d-flex align-items-center mb-4"]')
+        .should('contain.text', ' Multiple offers ')
+    cy.get('[class="default-content-list"]')
+        .should('contain.text', 'Advanced Diploma of Building Biology')
+        .and('contain.text', '1 September 2024')
+        .and('contain.text', ' Full-Time ')
+        .and('contain.text', ' Online ')
 })
 
 //

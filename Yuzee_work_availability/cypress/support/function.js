@@ -719,6 +719,9 @@ export function fillFunction (type, dataTable, additionalData = {}) {
     
         cy.get('[id="delivery_mode"]').click()
         cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains('ONLINE').click()
+
+        cy.contains('button', 'Next').click()
+        cy.wait(10000)
       }else if(additionalData.applicationType === 'multiple-offer'){
         cy.get('[bindlabel="keyword"]').click()
         cy.wait(3000)
@@ -740,9 +743,19 @@ export function fillFunction (type, dataTable, additionalData = {}) {
         cy.get('[role="option"]', {timeout : 10000}).contains('Australian National University').click()
     
         cy.get('[name="why_interested"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+        cy.contains('button', 'Next').click()
+        cy.wait(10000)
+
+        // cy.get('[class="custom-radio-wrap form-check-inline mr-3 ng-star-inserted"]')
+        //   .parent()
+        //   .find('[id="WEEKDAYS”]')
+        //   .click()
+        cy.get('[id="WEEKDAYS"]').click()
+        cy.get('[id="MORNINGS"]').click()
+        cy.wait(5000)
+        cy.contains('button', 'Next').click()
+
       }
-      cy.contains('button', 'Next').click()
-      cy.wait(5000)
       cy.get('[class="btn-cont-block btn-input min-h"]', {timeout:10000})
           .parent()
           .find('[class="btn-content-inner"]')
