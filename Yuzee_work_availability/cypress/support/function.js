@@ -355,7 +355,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       cy.get('[role="option"]', {timeout : 10000}).contains('Diploma').click()
 
       cy.get('[name="institute_name"]').clear().type('Australian National University')
-      cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains('Australian National University').click()
+      cy.get('[role="option"]', {timeout : 10000}).contains('Australian National University').click()
 
       //location
       // cy.get('[name="description"]').type('Cyberjaya')

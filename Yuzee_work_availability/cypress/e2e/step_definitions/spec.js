@@ -146,7 +146,7 @@ When("the user initiate the Postgraduate education application", () => {
     // cy.get('[class="text-center pt-2 mb-3"]').contains('Education').click()
     // cy.get('[class="post-title cursor-pointer mt-3"]').contains('Postgraduate').click()
 })
-
+//upskilling
 When("the user initiate the Upskilling application", () => {
     cy.get('[class="text-center icon-block cursor-pointer"]')
         .parent()
@@ -210,7 +210,7 @@ When("the user submits the mulitple offer form", () => {
 })
 Then("the user can view the mulitple offer application", () => {
     cy.wait(5000)
-    cy.contains('button', 'Go to my Applications ').click()
+    cy.contains('button', 'Go to my Applications').click()
     cy.get('[class="sec-block-pad section-bg"]')
         .should('be.visible')
     cy.get('[class="d-flex align-items-center mb-4"]')
@@ -220,6 +220,120 @@ Then("the user can view the mulitple offer application", () => {
         .and('contain.text', '1 September 2024')
         .and('contain.text', ' Full-Time ')
         .and('contain.text', ' Online ')
+})
+
+//upskilling
+When("the user provides valid upskilling details", (dataTable) => {
+    cy.url({ timeout: 60000 }).should('include', '/create-course-application/id')
+
+    cy.get('[class="btn-content-inner"]').contains(' Direct application ').click()
+    cy.get('[class="btn-content-inner"]').contains(' Create New ').click()
+    cy.get('[class="btn-content-inner"]').contains(' Direct application ').click()
+    cy.get('[class="btn-content-inner"]').contains(' Create New ').click()
+    cy.wait(5000)
+
+    cy.get('[class="select-card min-h"]').contains('My employer wants me to upskill').click()
+
+    cy.wait(5000)
+    cy.contains('button', 'Next').click()
+
+    cy.get('[class="select-card min-h"]').contains('I am currently working in the field').click()
+
+    cy.contains('button', 'Next').click()
+
+    cy.get('[class="btn btn-dots edit-blue-btn ng-star-inserted"]').click()
+    fillFunction('fillEducation', dataTable)
+
+    cy.get('[type="submit"]').contains('Save').click()
+    cy.get('[type="button"]', {timeout : 10000}).contains('Ok').click() 
+
+    cy.wait(10000)
+    cy.contains('button', 'Next').click()
+
+    cy.get('[id="WEEKDAYS"]').click()
+    cy.get('[id="MORNINGS"]').click()
+    cy.wait(5000)
+    cy.contains('button', 'Next').click()
+
+    cy.get('[class="select-card min-h ng-star-inserted"]').should('contain.text', 'Ali Abu').click()
+
+    cy.get('[class="select-card-content"]')
+    .contains(' Profile Details ')
+    .parent()
+    .find('[class="mt-3 btn txt-button border-0 mb-2 fs-14 p-0"]')
+    .contains(' Edit details ')
+    .click()
+    fillFunction('fillEditProfile')
+
+    cy.get('[type="submit"]').contains('Update').click()
+
+    cy.get('[name="institute_id"]').type('aus')
+    cy.get('[role="option"]', {timeout : 10000},{timeout : 10000}).contains(' Australian National University ').click()
+    
+    cy.get('[name="courses"]').click()
+    cy.wait(5000)
+    cy.get('[role="option"]', {timeout : 10000}).contains(' Angular Js ').click()
+
+    cy.get('[id="intake_date"]').click()
+    cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains(' January 2025 ').click()
+
+    cy.get('[id="study_mode"]').click()
+    cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains('FULL_TIME').click()
+
+    cy.get('[id="delivery_mode"]').click()
+    cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains('ONLINE').click()
+
+    cy.contains('button', 'Next').click()
+    cy.wait(10000)
+
+    cy.get('[class="btn-cont-block btn-input min-h"]', {timeout:10000})
+    .parent()
+    .find('[class="btn-content-inner"]')
+    .contains(' Myself / Family member ')
+    .click()
+
+    cy.wait(5000)
+    cy.contains('button', 'Next').click()
+    cy.get('[class="dropdown-toggle btn border-0 p-0 arrow-none m-0"]', {timeout : 10000}).eq(0).click()
+    cy.get('[name="file1"').invoke('removeClass', 'd-none').selectFile('cypress\\images\\5948574-sd_426_240_30fps.mp4')
+    cy.get('[class="dropdown-toggle btn border-0 p-0 arrow-none m-0"]', {timeout : 10000}).eq(1).click()    
+    cy.get('[name="file2"').invoke('removeClass', 'd-none').selectFile('cypress\\images\\5948574-sd_426_240_30fps.mp4')
+    cy.get('[class="dropdown-toggle btn border-0 p-0 arrow-none m-0"]', {timeout : 10000}).eq(1).click()
+    cy.get('[name="file3"').invoke('removeClass', 'd-none').selectFile('cypress\\images\\5948574-sd_426_240_30fps.mp4')
+    cy.contains('button', 'Next').click()
+    cy.wait(5000)
+
+ 
+    cy.get('[class="btn btn-dots mr-0 edit-blue-btn"]', {timeout : 10000}).click()
+    fillFunction('fillMyDocs',dataTable)
+    cy.wait(5000)
+    cy.get('[class="close"]').click()
+    cy.get('[type="button"]').contains('Yes').click()
+    cy.wait(5000)
+    cy.contains('button', 'Next').click()
+
+    cy.wait(5000)
+    cy.contains('button', 'Preview').click()
+
+    cy.wait(10000)
+    cy.contains('button', 'Submit').click()
+
+    cy.wait(10000)
+    cy.contains('button', 'Go to my Applications').click()
+
+    cy.wait(10000)
+    cy.get('[class="sec-block-pad section-bg"]')
+        .should('be.visible')
+    cy.get('[class="d-flex align-items-center mb-4"]')
+        .should('contain.text', 'Direct')
+        .and('contain.text', ' Upskilling offers ')
+    cy.get('[class="default-content-list"]')
+        .should('contain.text', ' Angular Js ')
+        .and('contain.text', 'Australian National University ')
+        .and('contain.text', ' Jan 2025 ')
+        .and('contain.text', ' FULL_TIME ')
+        .and('contain.text', ' ONLINE ')
+        .and('contain.text', ' ONLINE ')
 })
 
 //
