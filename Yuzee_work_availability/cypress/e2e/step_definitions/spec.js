@@ -1,6 +1,6 @@
 import { When, Then, Given } from "@badeball/cypress-cucumber-preprocessor"
 
-import {verifyOTP, selectDate, Onboarding, fillFunction, assertDetails, editDetails, deleteDetails} from '../../support/function';
+import {verifyOTP, selectDate, Onboarding, fillFunction, assertDetails, editDetails, deleteDetails, selectOption} from '../../support/function';
 
 Given("the user is on Yuzee homepage is open", () => {
     cy.visit('/')
@@ -204,7 +204,7 @@ When("the user provides valid mulitple offer details" , (dataTable) => {
     cy.get('[class="pl-18 img-content-width ng-star-inserted"]').contains('Ali Abu').click()
     fillFunction('fillEducationApplication', dataTable, { applicationType: 'multiple-offer' })
 })
-When("the user submits the mulitple offer form", () => {
+When("the user submits the upskills offer form", () => {
     cy.wait(10000)
     cy.contains('button', 'Submit').click()
 })
@@ -223,7 +223,7 @@ Then("the user can view the mulitple offer application", () => {
 })
 
 //upskilling
-When("the user provides valid upskilling details", (dataTable) => {
+When("the user provides valid upskilling direct offer details", (dataTable) => {
     cy.url({ timeout: 60000 }).should('include', '/create-course-application/id')
 
     cy.get('[class="btn-content-inner"]').contains(' Direct application ').click()
@@ -232,95 +232,15 @@ When("the user provides valid upskilling details", (dataTable) => {
     cy.get('[class="btn-content-inner"]').contains(' Create New ').click()
     cy.wait(5000)
 
-    cy.get('[class="select-card min-h"]').contains('My employer wants me to upskill').click()
-
-    cy.wait(5000)
-    cy.contains('button', 'Next').click()
-
-    cy.get('[class="select-card min-h"]').contains('I am currently working in the field').click()
-
-    cy.contains('button', 'Next').click()
-
-    cy.get('[class="btn btn-dots edit-blue-btn ng-star-inserted"]').click()
-    fillFunction('fillEducation', dataTable)
-
-    cy.get('[type="submit"]').contains('Save').click()
-    cy.get('[type="button"]', {timeout : 10000}).contains('Ok').click() 
-
-    cy.wait(10000)
-    cy.contains('button', 'Next').click()
-
-    cy.get('[id="WEEKDAYS"]').click()
-    cy.get('[id="MORNINGS"]').click()
-    cy.wait(5000)
-    cy.contains('button', 'Next').click()
-
-    cy.get('[class="select-card min-h ng-star-inserted"]').should('contain.text', 'Ali Abu').click()
-
-    cy.get('[class="select-card-content"]')
-    .contains(' Profile Details ')
-    .parent()
-    .find('[class="mt-3 btn txt-button border-0 mb-2 fs-14 p-0"]')
-    .contains(' Edit details ')
-    .click()
-    fillFunction('fillEditProfile')
-
-    cy.get('[type="submit"]').contains('Update').click()
-
-    cy.get('[name="institute_id"]').type('aus')
-    cy.get('[role="option"]', {timeout : 10000},{timeout : 10000}).contains(' Australian National University ').click()
-    
-    cy.get('[name="courses"]').click()
-    cy.wait(5000)
-    cy.get('[role="option"]', {timeout : 10000}).contains(' Angular Js ').click()
-
-    cy.get('[id="intake_date"]').click()
-    cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains(' January 2025 ').click()
-
-    cy.get('[id="study_mode"]').click()
-    cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains('FULL_TIME').click()
-
-    cy.get('[id="delivery_mode"]').click()
-    cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains('ONLINE').click()
-
-    cy.contains('button', 'Next').click()
-    cy.wait(10000)
-
-    cy.get('[class="btn-cont-block btn-input min-h"]', {timeout:10000})
-    .parent()
-    .find('[class="btn-content-inner"]')
-    .contains(' Myself / Family member ')
-    .click()
-
-    cy.wait(5000)
-    cy.contains('button', 'Next').click()
-    cy.get('[class="dropdown-toggle btn border-0 p-0 arrow-none m-0"]', {timeout : 10000}).eq(0).click()
-    cy.get('[name="file1"').invoke('removeClass', 'd-none').selectFile('cypress\\images\\5948574-sd_426_240_30fps.mp4')
-    cy.get('[class="dropdown-toggle btn border-0 p-0 arrow-none m-0"]', {timeout : 10000}).eq(1).click()    
-    cy.get('[name="file2"').invoke('removeClass', 'd-none').selectFile('cypress\\images\\5948574-sd_426_240_30fps.mp4')
-    cy.get('[class="dropdown-toggle btn border-0 p-0 arrow-none m-0"]', {timeout : 10000}).eq(1).click()
-    cy.get('[name="file3"').invoke('removeClass', 'd-none').selectFile('cypress\\images\\5948574-sd_426_240_30fps.mp4')
-    cy.contains('button', 'Next').click()
-    cy.wait(5000)
-
- 
-    cy.get('[class="btn btn-dots mr-0 edit-blue-btn"]', {timeout : 10000}).click()
-    fillFunction('fillMyDocs',dataTable)
-    cy.wait(5000)
-    cy.get('[class="close"]').click()
-    cy.get('[type="button"]').contains('Yes').click()
-    cy.wait(5000)
-    cy.contains('button', 'Next').click()
-
-    cy.wait(5000)
-    cy.contains('button', 'Preview').click()
-
+    fillFunction('fillUpskill', dataTable, { applicationType: 'direct-application' })
+})
+When("the user submits the upskilling form", () => {
     cy.wait(10000)
     cy.contains('button', 'Submit').click()
-
+})
+Then("the user can view the upskilling direct offer", () => {
     cy.wait(10000)
     cy.contains('button', 'Go to my Applications').click()
-
     cy.wait(10000)
     cy.get('[class="sec-block-pad section-bg"]')
         .should('be.visible')
@@ -333,9 +253,33 @@ When("the user provides valid upskilling details", (dataTable) => {
         .and('contain.text', ' Jan 2025 ')
         .and('contain.text', ' FULL_TIME ')
         .and('contain.text', ' ONLINE ')
-        .and('contain.text', ' ONLINE ')
 })
+When("the user provides valid upskilling multiple offer details", (dataTable) => {
+    cy.url({ timeout: 60000 }).should('include', '/create-course-application/id')
 
+    cy.get('[class="btn-content-inner"]').contains('Receive multiple offers').click()
+    cy.get('[class="btn-content-inner"]').contains(' Create New ').click()
+    cy.get('[class="btn-content-inner"]').contains('Receive multiple offers').click()
+    cy.get('[class="btn-content-inner"]').contains(' Create New ').click()
+    cy.wait(5000)
+
+    fillFunction('fillUpskill', dataTable, {applicationType : 'multiple-offer'})
+})
+Then("the user can view the upskilling multiple offer", () => {
+    cy.wait(10000)
+    cy.contains('button', 'Go to my Applications').click()
+    cy.wait(10000)
+    cy.get('[class="sec-block-pad section-bg"]')
+        .should('be.visible')
+    cy.get('[class="d-flex align-items-center mb-4"]')
+        .should('contain.text', 'Multiple offers ')
+        .and('contain.text', ' Upskilling offers ')
+    cy.get('[class="default-content-list"]')
+        .should('contain.text', 'Aboriginal Health and Wellbeing')
+        .and('contain.text', '1 September 2024')
+        .and('contain.text', 'Full-Time ')
+        .and('contain.text', 'Online ')
+})
 //
 //Edit profile photo if there is no photo
 When("the user edit the profile photo", () => {
