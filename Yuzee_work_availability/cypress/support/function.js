@@ -1,7 +1,7 @@
 //OTP
 export function verifyOTP () {
 
-  const serverID = "uhvpxryq";
+  const serverID = "dmumkrpv";
 
   cy.get('@uniqueEmail').then((emailAddress) => { 
     // waiting for the API
@@ -869,6 +869,7 @@ export function fillFunction (type, dataTable, additionalData = {}) {
         cy.wait(10000)
       }
 
+      cy.wait(5000)
       cy.get('[class="btn-cont-block btn-input min-h"]', {timeout:10000})
       .parent()
       .find('[class="btn-content-inner"]')
@@ -899,6 +900,109 @@ export function fillFunction (type, dataTable, additionalData = {}) {
       cy.contains('button', 'Preview').click()
       break;
 
+    case 'fillRPL':
+      cy.get('[class="btn btn-dots edit-blue-btn ng-star-inserted"]').click()
+      fillFunction('fillEducation', dataTable)
+  
+      cy.get('[type="submit"]').contains('Save').click()
+  
+      cy.get('[id="WEEKDAYS"]').click()
+      cy.get('[id="MORNINGS"]').click()
+      cy.wait(5000)
+      cy.contains('button', 'Next').click()
+  
+      cy.get('[class="select-card min-h ng-star-inserted"]').should('contain.text', 'Ali Abu').click()
+  
+      cy.get('[class="select-card-content"]')
+      .contains(' Profile Details ')
+      .parent()
+      .find('[class="mt-3 btn txt-button border-0 mb-2 fs-14 p-0"]')
+      .contains(' Edit details ')
+      .click()
+      fillFunction('fillEditProfile')
+      cy.get('[type="submit"]').contains('Update').click()
+  
+      cy.get('[class="select-card-content"]')
+      .contains('Education')
+      .parent()
+      .find('[class="mt-3 btn txt-button border-0 mb-2 fs-14 p-0"]')
+      .contains(' Edit details ')
+      .click()
+      fillFunction('fillEducation', dataTable)
+      cy.get('[type="submit"]').contains('Save').click()
+      cy.get('[type="button"]', {timeout : 10000}).contains('Ok').click() 
+
+      if(additionalData.applicationType === 'direct-application'){
+        cy.get('[name="institute_id"]').type('aus')
+        cy.get('[role="option"]', {timeout : 10000},{timeout : 10000}).contains(' Australian National University ').click()
+        
+        cy.get('[name="courses"]').click()
+        cy.wait(5000)
+        cy.get('[role="option"]', {timeout : 10000}).contains(' Angular Js ').click()
+    
+        cy.get('[id="intake_date"]').click()
+        cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains(' January 2025 ').click()
+    
+        cy.get('[id="study_mode"]').click()
+        cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains('FULL_TIME').click()
+    
+        cy.get('[id="delivery_mode"]').click()
+        cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains('ONLINE').click()
+    
+        cy.contains('button', 'Next').click()
+        cy.wait(10000)
+      }else if(additionalData.applicationType === 'multiple-offer'){
+        cy.get('[bindlabel="keyword"]').click()
+        cy.wait(3000)
+    
+        cy.get('[role="option"]', {timeout : 10000}).contains('Aboriginal Health and Wellbeing ').click()
+        cy.get('[name="study_mode"]').click()
+        cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains(' Full-Time ').click()
+    
+        cy.get('[name="delivery_mode"]').click()
+        cy.get('[role="option"]', {timeout : 10000}, {timeout : 10000}).contains(' Online ').click()
+    
+        cy.get('[name="level"]').click()
+    
+        cy.get('[role="option"]', {timeout : 10000}).contains(' Foundation + Diploma ').click()
+    
+        cy.get('[name="intake_date"]').click()
+        cy.get('[role="option"]', {timeout : 10000}).contains(' September 2024 ').click()
+    
+        cy.get('[name="description"]').type('australia')
+        cy.get('[role="option"]', {timeout : 10000}).contains('Australian National University').click()
+    
+        cy.get('[name="why_interested"]').type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.')
+        cy.contains('button', 'Next').click()
+        cy.wait(10000)
+      }
+      cy.get('[class="btn-cont-block btn-input min-h"]', {timeout:10000})
+      .parent()
+      .find('[class="btn-content-inner"]')
+      .contains(' Myself / Family member ')
+      .click()
+      cy.wait(5000)
+      cy.contains('button', 'Next').click()
+      cy.get('[class="dropdown-toggle btn border-0 p-0 arrow-none m-0"]', {timeout : 10000}).eq(0).click()
+      cy.get('[name="file1"').invoke('removeClass', 'd-none').selectFile('cypress\\images\\5948574-sd_426_240_30fps.mp4')
+      cy.get('[class="dropdown-toggle btn border-0 p-0 arrow-none m-0"]', {timeout : 10000}).eq(1).click()    
+      cy.get('[name="file2"').invoke('removeClass', 'd-none').selectFile('cypress\\images\\5948574-sd_426_240_30fps.mp4')
+      cy.get('[class="dropdown-toggle btn border-0 p-0 arrow-none m-0"]', {timeout : 10000}).eq(1).click()
+      cy.get('[name="file3"').invoke('removeClass', 'd-none').selectFile('cypress\\images\\5948574-sd_426_240_30fps.mp4')
+      cy.contains('button', 'Next').click()
+      cy.wait(5000)
+      cy.contains('button', 'Next').click()
+      cy.wait(5000)
+      cy.get('[class="btn btn-dots mr-0 edit-blue-btn"]', {timeout : 10000}).click()
+      fillFunction('fillMyDocs',dataTable)
+      cy.wait(5000)
+      cy.get('[class="close"]').click()
+      cy.wait(5000)
+      cy.get('[type="button"]').contains('Yes').click()
+      cy.wait(5000)
+      cy.contains('button', 'Preview').click()
+      break;
+    
     default:
       throw new Error(`Unknown action type: ${actionType}`);
   }

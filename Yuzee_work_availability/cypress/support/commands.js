@@ -24,7 +24,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-const serverID = "uhvpxryq";
+const serverID = "dmumkrpv";
 const emailDomain = `@${serverID}.mailosaur.net`;
 
 Cypress.Commands.add('generateUniqueEmail', () => {

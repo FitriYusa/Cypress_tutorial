@@ -156,6 +156,16 @@ When("the user initiate the Upskilling application", () => {
 // cy.get('[class="text-center pt-2 mb-3"]').contains('Education').click()
 // cy.get('[class="post-title cursor-pointer mt-3"]').contains('Postgraduate').click()
 })
+//RPL
+When("the user initiate the RPL application", () => {
+    cy.get('[class="text-center icon-block cursor-pointer"]')
+        .parent()
+        .find('[class="mb-0"]')
+        .contains('RPL')
+        .click()
+// cy.get('[class="text-center pt-2 mb-3"]').contains('Education').click()
+// cy.get('[class="post-title cursor-pointer mt-3"]').contains('Postgraduate').click()
+})
 
 //direct appliction
 When("the user provides valid direct application details", (dataTable) => {
@@ -280,6 +290,66 @@ Then("the user can view the upskilling multiple offer", () => {
         .and('contain.text', 'Full-Time ')
         .and('contain.text', 'Online ')
 })
+
+//RPL
+When("the user provides valid RPL direct offer details", (dataTable) => {
+    cy.url({ timeout: 60000 }).should('include', '/create-course-application/id')
+
+    cy.get('[class="btn-content-inner"]').contains(' Direct application ').click()
+    cy.get('[class="btn-content-inner"]').contains(' Create New ').click()
+    cy.get('[class="btn-content-inner"]').contains(' Direct application ').click()
+    cy.get('[class="btn-content-inner"]').contains(' Create New ').click()
+    cy.wait(5000)
+
+    fillFunction('fillUpskill', dataTable, { applicationType: 'direct-application' })
+})
+Then("the user can view the RPL direct offer", () => {
+    cy.wait(10000)
+    cy.contains('button', 'Go to my Applications').click()
+    cy.wait(10000)
+    cy.get('[class="sec-block-pad section-bg"]')
+        .should('be.visible')
+    cy.get('[class="d-flex align-items-center mb-4"]')
+        .should('contain.text', 'Direct')
+        .and('contain.text', ' RPL offers ')
+    cy.get('[class="default-content-list"]')
+        .should('contain.text', ' Angular Js ')
+        .and('contain.text', 'Australian National University ')
+        .and('contain.text', ' Jan 2025 ')
+        .and('contain.text', ' FULL_TIME ')
+        .and('contain.text', ' ONLINE ')   
+})
+When("the user provides valid RPL multiple offer details", (dataTable) => {
+    cy.url({ timeout: 60000 }).should('include', '/create-course-application/id')
+
+    cy.get('[class="btn-content-inner"]').contains('Receive multiple offers').click()
+    cy.get('[class="btn-content-inner"]').contains(' Create New ').click()
+    cy.get('[class="btn-content-inner"]').contains('Receive multiple offers').click()
+    cy.get('[class="btn-content-inner"]').contains(' Create New ').click()
+    cy.wait(5000)
+
+    fillFunction('fillRPL', dataTable, { applicationType: 'multiple-offer' })
+})
+When("the user submits the RPL form", () => {
+    cy.wait(10000)
+    cy.contains('button', 'Submit').click()
+})
+Then("the user can view the RPL multiple offer", () => {
+    cy.wait(10000)
+    cy.contains('button', 'Go to my Applications').click()
+    cy.wait(10000)
+    cy.get('[class="sec-block-pad section-bg"]')
+        .should('be.visible')
+    cy.get('[class="d-flex align-items-center mb-4"]')
+        .should('contain.text', 'Multiple offers ')
+        .and('contain.text', ' RPL offers ')
+    cy.get('[class="default-content-list"]')
+        .should('contain.text', 'Aboriginal Health and Wellbeing')
+        .and('contain.text', '1 September 2024')
+        .and('contain.text', 'Full-Time ')
+        .and('contain.text', 'Online ')    
+})
+
 //
 //Edit profile photo if there is no photo
 When("the user edit the profile photo", () => {

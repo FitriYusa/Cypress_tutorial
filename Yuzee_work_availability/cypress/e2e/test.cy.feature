@@ -10,11 +10,11 @@ Feature: Yuzee user profile components
       And the new user have no work experience skipping the onboarding process
       Then the new user will be redirect to the user control center page
 
-    #Upskill
-      Scenario Outline: Add Upskill multiple offer application
+    #RPL
+      Scenario Outline: Add RPL direct offer application
         Given the user is in apply page
-        When the user initiate the Upskilling application
-        When the user provides valid upskilling multiple offer details
+        When the user initiate the RPL application
+        When the user provides valid RPL direct offer details
         | subjects       | grade |  documentType                           | filePath         |
         | Communications | A     |  Australian keypass                     | cypress/images/2022-05-23.png    |
         | OOP            | A     |  Birth certificate                      | cypress/images/2022-05-23.png    |
@@ -26,5 +26,5 @@ Feature: Yuzee user profile components
         | Chemistry      | A     |  Police Check                           | cypress/images/2022-05-23.png    |
         | Literature     | B     |  First Aid Check                        | cypress/images/2022-05-23.png    |
         | Art            | A     |  CV/Resume                              | cypress/images/2022-05-23.png    |
-        And the user submits the upskilling form
-        Then the user can view the upskilling multiple offer
+        And the user submits the RPL form
+        Then the user can view the RPL direct offer

@@ -9,12 +9,12 @@ const emailAddress = `abs${randomString}${emailDomain}`;
 
 Given("the new user is on Yuzee homepage is open", () => {
     cy.visit('/')
-    cy.intercept('POST', 'https://auth.yuzee.click/users/api/v1/public/users/signup').as('signupRequest');
-});
+    cy.intercept('POST', 'https://auth.yuzee.click/users/api/v1/public/users/signup').as('signupRequest')
+})
 
 When("the new user initiate the account creation process", () => {
     cy.contains('Join Yuzee').click()
-});
+})
 
 When("the new user provides valid registration details", () => {
        cy.fillForm()
