@@ -2,10 +2,9 @@ Feature: Edit profile
 
     Background: Open edit profile form
       Given the user is on the profile page
-      And the user selects the edit profile button
-      And the user is in the edit profile form
 
     Scenario: Initiate Edit profile 
+      Given the user is in edit profile and wants to add "Looking for"
       When the user selects the edit profile button
       Then the user is in the edit profile form
 
