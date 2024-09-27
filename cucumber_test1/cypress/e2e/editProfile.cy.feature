@@ -4,19 +4,21 @@ Feature: Edit profile
       Given the user is on the profile page
 
     Scenario: Initiate Edit profile 
-      Given the user is in edit profile and wants to add "Looking for"
       When the user selects the edit profile button
       Then the user is in the edit profile form
 
     Scenario: Select minimum number of “Looking for”
+      Given the user is in edit profile and wants to add "Looking for"
       When the user selects one they are looking for
       Then the user can view the selected looking for displayed
 
     Scenario: Selecting all “Looking for” options
+      Given the user is in edit profile and wants to add "Looking for"
       When the user selects all they are looking for
       Then the user can view all of the selected looking for displayed
 
     Scenario: Maximum age for date of birth
+      Given the user is in edit profile and wants to select maximum Date of Birth
       When the user selects the maximum date of birth
       Then the user can view the selected max DOB displayed
 
